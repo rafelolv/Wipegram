@@ -63,3 +63,12 @@ test('abort errors normalize to ABORTED', () => {
   assert.equal(normalized.code, 'ABORTED');
   assert.equal(normalized.fatal, false);
 });
+
+test('normalized RPC statuses preserve transient 5xx classification', () => {
+  for (const status of [500, 502, 503]) {
+    const error = normalizeError(tgError('RPC_CALL_FAIL', status));
+    assert.equal(error.code, 'RPC_CALL_FAIL');
+    assert.equal(isTransientError(error), true);
+  }
+  assert.equal(isTransientError(normalizeError(tgError('RPC_CALL_FAIL', 400))), false);
+});

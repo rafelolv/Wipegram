@@ -25,7 +25,9 @@ export function errorType(error) {
 }
 
 export function errorCode(error) {
-  return typeof error?.code === 'number' ? error.code : 0;
+  if (typeof error?.code === 'number') return error.code;
+  // Normalization keeps the RPC status in details while code becomes its type.
+  return typeof error?.details?.code === 'number' ? error.details.code : 0;
 }
 
 /**

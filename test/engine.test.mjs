@@ -735,19 +735,21 @@ test('persistent search timeouts exhaust bounded retries without starting a hist
   assert.deepEqual(pauses, [1000, 2000, 4000]);
 });
 
-test('persistent batch timeouts stop instead of expanding into 100 individual requests', async () => {
+for (const type of ['TIMEOUT', 'RPC_CALL_FAIL']) {
+ test(`persistent ${type} failures stop instead of expanding into 100 individual requests`, async () => {
   const requests = [];
   const { engine } = makeEngine({ deleteBatch: async ({ ids }) => {
     requests.push([...ids]);
-    throw { code: 500, type: 'TIMEOUT' };
+    throw { code: 500, type };
   } });
   const result = await engine.delete({ target, entries: Array.from({ length: 100 }, (_, i) => msg(i + 1)), filters: makeFilters() });
   assert.equal(requests.length, 4);
   assert(requests.every(ids => ids.length === 100));
   assert.equal(result.stats.stopped, true);
-  assert.equal(result.stats.error.code, 'TIMEOUT');
+  assert.equal(result.stats.error.code, type);
   assert.equal(result.stats.deleted, 0);
 });
+}
 
 test('persistent individual timeout stops fallback before requesting the next message', async () => {
   const requests = [];

@@ -4,6 +4,12 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-06
+
+### Fixed
+
+- Preserve RPC status codes through error normalization so generic 5xx failures use bounded retries and stop deletion instead of triggering per-message fallback.
+
 ## [0.3.1] - 2026-11-06
 
 ### Changed

@@ -17,12 +17,12 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js"><img src="https://img.shields.io/badge/Install-Userscript-4ADE80?style=for-the-badge&amp;logo=tampermonkey&amp;logoColor=white" alt="Install Wipegram userscript — recommended"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.1/wipegram-chromium-0.3.1.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.3.1"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.1/wipegram-firefox-0.3.1.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.3.1"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.2/wipegram-chromium-0.3.2.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.3.2"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.2/wipegram-firefox-0.3.2.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.3.2"></a>
 </p>
 
 <p align="center">
-  <sub>Userscript recommended · Extension downloads: v0.3.1 · Local, unsigned packages</sub>
+  <sub>Userscript recommended · Extension downloads: v0.3.2 · Local, unsigned packages</sub>
 </p>
 
 <p align="center">
