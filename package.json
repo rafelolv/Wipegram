@@ -1,0 +1,45 @@
+{
+  "name": "wipegram",
+  "version": "0.2.0",
+  "description": "Bulk-delete your own messages in Telegram Web K chats",
+  "type": "module",
+  "main": "wipegram.user.js",
+  "homepage": "https://github.com/rafelolv/Wipegram#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafelolv/Wipegram.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rafelolv/Wipegram/issues"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "build:extensions": "npm run build && node build/extensions.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:ui": "node test/ui/run-ui-test.mjs",
+    "test:extensions:browser": "WIPEGRAM_TEST_EXTENSION=1 node test/ui/run-ui-test.mjs",
+    "check": "npm test && npm run build:extensions && node scripts/check-artifact.mjs && node scripts/check-extensions.mjs",
+    "check:release": "node scripts/check-release.mjs"
+  },
+  "keywords": [
+    "telegram",
+    "delete",
+    "messages",
+    "wipe",
+    "purge",
+    "clean",
+    "bulk",
+    "userscript"
+  ],
+  "author": "Wipegram contributors",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "parse5": "^8.1.0",
+    "playwright-core": "^1.50.0"
+  }
+}
