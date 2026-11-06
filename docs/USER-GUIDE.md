@@ -87,11 +87,11 @@ A common safe pattern is:
 
 ### Skip pinned messages
 
-This is on by default and is a safety feature. Before scanning, Wipegram loads the chat's pinned message IDs and excludes them. It loads pins again before deletion to protect messages pinned during review. In a forum topic it loads pinned IDs for that topic; with **Current topic only** off, it protects pins across the forum. A pin added after the final check can still race with deletion.
+This starts **off**. Enable it when you want to protect pinned messages. With protection enabled, before scanning Wipegram loads the chat's pinned message IDs and excludes them. It loads pins again before deletion to protect messages pinned during review. In a forum topic it loads pinned IDs for that topic; with **Current topic only** off, it protects pins across the forum. A pin added after the final check can still race with deletion.
 
 If Telegram refuses to return pinned IDs, Wipegram **stops the scan** with `PINNED_UNAVAILABLE`. It does not guess and risk deleting a pinned message. Reload the chat and try again.
 
-Unchecking this option means “scan even if I cannot identify pinned messages.” Use it only when you understand that a pinned message may be deleted.
+With this option off, pinned messages can be selected and deleted. Confirmation explicitly states that pins are included.
 
 ### Current topic only
 
@@ -100,7 +100,7 @@ Visible when you are inside a forum topic. When checked, the scan is limited to 
 ### Advanced options
 
 - **Scan method** — `Auto` (recommended), `Telegram sender search`, or `Full history walk`.
-- **Max messages** — stop after this many matches. `0` or empty means unlimited.
+- **Message limit** — visible **100 / 500 / All** presets, starting at 100; custom whole numbers are accepted. `0` or empty means unlimited.
 - **Pause between batches (ms)** — extra delay between delete batches, useful on accounts that hit limits quickly.
 - **Pause between scan pages (ms)** — at least 350 ms between search/history pages; larger configured values are honored.
 
@@ -124,11 +124,11 @@ Press **Scan messages**. Wipegram only reads at this stage; nothing is deleted.
 - **Deleted** — zero until you start deleting.
 - **Failed** — deletions Telegram refused or that failed after retries.
 
-The status line and activity log report the current mode, fallback events, flood waits, network retries, and page progress.
+The status line and activity log report the current mode, fallback events, flood waits, network retries, and page progress. During deletion the panel shows **Batch N of M** using the actual eligible batches. **Elapsed** measures the current scan or deletion, including waits. A live **Retry in Ns** countdown shows server rate limits and network backoff; it clears when the operation finishes or stops.
 
 ### Reviewing results
 
-**Found messages** shows up to eight rows by default. Press **Show all** to render up to 200 rows; the JSON report always contains every matched message, even if the preview list is truncated.
+**Found messages** starts with eight rows. Every match is selected initially. Uncheck individual rows or use **Select all matches** / **Clear selection**. The selected count and Delete button reflect only your selection. **Browse all** opens pages of up to 200 rows; Previous/Next reach every match, and choices survive page navigation. Confirmation and its typed DELETE threshold use the selected count; admin mode always requires typed DELETE.
 
 Each row shows the date, message ID, media badge, and a short preview. Use **Report** to download the full list before deleting if you want an audit trail.
 
@@ -174,7 +174,7 @@ Deletion rules vary by chat type and message age. Telegram may delete a message 
 
 ## 7. Reports
 
-The **Report** button downloads `wipegram-<chat>-<date>.json` locally. It contains the target, filters, scan/delete statistics, failures, and every matched message ID with date, type, and preview.
+The **Report** button downloads `wipegram-<chat>-<date>.json` locally. It contains the target, filters, scan/delete statistics, failures, and every matched message ID with date, type, preview and selection flag. Selection IDs/count distinguish the subset confirmed for deletion from all scanned matches.
 
 Reports may contain private chat names and message text. Store or share them carefully. Wipegram never uploads them.
 
@@ -182,7 +182,7 @@ Reports may contain private chat names and message text. Store or share them car
 
 - [ ] The target card shows the chat I expect.
 - [ ] I am not in a chat preview or a Saved sub-conversation.
-- [ ] **Skip pinned messages** is on, unless I explicitly accept the risk.
+- [ ] I enabled **Skip pinned messages** if I want pins protected; it starts off.
 - [ ] The date range and message count are as small as needed for a first run.
 - [ ] I reviewed the result list and, if needed, downloaded a report.
 - [ ] I understand that deletion is permanent and may remove messages for other people too.

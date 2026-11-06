@@ -45,7 +45,7 @@ export function normalizeFilters(raw = {}, target = {}) {
     type: TYPE_VALUES.has(raw.type) ? raw.type : 'all',
     minDate: Number.isFinite(raw.minDate) && raw.minDate > 0 ? raw.minDate : null,
     maxDate: Number.isFinite(raw.maxDate) && raw.maxDate > 0 ? raw.maxDate : null,
-    skipPinned: raw.skipPinned !== false,
+    skipPinned: raw.skipPinned === true,
     topicScope: !!raw.topicScope && !!target.topMsgId,
     maxMessages: clamp(Number.parseInt(raw.maxMessages, 10) || 0, 0, 1_000_000),
     scanMethod: ['auto', 'search', 'history'].includes(raw.scanMethod) ? raw.scanMethod : 'auto',

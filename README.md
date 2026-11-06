@@ -17,12 +17,12 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js"><img src="https://img.shields.io/badge/Install-Userscript-4ADE80?style=for-the-badge&amp;logo=tampermonkey&amp;logoColor=white" alt="Install Wipegram userscript — recommended"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.2/wipegram-chromium-0.3.2.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.3.2"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.2/wipegram-firefox-0.3.2.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.3.2"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.4.0/wipegram-chromium-0.4.0.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.4.0"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.4.0/wipegram-firefox-0.4.0.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.4.0"></a>
 </p>
 
 <p align="center">
-  <sub>Userscript recommended · Extension downloads: v0.3.2 · Local, unsigned packages</sub>
+  <sub>Userscript recommended · Extension downloads: v0.4.0 · Local, unsigned packages</sub>
 </p>
 
 <p align="center">
@@ -91,7 +91,7 @@ Install the generated `wipegram.user.js`, or load a package from `dist/chromium`
 
 | ☀️ Light mode | 🌙 Dark mode |
 | :---: | :---: |
-| <img src="docs/preview-light.png" alt="Wipegram light theme with chat and filter controls" width="400"> | <img src="docs/preview-dark.png" alt="Wipegram charcoal and green workspace ready to scan" width="400"> |
+| <img src="docs/preview-light.png" alt="Wipegram light theme with chat and filter controls" width="400"> | <img src="docs/preview-dark.png" alt="Wipegram dark workspace with individual selection and quick message limits" width="400"> |
 | Pick your target and filters. | Review your matches before deleting. |
 
 ## Features
@@ -99,8 +99,8 @@ Install the generated `wipegram.user.js`, or load a package from `dist/chromium`
 | | Made for your cleanup |
 | --- | --- |
 | 🔎 **Find what matters** | Text, regex, dates, media types and forum-topic filters. Auto supplements sender search with one recent history page. |
-| 👀 **Preview first** | Scan before deleting. Inspect matched messages, counts and the activity log. |
-| 🛡️ **Keep control** | Own-message checks, pinned-message protection, account isolation and explicit confirmation. Type `DELETE` above 100 matches. |
+| 👀 **Preview first** | Select or deselect individual matches, browse every result in pages, then confirm only your selection. |
+| 🛡️ **Keep control** | Own-message checks, pinned-message protection, account isolation and explicit confirmation. Type `DELETE` above 100 selected messages. |
 | ⏳ **Respect the pace** | Batches of up to 100 IDs, bounded retries and automatic Telegram flood-wait handling. Stop with partial statistics. |
 | 🫥 **Keep it private** | Blur names and previews with privacy mode. Export a local JSON report when needed. Reports contain private data. |
 | ✨ **Make yourself comfortable** | Light/dark themes, mobile layout, keyboard access and the same engine in every distribution. |
@@ -115,7 +115,7 @@ Install the generated `wipegram.user.js`, or load a package from `dist/chromium`
 4. Press **Scan messages**.
 5. Review **Found messages**, the counts, and the activity log. Use **Report** if you want a JSON copy.
 6. Press **Delete N messages**, review the confirmation, and confirm.
-7. For more than 100 messages, type `DELETE` to enable the final button.
+7. For more than 100 selected messages, type `DELETE` to enable the final button.
 8. Press **Stop** if you change your mind. Messages already deleted cannot be restored.
 
 ## What is supported
@@ -150,9 +150,9 @@ To moderate a group or channel, expand **Admin mode** and explicitly enable **In
 | **Text contains** | Telegram search query in sender-search mode; local case-insensitive substring in history mode. |
 | **Regex pattern** | JavaScript regular expression, case-insensitive, always checked locally. Example: `^hello\|invoice`. Invalid patterns are rejected before scanning. |
 | **Newer than / Older than** | Local date and time bounds. Both ends are inclusive to the second. |
-| **Skip pinned messages** | On by default. Pinned IDs are loaded before scanning. If they cannot be loaded, the scan aborts with `PINNED_UNAVAILABLE` rather than risk deleting a pinned message. |
+| **Skip pinned messages** | Off by default. Enable it to protect pinned messages; pinned IDs are then loaded before scanning. If they cannot be loaded, the scan aborts with `PINNED_UNAVAILABLE` rather than risk deleting a pinned message. |
 | **Current topic only** | Visible in forum topics. When off, Wipegram scans the whole forum. |
-| **Max messages** | Stops scanning after N matches. `0` or empty means unlimited. |
+| **Message limit** | Visible **100 / 500 / All** presets; starts at 100. Custom values are supported. `0` or empty means unlimited. |
 | **Scan method** | `Auto` (sender search, then one recent history page), `Telegram sender search`, or `Full history walk`. A message cap stops either Auto pass once reached. |
 | **Pause between batches / pages** | Scan pages use at least 350 ms; set a longer pause if needed. Batch pauses remain optional. |
 
@@ -181,10 +181,10 @@ Wipegram is deliberately conservative:
 
 - **Only your own messages by default.** Other authors require explicit admin mode and verified group/channel deletion rights.
 - **Delete for everyone where Telegram permits it.** For private chats and groups, `revoke: true` removes the message from both sides when Telegram allows it. For channels/supergroups, `channels.deleteMessages` revokes the messages.
-- **Pinned messages are protected** by default. Pinned IDs are reloaded before deletion, and message-level pinned flags are also checked. Incomplete pagination or lookup failure stops the operation. Unchecking the option is the explicit opt-out. Pins added after the final check can still race with deletion.
+- **Pinned protection is optional and starts off.** Enable **Skip pinned messages** to exclude pins. When enabled, pinned IDs are reloaded before deletion, message-level pinned flags are checked, and incomplete pagination or lookup failure stops the operation. Pins added after the final check can still race with deletion.
 - **Chat/account changes abort the operation.** Account identity is part of every preview key and is verified before every API call. A request already submitted can still finish after Stop or a chat change.
 - **Chat previews and unsupported chats are blocked.** A chat preview is not the real conversation, and Saved sub-conversations are not supported yet.
-- **More than 100 messages require typing `DELETE`.** Admin mode requires it for every deletion, regardless of size.
+- **More than 100 selected messages require typing `DELETE`.** Admin mode requires it for every deletion, regardless of size.
 - **Long flood waits stop the operation.** Wipegram will not silently park your tab for more than 15 minutes.
 - **No undo.** Telegram does not provide an undo for these deletions.
 
@@ -213,7 +213,7 @@ Wipegram retries a rejected batch one message at a time so a single problematic 
 
 Telegram does not document a universal deletion requests-per-second quota. These batch sizes and retry caps are Wipegram policies, not guarantees against rate limits. The Bot API's deletion restrictions are not a specification for this logged-in user MTProto client. See [verified limits and technical sources](docs/TELEGRAM-LIMITS.md).
 
-The activity log shows every wait and retry. The JSON report includes flood-wait counts and seconds.
+The panel shows the current deletion batch, elapsed time and a live retry countdown. The activity log shows every wait and retry. The JSON report includes flood-wait counts and seconds.
 
 
 </details>

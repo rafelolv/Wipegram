@@ -431,6 +431,7 @@ export class WipegramEngine {
       failed: 0,
       processed: 0,
       batches: 0,
+      totalBatches: 0,
       failedBatches: 0,
       floodWaits: 0,
       floodSeconds: 0,
@@ -458,6 +459,8 @@ export class WipegramEngine {
         alreadyGone: stats.alreadyGone,
         skipped: stats.skipped,
         failed: stats.failed,
+        batch: stats.batches,
+        totalBatches: stats.totalBatches,
         current
       });
     };
@@ -477,10 +480,12 @@ export class WipegramEngine {
       });
       emitProgress();
       const batches = chunk(eligible, this.batchSize);
+      stats.totalBatches = batches.length;
 
       for (const batch of batches) {
         this.checkAbort(signal);
         stats.batches += 1;
+        this.emit('delete:batch', { batch: stats.batches, totalBatches: batches.length, size: batch.length, total: unique.length });
 
         let batchFailed = false;
         try {

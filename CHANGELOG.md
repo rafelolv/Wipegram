@@ -4,6 +4,18 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-06
+
+### Added
+
+- Show actual deletion batches, elapsed time and live flood-wait/network-retry countdowns.
+- Add visible 100 / 500 / All scan presets, starting at 100, with custom limits.
+- Select/deselect individual results, browse all matches in pages and confirm only the selected subset; preserve selection details in reports.
+
+### Changed
+
+- Start Skip pinned messages unchecked; retain full protection when explicitly enabled and state pin inclusion in confirmation.
+
 ## [0.3.2] - 2026-11-06
 
 ### Fixed

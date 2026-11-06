@@ -166,6 +166,9 @@ async function main() {
         };
       }
 
+      if ((method === 'messages.deleteMessages' || method === 'channels.deleteMessages') && window.__holdDelete) {
+        await new Promise(resolve => { window.__releaseDelete = resolve; });
+      }
       if (method === 'messages.deleteMessages') {
         window.__deleted.push(...(params?.id || []));
         window.__messages = window.__messages.filter(message => !params.id.includes(message.id));
@@ -215,6 +218,16 @@ async function main() {
     return root.getElementById('target-name').textContent;
   });
   assert(targetName === 'Test Chat', `Unexpected target name: ${targetName}`);
+
+  assert(await page.inputValue('#max-messages') === '100', 'Quick limit must start at 100');
+  assert(await page.isChecked('#skip-pinned') === false, 'Skip pinned must start unchecked');
+  await page.click('#limit-500');
+  assert(await page.inputValue('#max-messages') === '500', '500 preset must update the scan cap');
+  await page.click('#limit-100');
+  await page.fill('#max-messages', '-1');
+  await page.click('#scan-btn');
+  await waitForShadow(page, '/Message limit must be/.test(root.getElementById("form-error").textContent)');
+  await page.click('#limit-100');
 
   // Keyboard shortcut toggles the panel.
   await page.keyboard.press('Alt+Shift+W');
@@ -347,6 +360,8 @@ async function main() {
   await page.evaluate(() => { window.__emptySenderSearch = false; });
 
   // The >100 messages confirmation gate.
+  await page.click('#limit-all');
+  assert(await page.inputValue('#max-messages') === '0', 'All preset must remove the cap');
   await page.evaluate(() => {
     window.__messages = Array.from({ length: 120 }, (_, index) => ({
       _: 'message',
@@ -603,6 +618,66 @@ async function main() {
   });
   await waitForShadow(page, 'root.getElementById("delete-btn").disabled === true');
   assert(await page.evaluate(() => window.__deleted.length === 0), 'Account switch reused another account\'s preview');
+
+  // Selection must work beyond the first 200 rendered rows and delete only
+  // the selected subset, without losing unselected messages in the report.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.evaluate(messages => {
+    window.rootScope.myId = 999;
+    window.__messages = messages;
+    window.__deleted = [];
+    window.__wipegram.ui.refreshTarget({ quiet: true });
+  }, Array.from({ length: 501 }, (_, i) => message(1000 + i)));
+  await page.click('#limit-all');
+  await page.click('#scan-btn');
+  await waitForShadow(page, 'root.getElementById("metric-found").textContent === "501" && !root.getElementById("delete-btn").disabled', 15000);
+  await page.click('#results-toggle');
+  await page.click('#results-next');
+  await page.uncheck('[data-message-id="1200"] .wg-result-select');
+  await page.click('#results-next');
+  await page.click('#results-prev');
+  assert(await page.isChecked('[data-message-id="1200"] .wg-result-select') === false, 'Selection must survive page navigation');
+  await page.click('#results-next');
+  await page.click('#select-none-btn');
+  assert(await page.isDisabled('#delete-btn'), 'Empty selection must disable deletion');
+  await page.check('[data-message-id="1100"] .wg-result-select');
+  assert(await page.textContent('#selection-count') === '1 of 501 selected', 'Selected count must include offscreen matches');
+  if (process.env.WIPEGRAM_UI_SCREENSHOT !== '0') {
+    await page.evaluate(() => {
+      const ui = window.__wipegram.ui;
+      if (ui.privacy) ui.togglePrivacy();
+      ui.shadow.querySelector('.wg-review-scroll').scrollTop = 0;
+    });
+    await page.locator('#panel').screenshot({ path: path.join(os.tmpdir(), 'wipegram-panel-selection.png') });
+  }
+  await page.click('#delete-btn');
+  assert((await page.textContent('#modal-title')).includes('1 message'), 'Confirmation must use selected count, not all matches');
+  assert(await page.locator('#confirm-field').isHidden(), 'One own selected message must not inherit the >100 gate from unselected results');
+  assert((await page.textContent('#modal-warning')).includes('Pinned messages are included'), 'Confirmation must show disabled pin protection');
+  await page.evaluate(() => { window.__holdDelete = true; });
+  await page.click('#confirm-delete');
+  await page.waitForFunction(() => typeof window.__releaseDelete === 'function');
+  assert(await page.textContent('#batch-label') === 'Batch 1 of 1', 'Actual batch progress must be visible');
+  assert(await page.locator('.wg-result-select').first().isDisabled(), 'Selection must freeze while deleting');
+  await page.waitForTimeout(1100);
+  assert(!/Elapsed 0s/.test(await page.textContent('#elapsed-label')), 'Elapsed time must advance during a pending request');
+  await page.evaluate(() => window.__wipegram.ui.handleEngineEvent({ type: 'flood', seconds: 3, until: Date.now() + 2200 }));
+  await waitForShadow(page, '/Retry in [12]s/.test(root.getElementById("wait-label").textContent)');
+  await page.evaluate(() => { window.__holdDelete = false; window.__releaseDelete(); });
+  await waitForShadow(page, 'root.getElementById("metric-deleted").textContent === "1" && root.getElementById("scan-btn").hidden === false');
+  const selectionOutcome = await page.evaluate(() => ({
+    ids: window.__deleted,
+    remaining: window.__messages.length,
+    report: window.__wipegram.ui.buildReport(),
+    timer: window.__wipegram.ui.progressTimer,
+    waiting: window.__wipegram.ui.waitLabel.hidden,
+    found: window.__wipegram.ui.metricFound.textContent
+  }));
+  assert(JSON.stringify(selectionOutcome.ids) === '[1100]' && selectionOutcome.remaining === 500, 'Deletion must exclude every unchecked message');
+  assert(selectionOutcome.found === '501', 'Found counter must keep all matches rather than shrink to the selection');
+  assert(selectionOutcome.report.selection.count === 1 && selectionOutcome.report.messages.length === 501, 'Report must distinguish selection from all scanned matches');
+  assert(selectionOutcome.report.messages.filter(m => m.selected).length === 1, 'Report selection flags must remain after cleanup');
+  assert(selectionOutcome.timer === null && selectionOutcome.waiting, 'Finished operations must stop timers and clear countdowns');
 
   // Web A should only display the unsupported notice.
   const aPage = await context.newPage();

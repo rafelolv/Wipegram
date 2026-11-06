@@ -1,6 +1,6 @@
 {
   "name": "wipegram",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Scan, review and bulk-delete your own messages in Telegram Web K",
   "type": "module",
   "main": "wipegram.user.js",

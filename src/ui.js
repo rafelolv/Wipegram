@@ -4,7 +4,7 @@ import {
   messagePreview,
   normalizeFilters
 } from './filters.js';
-import { humanError, isAbortError, normalizeError } from './errors.js';
+import { WipegramError, humanError, isAbortError, normalizeError } from './errors.js';
 import { targetKey } from './telegram.js';
 import {
   downloadJson,
@@ -77,6 +77,9 @@ export class WipegramUI {
     this.targetError = null;
     this.targetKey = '';
     this.entries = [];
+    this.selectedIds = new Set();
+    this.confirmedEntries = null;
+    this.resultPage = 0;
     this.scanSnapshot = null;
     this.scanStats = null;
     this.deleteStats = null;
@@ -92,6 +95,11 @@ export class WipegramUI {
     this.logs = [];
     this.pollTimer = null;
     this.toastTimer = null;
+    this.progressTimer = null;
+    this.operationStartedAt = 0;
+    this.elapsedMs = 0;
+    this.waitState = null;
+    this.batchState = null;
     this.themeObserver = null;
     this.drag = null;
     this.destroyed = false;
@@ -156,8 +164,12 @@ export class WipegramUI {
     this.readyTitle = this.shadow.getElementById('ready-title');
     this.readyDescription = this.shadow.getElementById('ready-description');
     this.progressWrap = this.shadow.querySelector('.wg-progress-wrap');
+    this.elapsedLabel = this.shadow.getElementById('elapsed-label');
+    this.waitLabel = this.shadow.getElementById('wait-label');
+    this.batchLabel = this.shadow.getElementById('batch-label');
 
     this.bindEvents();
+    this.updateLimitPresets();
     this.restorePrivacy();
     this.watchTheme();
     this.updateButtons();
@@ -174,8 +186,33 @@ export class WipegramUI {
     this.stopButton.addEventListener('click', () => this.abortOperation('Stopped by you.'));
     this.resultsToggle.addEventListener('click', () => {
       this.showAllResults = !this.showAllResults;
+      this.resultPage = 0;
       this.renderResults();
     });
+    for (const direction of ['prev', 'next']) {
+      this.shadow.getElementById(`results-${direction}`).addEventListener('click', () => {
+        this.resultPage += direction === 'next' ? 1 : -1;
+        this.renderResults();
+        this.resultsList.scrollIntoView({ block: 'nearest' });
+      });
+    }
+    for (const [id, selected] of [['select-all-btn', true], ['select-none-btn', false]]) {
+      this.shadow.getElementById(id).addEventListener('click', () => {
+        if (this.busy || this.phase !== 'ready') return;
+        this.hideConfirm();
+        this.selectedIds = new Set(selected ? this.entries.map(message => message.id) : []);
+        this.renderResults();
+        this.updateButtons();
+      });
+    }
+    for (const button of this.shadow.querySelectorAll('[data-limit]')) {
+      button.addEventListener('click', () => {
+        if (this.busy) return;
+        const input = this.shadow.getElementById('max-messages');
+        input.value = button.dataset.limit;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    }
     this.resetButton.addEventListener('click', () => this.resetResults());
     this.reportButton.addEventListener('click', () => this.downloadReport());
     this.confirmCancel.addEventListener('click', () => this.hideConfirm());
@@ -196,6 +233,7 @@ export class WipegramUI {
 
     const filtersChanged = () => {
       this.clearFormError();
+      this.updateLimitPresets();
       if (this.busy || !this.scanSnapshot) return;
       this.hideConfirm();
       this.invalidateResults('Filters changed. Scan again before deleting.');
@@ -456,11 +494,11 @@ export class WipegramUI {
     this.scanButton.hidden = this.busy;
     this.deleteButton.hidden = this.busy;
     this.stopButton.hidden = !this.busy;
-    this.stopButton.disabled = false;
+    this.stopButton.disabled = this.busy && this.abortController?.signal.aborted === true;
     this.scanButton.disabled = this.busy || !this.target;
-    this.deleteButton.disabled = this.busy || !hasResults || this.phase !== 'ready';
-    this.deleteLabel.textContent = hasResults
-      ? `Delete ${formatNumber(this.entries.length)} message${this.entries.length === 1 ? '' : 's'}`
+    this.deleteButton.disabled = this.busy || !this.selectedIds.size || this.phase !== 'ready';
+    this.deleteLabel.textContent = this.selectedIds.size
+      ? `Delete ${formatNumber(this.selectedIds.size)} message${this.selectedIds.size === 1 ? '' : 's'}`
       : 'Delete messages';
     this.scanLabel.textContent = this.scanSnapshot ? 'Scan again' : 'Scan messages';
     this.reportButton.disabled = this.busy || !this.scanSnapshot;
@@ -478,14 +516,56 @@ export class WipegramUI {
         : this.phase === 'done' ? 'Scan again to refresh remaining messages. Download a report for details.'
         : this.scanSnapshot ? this.scanSnapshot.filters.scanMethod === 'auto' ? 'For older missing messages, choose Full history walk in Advanced options.' : 'Adjust your filters and scan again when you are ready.'
           : 'Choose your chat and filters, then scan for messages.';
+    for (const control of this.shadow.querySelectorAll('.wg-result-select, #select-all-btn, #select-none-btn')) control.disabled = this.busy || this.phase !== 'ready';
     this.panel.classList.toggle('wg-ready', hasResults && this.phase === 'ready');
   }
 
   setBusy(busy, phase = this.phase) {
+    if (busy && !this.busy) {
+      this.operationStartedAt = Date.now();
+      this.elapsedMs = 0;
+      this.waitState = null;
+      this.batchState = null;
+      clearInterval(this.progressTimer);
+      this.progressTimer = setInterval(() => this.updateProgressDetails(), 500);
+    } else if (!busy) {
+      if (this.busy) this.elapsedMs = Date.now() - this.operationStartedAt;
+      clearInterval(this.progressTimer);
+      this.progressTimer = null;
+      this.waitState = null;
+    }
     this.busy = busy;
     this.phase = phase;
     this.panel?.classList.toggle('wg-busy', busy);
     this.updateButtons();
+    this.updateProgressDetails();
+  }
+
+  updateLimitPresets() {
+    const limit = Number.parseInt(this.shadow.getElementById('max-messages').value, 10) || 0;
+    for (const button of this.shadow.querySelectorAll('[data-limit]')) {
+      button.setAttribute('aria-pressed', String(Number(button.dataset.limit) === limit));
+    }
+  }
+
+  updateProgressDetails() {
+    if (!this.elapsedLabel) return;
+    const elapsed = this.busy ? Date.now() - this.operationStartedAt : this.elapsedMs;
+    this.elapsedLabel.textContent = `Elapsed ${formatDuration(elapsed)}`;
+    this.batchLabel.hidden = !this.batchState;
+    this.batchLabel.textContent = this.batchState ? `Batch ${this.batchState.batch} of ${this.batchState.totalBatches}` : '';
+    if (this.abortController?.signal.aborted) this.waitState = null;
+    if (this.waitState && this.waitState.until <= Date.now()) {
+      this.waitState = null;
+      if (this.busy) this.setStatus('Resuming request…');
+    }
+    this.waitLabel.hidden = !this.waitState || !this.busy;
+    this.waitLabel.textContent = this.waitState && this.busy
+      ? `Retry in ${Math.max(0, Math.ceil((this.waitState.until - Date.now()) / 1000))}s` : '';
+  }
+
+  selectedEntries() {
+    return this.entries.filter(message => this.selectedIds.has(message.id));
   }
 
   setStatus(text, tone = 'info') {
@@ -576,6 +656,9 @@ export class WipegramUI {
   }
 
   readFilters() {
+    if (!this.shadow.getElementById('max-messages').checkValidity()) {
+      throw new WipegramError('INVALID_FILTER', 'Message limit must be a whole number between 0 and 1,000,000. Zero means all matches.');
+    }
     const raw = {
       includeOthers: this.includeOthers,
       query: this.shadow.getElementById('query-input').value,
@@ -664,6 +747,8 @@ export class WipegramUI {
       }
 
       this.entries = result.entries;
+      this.selectedIds = new Set(result.entries.map(message => message.id));
+      this.resultPage = 0;
       this.scanStats = result.stats;
       snapshot.entries = result.entries;
       snapshot.stats = result.stats;
@@ -715,7 +800,7 @@ export class WipegramUI {
   }
 
   openConfirm() {
-    if (this.busy || !this.entries.length || !this.scanSnapshot) return;
+    if (this.busy || !this.selectedIds.size || !this.scanSnapshot) return;
 
     const current = this.currentTargetInfo();
     this.target = current.target;
@@ -730,13 +815,15 @@ export class WipegramUI {
     }
 
     const target = this.scanSnapshot.target;
-    const count = this.entries.length;
+    this.confirmedEntries = this.selectedEntries();
+    const count = this.confirmedEntries.length;
     const requireType = count > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot.filters.includeOthers === true;
 
     this.modalTitle.textContent = `${this.scanSnapshot.filters.includeOthers ? 'Admin: delete' : 'Delete'} ${formatNumber(count)} message${count === 1 ? '' : 's'}?`;
     this.modalTarget.textContent = `${target.title}${target.username ? ` (@${target.username})` : ''}`;
 
     const filterParts = describeFilters(this.scanSnapshot.filters);
+    filterParts.push(`${count} selected of ${this.entries.length} matches`);
     if (this.scanSnapshot.chat.topMsgId && !this.scanSnapshot.filters.topicScope) {
       filterParts.push('entire chat, all topics');
     }
@@ -752,6 +839,7 @@ export class WipegramUI {
       ? 'These messages will be removed from your Saved Messages. Telegram cannot undo this.'
       : 'This deletes the messages from your account and, where Telegram permits, for everyone in this chat. Telegram cannot undo this.';
 
+    if (!this.scanSnapshot.filters.skipPinned) this.modalWarning.textContent += ' Pinned messages are included.';
     this.confirmField.hidden = !requireType;
     this.confirmInput.value = '';
     this.modalOpen = true;
@@ -769,14 +857,16 @@ export class WipegramUI {
   }
 
   updateConfirmState() {
-    const count = this.entries.length;
+    const count = this.confirmedEntries?.length || 0;
     const requireType = count > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers === true;
     this.confirmDelete.disabled = requireType && this.confirmInput.value.trim() !== 'DELETE';
   }
 
   hideConfirm() {
     if (!this.modal) return;
+    const wasOpen = this.modalOpen;
     this.modalOpen = false;
+    this.confirmedEntries = null;
     this.modal.hidden = true;
     this.modal.classList.remove('wg-show');
     this.panel.inert = false;
@@ -784,7 +874,7 @@ export class WipegramUI {
     this.confirmDelete.disabled = false;
     this.modalTarget.textContent = '';
     this.modalFilters.replaceChildren();
-    if (!this.busy && this.deleteButton && !this.deleteButton.hidden) {
+    if (wasOpen && !this.busy && this.deleteButton && !this.deleteButton.hidden) {
       try {
         this.deleteButton.focus({ preventScroll: true });
       } catch {
@@ -795,7 +885,9 @@ export class WipegramUI {
 
   async confirmDeleteMessages() {
     if (!this.modalOpen || this.busy) return;
-    if ((this.entries.length > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers) && this.confirmInput.value.trim() !== 'DELETE') return;
+    if (!this.confirmedEntries?.length) return;
+    if (this.confirmedEntries.length !== this.selectedIds.size || this.confirmedEntries.some(message => !this.selectedIds.has(message.id))) { this.hideConfirm(); return; }
+    if ((this.confirmedEntries.length > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers) && this.confirmInput.value.trim() !== 'DELETE') return;
     if (this.targetKey !== this.scanSnapshot?.key) {
       this.hideConfirm();
       this.invalidateResults('The open chat changed. Scan again before deleting.');
@@ -803,12 +895,13 @@ export class WipegramUI {
       return;
     }
 
+    const confirmed = [...this.confirmedEntries];
     this.hideConfirm();
-    await this.startDelete();
+    await this.startDelete(confirmed);
   }
 
-  async startDelete() {
-    if (this.busy || !this.scanSnapshot || !this.entries.length) return;
+  async startDelete(confirmed) {
+    if (this.busy || !this.scanSnapshot || !confirmed?.length) return;
 
     const { target, error } = this.currentTargetInfo();
     if (!target || targetKey(target) !== this.scanSnapshot.key) {
@@ -817,9 +910,10 @@ export class WipegramUI {
       return;
     }
 
-    const count = this.entries.length;
+    const count = confirmed.length;
+    this.scanSnapshot.selectedIds = confirmed.map(message => message.id);
     this.resetMetrics();
-    this.setMetrics({ checked: this.scanStats?.scanned || 0, found: count, deleted: 0, failed: 0 });
+    this.setMetrics({ checked: this.scanStats?.scanned || 0, found: this.scanSnapshot.entries.length, deleted: 0, failed: 0 });
     this.setProgress('determinate', 0);
     this.setStatus(`Deleting 0 of ${formatNumber(count)} messages…`, 'info');
     this.addLog('info', `Delete started for ${formatNumber(count)} message${count === 1 ? '' : 's'}.`);
@@ -830,7 +924,7 @@ export class WipegramUI {
     try {
       const result = await this.engine.delete({
         target: this.scanSnapshot.target,
-        entries: this.entries,
+        entries: confirmed,
         filters: this.scanSnapshot.filters,
         signal: this.abortController.signal
       });
@@ -887,6 +981,7 @@ export class WipegramUI {
       // Keep the original snapshot for reports, but require a fresh scan rather
       // than presenting processed candidates as messages still waiting to delete.
       this.entries = [];
+      this.selectedIds.clear();
       this.renderResults();
       this.abortController = null;
       this.updateButtons();
@@ -904,7 +999,14 @@ export class WipegramUI {
   }
 
   invalidateResults(message = null, { silent = false } = {}) {
+    if (this.modalOpen) this.hideConfirm();
     this.entries = [];
+    this.selectedIds.clear();
+    this.resultPage = 0;
+    this.waitState = null;
+    this.batchState = null;
+    this.elapsedMs = 0;
+    this.updateProgressDetails();
     this.scanSnapshot = null;
     this.scanStats = null;
     this.deleteStats = null;
@@ -941,27 +1043,58 @@ export class WipegramUI {
       this.resultsCount.textContent = '';
       this.resultsToggle.hidden = true;
       this.resultsMore.hidden = true;
+      this.shadow.getElementById('result-pages').hidden = true;
       return;
     }
 
     this.resultsCount.textContent = `· ${formatNumber(entries.length)}`;
     this.resultsToggle.hidden = entries.length <= VISIBLE_RESULTS;
-    this.resultsToggle.textContent = this.showAllResults ? 'Show less' : 'Show all';
+    this.resultsToggle.textContent = this.showAllResults ? 'Compact view' : 'Browse all';
     const limit = this.showAllResults ? MAX_RENDERED_RESULTS : VISIBLE_RESULTS;
-    const shown = entries.slice(0, limit);
+    this.resultPage = Math.max(0, Math.min(this.resultPage, Math.ceil(entries.length / limit) - 1));
+    const start = this.showAllResults ? this.resultPage * limit : 0;
+    const shown = entries.slice(start, start + limit);
     const nodes = shown.map(message => this.createResultNode(message));
     this.resultsList.replaceChildren(...nodes);
 
-    const truncated = this.showAllResults && entries.length > MAX_RENDERED_RESULTS;
-    this.resultsMore.hidden = !truncated;
-    if (truncated) {
-      this.resultsMore.textContent = `Showing the first ${formatNumber(MAX_RENDERED_RESULTS)} of ${formatNumber(entries.length)} messages. The JSON report contains every ID.`;
+    this.resultsMore.hidden = true;
+    const pages = this.shadow.getElementById('result-pages');
+    pages.hidden = !this.showAllResults || entries.length <= limit;
+    this.shadow.getElementById('results-prev').disabled = this.resultPage === 0;
+    this.shadow.getElementById('results-next').disabled = start + limit >= entries.length;
+    this.shadow.getElementById('results-page-label').textContent = `${start + 1}–${Math.min(start + limit, entries.length)} of ${formatNumber(entries.length)}`;
+    this.updateSelection();
+  }
+
+  updateSelection() {
+    this.shadow.getElementById('selection-count').textContent = `${formatNumber(this.selectedIds.size)} of ${formatNumber(this.entries.length)} selected`;
+    if (!this.busy && this.phase === 'ready') {
+      this.setStatus(this.selectedIds.size
+        ? `${formatNumber(this.selectedIds.size)} selected of ${formatNumber(this.entries.length)} matches. Review before deleting.`
+        : 'No messages selected. Select a match to enable deletion.', this.selectedIds.size ? 'success' : 'warning');
     }
+    this.updateButtons();
   }
 
   createResultNode(message) {
     const row = document.createElement('div');
     row.className = 'wg-result';
+    row.dataset.messageId = String(message.id);
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'wg-result-select';
+    checkbox.checked = this.selectedIds.has(message.id);
+    checkbox.disabled = this.busy || this.phase !== 'ready';
+    checkbox.setAttribute('aria-label', `Select message ${message.id}`);
+    checkbox.addEventListener('change', () => {
+      if (this.busy || this.phase !== 'ready' || !row.isConnected) return;
+      this.hideConfirm();
+      if (checkbox.checked) this.selectedIds.add(message.id);
+      else this.selectedIds.delete(message.id);
+      row.classList.toggle('wg-unselected', !checkbox.checked);
+      this.updateSelection();
+    });
+    row.classList.toggle('wg-unselected', !checkbox.checked);
 
     const top = document.createElement('div');
     top.className = 'wg-result-top';
@@ -974,7 +1107,7 @@ export class WipegramUI {
     badge.className = 'wg-badge';
     badge.textContent = TYPE_BADGES[mediaKind(message)] || 'Message';
 
-    top.append(date, badge);
+    top.append(checkbox, date, badge);
 
     const text = document.createElement('div');
     text.className = 'wg-result-text wg-blur';
@@ -989,8 +1122,10 @@ export class WipegramUI {
     const snapshot = this.scanSnapshot;
     const target = snapshot.target;
     const filters = snapshot.filters;
+    const selection = new Set(snapshot.selectedIds || this.selectedIds);
     const messages = snapshot.entries.map(message => ({
       id: message.id,
+      selected: selection.has(message.id),
       date: message.date ? new Date(message.date * 1000).toISOString() : null,
       type: mediaKind(message),
       preview: messagePreview(message)
@@ -1000,6 +1135,7 @@ export class WipegramUI {
       app: 'Wipegram',
       version: APP_VERSION,
       exportedAt: new Date().toISOString(),
+      selection: { ids: [...selection], count: selection.size, matches: snapshot.entries.length },
       page: location.href,
       target: {
         title: target.title,
@@ -1083,6 +1219,11 @@ export class WipegramUI {
         this.setStatus(`Deleting 0 of ${formatNumber(event.total)} messages…`, 'info');
         this.setProgress('determinate', 0);
         break;
+      case 'delete:batch':
+        this.waitState = null;
+        this.batchState = { batch: event.batch, totalBatches: event.totalBatches };
+        this.updateProgressDetails();
+        break;
       case 'delete:progress': {
         this.setMetrics({ deleted: event.deleted, failed: event.failed });
         const fraction = event.total ? event.processed / event.total : 0;
@@ -1100,12 +1241,16 @@ export class WipegramUI {
         break;
       case 'flood':
         this.addLog('warning', `Telegram rate limit: waiting ${formatDuration(event.seconds * 1000)}.`);
-        this.setStatus(`Telegram rate limit — waiting ${formatDuration(event.seconds * 1000)}…`, 'warning');
+        this.waitState = { until: event.until || Date.now() + event.seconds * 1000 };
+        this.setStatus('Telegram rate limit — paused.', 'warning');
+        this.updateProgressDetails();
         this.showToast(`Rate limited. Waiting ${formatDuration(event.seconds * 1000)}…`, 'warning');
         break;
       case 'retry':
         this.addLog('warning', `${event.message} Retrying in ${formatDuration(event.delay)} (attempt ${event.attempt}).`);
-        this.setStatus(`Network hiccup — retrying in ${formatDuration(event.delay)}…`, 'warning');
+        this.waitState = { until: Date.now() + event.delay };
+        this.setStatus('Network hiccup — waiting to retry…', 'warning');
+        this.updateProgressDetails();
         break;
       default:
         break;
@@ -1197,6 +1342,7 @@ export class WipegramUI {
     this.abortController?.abort();
     this.themeObserver?.disconnect();
     if (this.toastTimer) clearTimeout(this.toastTimer);
+    clearInterval(this.progressTimer);
     document.removeEventListener('keydown', this.onDocumentKeydown);
     document.removeEventListener('pointerdown', this.onDocumentPointerDown);
     for (const type of ['keydown', 'keypress', 'keyup']) {

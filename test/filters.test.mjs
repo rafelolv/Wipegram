@@ -53,7 +53,7 @@ test('normalizeFilters clamps numbers and falls back to safe defaults', () => {
   assert.equal(normalized.maxMessages, 0);
   assert.equal(normalized.deleteDelay, 60_000);
   assert.equal(normalized.searchDelay, 0);
-  assert.equal(normalized.skipPinned, true);
+  assert.equal(normalized.skipPinned, false);
 });
 
 test('topic scope only applies when the target has a topic', () => {
@@ -197,4 +197,14 @@ test('everyone scope requires verified explicit admin target and is otherwise of
   assert.equal(localMatches(foreign, normalizeFilters({}, target), { selfUserId: 42 }), false);
   assert.equal(localMatches(foreign, normalized, { selfUserId: 42 }), true);
   assert(describeFilters(normalized).some(text => text.includes('Everyone')));
+});
+
+test('pinned protection is off by default and only enabled with an explicit boolean', () => {
+  const pinned = message(10, { pFlags: { out: true, pinned: true } });
+  for (const raw of [{}, { skipPinned: false }, { skipPinned: 'true' }]) {
+    const normalized = normalizeFilters(raw, target);
+    assert.equal(normalized.skipPinned, false);
+    assert.equal(localMatches(pinned, normalized, { selfUserId: target.selfId }), true);
+  }
+  assert.equal(normalizeFilters({ skipPinned: true }, target).skipPinned, true);
 });

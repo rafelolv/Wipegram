@@ -763,3 +763,14 @@ test('persistent individual timeout stops fallback before requesting the next me
   assert.equal(result.stats.stopped, true);
   assert.equal(result.stats.error.code, 'TIMEOUT');
 });
+
+test('batch events identify each actual deletion batch after pinned exclusions', async () => {
+  const { engine, events } = makeEngine({ getPinnedIds: async () => new Set([205]), deleteBatch: async () => {} });
+  const entries = Array.from({ length: 205 }, (_, i) => msg(i + 1));
+  const result = await engine.delete({ target, entries, filters: makeFilters({ skipPinned: true }) });
+  assert.equal(result.stats.totalBatches, 3);
+  assert.deepEqual(events.filter(event => event.type === 'delete:batch').map(({ batch, totalBatches, size }) => ({ batch, totalBatches, size })), [
+    { batch: 1, totalBatches: 3, size: 100 }, { batch: 2, totalBatches: 3, size: 100 }, { batch: 3, totalBatches: 3, size: 4 }
+  ]);
+  assert.equal(result.stats.skipped, 1);
+});

@@ -42,6 +42,16 @@
         </label>
       </div>
 
+      <div class="wg-limit">
+        <label class="wg-limit-label" for="max-messages">Message limit</label>
+        <input type="number" id="max-messages" min="0" max="1000000" step="1" value="100" aria-label="Maximum matching messages; zero means all">
+        <div class="wg-limit-presets" role="group" aria-label="Quick message limit">
+          <button type="button" id="limit-100" class="wg-limit-choice" aria-pressed="true" data-limit="100">100</button>
+          <button type="button" id="limit-500" class="wg-limit-choice" aria-pressed="false" data-limit="500">500</button>
+          <button type="button" id="limit-all" class="wg-limit-choice" aria-pressed="false" data-limit="0">All</button>
+        </div>
+      </div>
+
         <div class="wg-grid wg-dates">
           <label class="wg-field">
             <span>Newer than</span>
@@ -54,7 +64,7 @@
         </div>
       <div class="wg-checks">
         <label class="wg-check">
-          <input type="checkbox" id="skip-pinned" checked>
+          <input type="checkbox" id="skip-pinned">
           <span>Skip pinned messages</span>
         </label>
         <label class="wg-check" id="topic-wrap" hidden>
@@ -88,10 +98,7 @@
               <option value="history">Full history walk</option>
             </select>
           </label>
-          <label class="wg-field">
-            <span>Max messages</span>
-            <input type="number" id="max-messages" min="0" step="1" placeholder="Unlimited">
-          </label>
+
           <label class="wg-field">
             <span>Pause between batches (ms)</span>
             <input type="number" id="delete-delay" min="0" max="60000" step="100" value="0">
@@ -125,6 +132,7 @@
       <div class="wg-progress-wrap">
         <div class="wg-progress"><div class="wg-progress-bar" id="progress-bar"></div></div>
         <div class="wg-status"><span id="status-text">Choose filters, then scan the open chat.</span></div>
+        <div class="wg-run-details"><span id="batch-label" hidden></span><span id="elapsed-label">Elapsed 0s</span><span id="wait-label" role="timer" hidden></span></div>
       </div>
       <div class="wg-review-scroll">
         <div class="wg-empty" id="ready-state">
@@ -135,7 +143,17 @@
         <span>Found messages <span class="wg-count" id="results-count"></span></span>
         <button type="button" class="wg-link" id="results-toggle" hidden>Show all</button>
       </div>
+      <div class="wg-selection-bar">
+        <span id="selection-count"></span>
+        <button type="button" class="wg-link" id="select-all-btn">Select all matches</button>
+        <button type="button" class="wg-link" id="select-none-btn">Clear selection</button>
+      </div>
       <div class="wg-results-list" id="results-list"></div>
+      <div class="wg-result-pages" id="result-pages" hidden>
+        <button type="button" class="wg-btn wg-ghost wg-sm" id="results-prev">Previous</button>
+        <span id="results-page-label"></span>
+        <button type="button" class="wg-btn wg-ghost wg-sm" id="results-next">Next</button>
+      </div>
       <div class="wg-hint wg-results-more" id="results-more" hidden></div>
     </section>
 
