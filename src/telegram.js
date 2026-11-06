@@ -32,15 +32,25 @@ function currentSelfId(root) {
   return Number(myId) || 0;
 }
 
-export function getCurrentTarget() {
-  const root = window.rootScope;
+export function canModerate(peer) {
+  return ['chat', 'channel'].includes(peer?._)
+    && !peer.pFlags?.min
+    && !peer.pFlags?.left && !peer.pFlags?.kicked && !peer.pFlags?.deactivated
+    && (peer.pFlags?.creator === true || peer.admin_rights?.pFlags?.delete_messages === true);
+}
+
+export function getCurrentTarget({ includeOthers = false, root = globalThis.window?.rootScope,
+  app = globalThis.window?.appImManager, mirror = globalThis.window?.apiManagerProxy } = {}) {
+  if (typeof includeOthers !== 'boolean') {
+    throw new WipegramError('MODERATION_FORBIDDEN', 'Admin mode requires an explicit boolean opt-in.', { fatal: true });
+  }
   const managers = root?.managers;
   const apiManager = managers?.apiManager;
   if (!apiManager) {
     throw new WipegramError('NOT_READY', 'Telegram Web is still loading. Wait a moment and try again.');
   }
 
-  const chat = window.appImManager?.chat;
+  const chat = app?.chat;
   if (!chat || !chat.peerId) {
     throw new WipegramError('NO_CHAT', 'Open a chat first, then press Scan messages.');
   }
@@ -53,8 +63,8 @@ export function getCurrentTarget() {
     throw new WipegramError('UNSUPPORTED_CHAT', 'Open a normal chat, group or Saved Messages.');
   }
 
-  if (chat.isBroadcast) {
-    throw new WipegramError('BROADCAST_CHANNEL', 'Broadcast posts are published as the channel, so personal authorship cannot be verified. Open its discussion group or a private chat instead.');
+  if (chat.isBroadcast && !includeOthers) {
+    throw new WipegramError('BROADCAST_CHANNEL', 'Broadcast posts use the channel identity. Use its discussion group for your own comments, or explicitly enable Admin mode if you have deletion rights.');
   }
 
   if (chat.isMonoforum) {
@@ -65,12 +75,16 @@ export function getCurrentTarget() {
   // Tab managers are worker proxies and return Promises. The page's peer
   // mirror is synchronous, so target detection never mistakes a Promise for
   // a peer or a boolean channel flag.
-  const mirror = window.apiManagerProxy;
   const peer = mirror?.getPeer
     ? mirror.getPeer(peerId)
     : managers.appPeersManager.getPeer(peerId);
   if (!peer || typeof peer.then === 'function') {
     throw new WipegramError('PEER_NOT_LOADED', 'Telegram has not loaded this chat yet. Close and reopen it, then try again.');
+  }
+
+  const canDeleteOthers = canModerate(peer);
+  if (includeOthers && !canDeleteOthers) {
+    throw new WipegramError('MODERATION_FORBIDDEN', 'Admin mode requires verified owner or delete-messages permission in this group or channel.', { fatal: true });
   }
 
   const isChannel = peer._ === 'channel';
@@ -133,13 +147,15 @@ export function getCurrentTarget() {
     topMsgId: threadId ? midToServerId(threadId) : 0,
     topicTitle: isSaved ? '' : (chat.topicTitle || ''),
     chatType: chat.type,
-    isForum: isSaved ? false : !!chat.isForum
+    isForum: isSaved ? false : !!chat.isForum,
+    canDeleteOthers,
+    includeOthers: includeOthers === true
   };
 }
 
 export function targetKey(target) {
   if (!target) return '';
-  return `${target.selfId || 0}:${target.peerId}:${target.threadId || 0}`;
+  return `${target.selfId || 0}:${target.peerId}:${target.threadId || 0}:${target.includeOthers ? 'everyone' : 'own'}`;
 }
 
 function messagesOf(result) {
@@ -154,6 +170,7 @@ export function normalizeMessagesResult(result) {
   const ids = rawMessages.map(message => message?.id).filter(id => Number.isInteger(id) && id > 0);
   return {
     messages: messagesOf(result),
+    receivedCount: rawMessages.length,
     count: Number.isFinite(result?.count) ? result.count : 0,
     notModified: result?._ === 'messages.messagesNotModified',
     nextOffsetId: ids.length ? Math.min(...ids) : 0,
@@ -162,9 +179,11 @@ export function normalizeMessagesResult(result) {
 }
 
 export class TelegramApi {
-  constructor({ root = () => window.rootScope, app = () => window.appImManager } = {}) {
+  constructor({ root = () => window.rootScope, app = () => window.appImManager,
+    mirror = () => globalThis.window?.apiManagerProxy } = {}) {
     this.getRoot = root;
     this.getApp = app;
+    this.getMirror = mirror;
   }
 
   get managers() {
@@ -179,32 +198,49 @@ export class TelegramApi {
     return !!this.apiManager;
   }
 
-  getCurrentTarget() {
-    return getCurrentTarget();
+  getCurrentTarget(options = {}) {
+    return getCurrentTarget({ ...options, root: this.getRoot(), app: this.getApp(), mirror: this.getMirror() });
   }
 
   async invoke(method, params, options = {}) {
-    const { expectedSelfId, ...apiOptions } = options;
+    const { expectedSelfId, moderationTarget, ...apiOptions } = options;
     if (expectedSelfId && currentSelfId(this.getRoot()) !== expectedSelfId) {
       throw new WipegramError('ACCOUNT_CHANGED', 'The Telegram account changed. Scan again before deleting.', { fatal: true });
+    }
+    if (moderationTarget) {
+      let current;
+      try { current = this.getCurrentTarget({ includeOthers: true }); }
+      catch {
+        throw new WipegramError('MODERATION_FORBIDDEN', 'Admin permission could not be verified. Scan again before deleting.', { fatal: true });
+      }
+      if (current.selfId !== moderationTarget.selfId || current.peerId !== moderationTarget.peerId
+        || (moderationTarget.threadId && current.threadId !== moderationTarget.threadId)) {
+        throw new WipegramError('MODERATION_FORBIDDEN', 'Admin target or account changed. Scan again before deleting.', { fatal: true });
+      }
     }
     const apiManager = this.apiManager;
     if (!apiManager) {
       throw new WipegramError('NOT_READY', 'Telegram Web is still loading. Wait a moment and try again.');
     }
 
-    return apiManager.invokeApi(method, params, {
-      noErrorBox: true,
-      floodMaxTimeout: 0,
-      ...apiOptions
-    });
+    try {
+      return await apiManager.invokeApi(method, params, {
+        noErrorBox: true,
+        floodMaxTimeout: 0,
+        ...apiOptions
+      });
+    } catch (error) {
+      if (moderationTarget && ['CHAT_ADMIN_REQUIRED', 'RIGHT_FORBIDDEN', 'USER_NOT_PARTICIPANT'].includes(error?.type || error?.code || error?.message)) {
+        throw new WipegramError('MODERATION_FORBIDDEN', 'Telegram refused admin permission. Stop and verify your role before scanning again.', { fatal: true });
+      }
+      throw error;
+    }
   }
 
   async searchPage({ target, query = '', filter, minDate, maxDate, offsetId = 0, limit = PAGE_SIZE }) {
     const params = {
       peer: target.inputPeer,
       q: query || '',
-      from_id: { _: 'inputPeerSelf' },
       filter,
       min_date: minDate ? toUnixSeconds(minDate) - 1 : 0,
       max_date: maxDate ? toUnixSeconds(maxDate) + 1 : 0,
@@ -216,9 +252,11 @@ export class TelegramApi {
       hash: 0
     };
 
+    if (!target.includeOthers) params.from_id = { _: 'inputPeerSelf' };
+
     if (target.topMsgId) params.top_msg_id = target.topMsgId;
 
-    return normalizeMessagesResult(await this.invoke('messages.search', params, { expectedSelfId: target.selfId }));
+    return normalizeMessagesResult(await this.invoke('messages.search', params, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null }));
   }
 
   async historyPage({ target, offsetId = 0, offsetDate = 0, limit = PAGE_SIZE }) {
@@ -233,7 +271,7 @@ export class TelegramApi {
         max_id: 0,
         min_id: 0,
         hash: 0
-      }, { expectedSelfId: target.selfId }));
+      }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null }));
     }
 
     return normalizeMessagesResult(await this.invoke('messages.getHistory', {
@@ -245,7 +283,7 @@ export class TelegramApi {
       max_id: 0,
       min_id: 0,
       hash: 0
-    }, { expectedSelfId: target.selfId }));
+    }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null }));
   }
 
   async getPinnedIds({ target, signal }) {
@@ -270,7 +308,7 @@ export class TelegramApi {
 
       if (target.topMsgId) params.top_msg_id = target.topMsgId;
 
-      const raw = await this.invoke('messages.search', params, { expectedSelfId: target.selfId });
+      const raw = await this.invoke('messages.search', params, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null });
       const result = normalizeMessagesResult(raw);
       if (result.notModified || result.incomplete) {
         throw new WipegramError('PINNED_UNAVAILABLE', 'Telegram did not return the pinned messages. Scan stopped to protect them.');
@@ -302,13 +340,13 @@ export class TelegramApi {
       return this.invoke('channels.deleteMessages', {
         channel: target.inputChannel,
         id: ids
-      }, { expectedSelfId: target.selfId });
+      }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null });
     }
 
     return this.invoke('messages.deleteMessages', {
       revoke: true,
       id: ids
-    }, { expectedSelfId: target.selfId });
+    }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null });
   }
 }
 

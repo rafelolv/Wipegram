@@ -86,6 +86,7 @@ export class WipegramUI {
     this.busy = false;
     this.abortController = null;
     this.modalOpen = false;
+    this.includeOthers = false;
     this.showAllResults = false;
     this.privacy = false;
     this.logs = [];
@@ -148,6 +149,13 @@ export class WipegramUI {
     this.confirmCancel = this.shadow.getElementById('confirm-cancel');
     this.toastElement = this.shadow.getElementById('toast');
     this.privacyButton = this.shadow.getElementById('privacy-btn');
+    this.scopeCheckbox = this.shadow.getElementById('include-others');
+    this.scopeLabel = this.shadow.getElementById('scope-label');
+    this.checkedLabel = this.shadow.getElementById('checked-label');
+    this.readyState = this.shadow.getElementById('ready-state');
+    this.readyTitle = this.shadow.getElementById('ready-title');
+    this.readyDescription = this.shadow.getElementById('ready-description');
+    this.progressWrap = this.shadow.querySelector('.wg-progress-wrap');
 
     this.bindEvents();
     this.restorePrivacy();
@@ -173,6 +181,18 @@ export class WipegramUI {
     this.confirmCancel.addEventListener('click', () => this.hideConfirm());
     this.confirmDelete.addEventListener('click', () => this.confirmDeleteMessages());
     this.confirmInput.addEventListener('input', () => this.updateConfirmState());
+    this.shadow.getElementById('clear-log-btn').addEventListener('click', () => this.clearLog());
+    this.shadow.getElementById('filters-shortcut').addEventListener('click', () => {
+      this.shadow.getElementById('type-select').focus({ preventScroll: false });
+    });
+    this.scopeCheckbox.addEventListener('change', () => {
+      this.includeOthers = this.scopeCheckbox.checked;
+      this.hideConfirm();
+      this.invalidateResults(null, { silent: true });
+      this.refreshTarget({ quiet: true });
+      if (this.targetError) this.showToast(this.targetError.message, 'warning');
+      this.setStatus('Message scope changed. Scan again before deleting.');
+    });
     this.modal.addEventListener('click', event => {
       if (event.target === this.modal) this.hideConfirm();
     });
@@ -303,6 +323,11 @@ export class WipegramUI {
     }
 
     this.hideConfirm();
+    if (this.includeOthers) {
+      this.includeOthers = false;
+      this.scopeCheckbox.checked = false;
+      this.invalidateResults(null, { silent: true });
+    }
     this.panel.hidden = true;
     this.panel.classList.remove('wg-open');
     this.stopPolling();
@@ -333,8 +358,18 @@ export class WipegramUI {
 
   currentTargetInfo() {
     try {
-      return { target: this.api.getCurrentTarget(), error: null };
+      let target = this.api.getCurrentTarget({ includeOthers: this.includeOthers });
+      if (this.includeOthers && this.target && (target.peerId !== this.target.peerId || target.selfId !== this.target.selfId)) {
+        this.includeOthers = false;
+        this.scopeCheckbox.checked = false;
+        target = this.api.getCurrentTarget({ includeOthers: false });
+      }
+      return { target, error: null };
     } catch (error) {
+      if (this.includeOthers) {
+        this.includeOthers = false;
+        this.scopeCheckbox.checked = false;
+      }
       return { target: null, error: normalizeError(error) };
     }
   }
@@ -372,6 +407,8 @@ export class WipegramUI {
 
   renderTarget() {
     if (!this.panel) return;
+    this.scopeLabel.textContent = this.includeOthers ? 'Everyone — admin mode' : 'Your messages only';
+    this.checkedLabel.textContent = this.includeOthers ? 'Checked' : 'Yours checked';
     const target = this.target;
     const error = this.targetError;
 
@@ -414,7 +451,7 @@ export class WipegramUI {
     this.fieldset.disabled = this.busy;
     this.shadow.getElementById('refresh-btn').disabled = this.busy;
     this.scanButton.hidden = this.busy;
-    this.deleteButton.hidden = this.busy || !hasResults || this.phase !== 'ready';
+    this.deleteButton.hidden = this.busy;
     this.stopButton.hidden = !this.busy;
     this.stopButton.disabled = false;
     this.scanButton.disabled = this.busy || !this.target;
@@ -425,7 +462,14 @@ export class WipegramUI {
     this.scanLabel.textContent = this.scanSnapshot ? 'Scan again' : 'Scan messages';
     this.reportButton.disabled = this.busy || !this.scanSnapshot;
     this.resetButton.disabled = this.busy;
-    this.metrics.hidden = !this.busy && !this.scanSnapshot;
+    this.metrics.hidden = false;
+    this.progressWrap.hidden = !this.busy && !this.scanSnapshot;
+    this.readyState.hidden = hasResults;
+    this.readyTitle.textContent = this.busy ? 'Scan in progress' : this.phase === 'done' ? 'Cleanup finished' : this.scanSnapshot ? 'No matching messages' : 'Ready to scan';
+    this.readyDescription.textContent = !this.target ? 'Open a supported Telegram chat to get started.'
+      : this.busy ? 'You can stop at any time. Review the results before deleting.'
+        : this.scanSnapshot ? 'Adjust your filters and scan again when you are ready.'
+          : 'Choose your chat and filters, then scan for messages.';
     this.panel.classList.toggle('wg-ready', hasResults && this.phase === 'ready');
   }
 
@@ -525,6 +569,7 @@ export class WipegramUI {
 
   readFilters() {
     const raw = {
+      includeOthers: this.includeOthers,
       query: this.shadow.getElementById('query-input').value,
       pattern: this.shadow.getElementById('pattern-input').value,
       type: this.shadow.getElementById('type-select').value,
@@ -574,7 +619,7 @@ export class WipegramUI {
     this.filters = filters;
     this.resetMetrics();
     this.setProgress('indeterminate');
-    this.setStatus('Scanning for your messages…', 'info');
+    this.setStatus(filters.includeOthers ? 'Scanning everyone’s messages — admin mode…' : 'Scanning for your messages…', 'info');
     this.addLog('info', `Scan started (${filters.scanMethod} mode).`);
 
     const scanTarget = filters.topicScope
@@ -675,9 +720,9 @@ export class WipegramUI {
 
     const target = this.scanSnapshot.target;
     const count = this.entries.length;
-    const requireType = count > TYPE_CONFIRM_THRESHOLD;
+    const requireType = count > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot.filters.includeOthers === true;
 
-    this.modalTitle.textContent = `Delete ${formatNumber(count)} message${count === 1 ? '' : 's'}?`;
+    this.modalTitle.textContent = `${this.scanSnapshot.filters.includeOthers ? 'Admin: delete' : 'Delete'} ${formatNumber(count)} message${count === 1 ? '' : 's'}?`;
     this.modalTarget.textContent = `${target.title}${target.username ? ` (@${target.username})` : ''}`;
 
     const filterParts = describeFilters(this.scanSnapshot.filters);
@@ -690,7 +735,9 @@ export class WipegramUI {
       return item;
     }));
 
-    this.modalWarning.textContent = target.isSaved
+    this.modalWarning.textContent = this.scanSnapshot.filters.includeOthers
+      ? 'Admin mode includes other people’s messages. This deletes the selected messages for everyone. Telegram cannot undo this.'
+      : target.isSaved
       ? 'These messages will be removed from your Saved Messages. Telegram cannot undo this.'
       : 'This deletes the messages from your account and, where Telegram permits, for everyone in this chat. Telegram cannot undo this.';
 
@@ -712,7 +759,7 @@ export class WipegramUI {
 
   updateConfirmState() {
     const count = this.entries.length;
-    const requireType = count > TYPE_CONFIRM_THRESHOLD;
+    const requireType = count > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers === true;
     this.confirmDelete.disabled = requireType && this.confirmInput.value.trim() !== 'DELETE';
   }
 
@@ -737,7 +784,7 @@ export class WipegramUI {
 
   async confirmDeleteMessages() {
     if (!this.modalOpen || this.busy) return;
-    if (this.entries.length > TYPE_CONFIRM_THRESHOLD && this.confirmInput.value.trim() !== 'DELETE') return;
+    if ((this.entries.length > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers) && this.confirmInput.value.trim() !== 'DELETE') return;
     if (this.targetKey !== this.scanSnapshot?.key) {
       this.hideConfirm();
       this.invalidateResults('The open chat changed. Scan again before deleting.');
@@ -950,6 +997,7 @@ export class WipegramUI {
         topicId: target.topMsgId || snapshot.chat.topMsgId || 0
       },
       filters: {
+        includeOthers: !!filters.includeOthers,
         type: filters.type,
         query: filters.query,
         pattern: filters.pattern,
@@ -987,7 +1035,7 @@ export class WipegramUI {
   handleEngineEvent(event) {
     switch (event.type) {
       case 'scan:start':
-        this.setStatus('Scanning for your messages…', 'info');
+        this.setStatus(event.filters.includeOthers ? 'Scanning everyone’s messages — admin mode…' : 'Scanning for your messages…', 'info');
         this.setProgress('indeterminate');
         break;
       case 'scan:progress': {
@@ -997,7 +1045,7 @@ export class WipegramUI {
         this.setStatus(
           event.mode === 'search'
             ? `Searching… ${found} of your messages found.`
-            : `Scanning history… ${checked} messages checked, ${found} found.`,
+            : `Scanning history… ${checked} ${this.includeOthers ? 'messages' : 'of your messages'} checked, ${found} found.`,
           'info'
         );
         break;

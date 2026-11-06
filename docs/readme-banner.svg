@@ -3,38 +3,41 @@
   <desc id="description">Your Telegram messages. A fresh start. Scan, review, clean.</desc>
   <defs>
     <linearGradient id="background" x2="1" y2="1">
-      <stop stop-color="#0c1726"/>
-      <stop offset="1" stop-color="#102e3a"/>
+      <stop stop-color="#101211"/>
+      <stop offset="1" stop-color="#1b1e1c"/>
     </linearGradient>
     <linearGradient id="accent" x2="1" y2="1">
-      <stop stop-color="#6ee7cf"/>
-      <stop offset="1" stop-color="#38bdf8"/>
+      <stop stop-color="#4ade80"/>
+      <stop offset="1" stop-color="#86b99a"/>
     </linearGradient>
     <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1" fill="#c7f9ef" opacity=".09"/>
+      <circle cx="2" cy="2" r="1" fill="#86b99a" opacity=".09"/>
     </pattern>
   </defs>
   <rect width="1200" height="320" rx="24" fill="url(#background)"/>
   <rect width="1200" height="320" rx="24" fill="url(#dots)"/>
-  <circle cx="1105" cy="20" r="170" fill="#38bdf8" opacity=".05"/>
-  <circle cx="1050" cy="285" r="125" fill="#6ee7cf" opacity=".05"/>
-  <rect x="56" y="64" width="104" height="104" rx="28" fill="url(#accent)"/>
-  <path d="m76 94 14 47h10l8-27 8 27h10l14-47h-12l-8 29-8-29h-9l-8 29-7-29Z" fill="#102532"/>
+  <circle cx="1105" cy="20" r="170" fill="#86b99a" opacity=".05"/>
+  <circle cx="1050" cy="285" r="125" fill="#4ade80" opacity=".05"/>
+  <!-- BRAND_MARK_START -->
+  <svg x="56" y="64" width="104" height="104" viewBox="0 0 128 128" aria-hidden="true"><rect width="128" height="128" rx="28" fill="#101211"/>
+  <path d="m14 39 15 51h12l10-30 9 30h12l16-51H74l-9 30-9-30H44L35 69l-7-30Z" fill="#e8ebe9"/>
+  <path d="M103 39h15L97 90H82Z" fill="#4ade80"/></svg>
+  <!-- BRAND_MARK_END -->
   <g font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
-    <text x="190" y="101" fill="#6ee7cf" font-size="12" font-weight="700" letter-spacing="3">A FRESH START FOR YOUR CHATS</text>
-    <text x="186" y="161" fill="#f1f8fc" font-size="64" font-weight="750" letter-spacing="-2">Wipegram</text>
-    <text x="58" y="219" fill="#bfd0de" font-size="22">Your Telegram messages. Your cleanup.</text>
-    <text x="58" y="253" fill="#7f9dac" font-size="15">Scan first. Review your matches. Delete with control.</text>
+    <text x="190" y="101" fill="#4ade80" font-size="12" font-weight="700" letter-spacing="3">A FRESH START FOR YOUR CHATS</text>
+    <text x="186" y="161" fill="#e8ebe9" font-size="64" font-weight="750" letter-spacing="-2">Wipegram</text>
+    <text x="58" y="219" fill="#bdc8c0" font-size="22">Your Telegram messages. Your cleanup.</text>
+    <text x="58" y="253" fill="#86b99a" font-size="15">Scan first. Review your matches. Delete with control.</text>
     <g transform="translate(818 77)">
-      <rect width="310" height="168" rx="18" fill="#102433" stroke="#315565"/>
-      <circle cx="25" cy="25" r="4" fill="#6ee7cf"/>
-      <text x="40" y="30" fill="#cfe5ec" font-size="12" font-weight="600" letter-spacing="1">TELEGRAM WEB K</text>
-      <path d="M20 47h270" stroke="#294856"/>
-      <rect x="21" y="65" width="195" height="22" rx="8" fill="#244150"/>
-      <rect x="74" y="99" width="214" height="22" rx="8" fill="#255d60"/>
-      <rect x="127" y="133" width="161" height="15" rx="7" fill="#6ee7cf" opacity=".65"/>
-      <circle cx="272" cy="75" r="9" fill="#6ee7cf"/>
-      <path d="m268 75 3 3 5-6" fill="none" stroke="#102532" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect width="310" height="168" rx="18" fill="#1b1e1c" stroke="#2d332f"/>
+      <circle cx="25" cy="25" r="4" fill="#4ade80"/>
+      <text x="40" y="30" fill="#e8ebe9" font-size="12" font-weight="600" letter-spacing="1">TELEGRAM WEB K</text>
+      <path d="M20 47h270" stroke="#2d332f"/>
+      <rect x="21" y="65" width="195" height="22" rx="8" fill="#2d332f"/>
+      <rect x="74" y="99" width="214" height="22" rx="8" fill="#385242"/>
+      <rect x="127" y="133" width="161" height="15" rx="7" fill="#4ade80" opacity=".65"/>
+      <circle cx="272" cy="75" r="9" fill="#4ade80"/>
+      <path d="m268 75 3 3 5-6" fill="none" stroke="#101211" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </g>
   </g>
 </svg>

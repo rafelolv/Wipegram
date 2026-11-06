@@ -63,7 +63,7 @@ test('topic scope only applies when the target has a topic', () => {
 
 test('message type labels and MTProto filters map correctly', () => {
   assert.equal(typeLabel('photos'), 'Photos');
-  assert.equal(typeLabel('unknown'), 'All messages');
+  assert.equal(typeLabel('unknown'), 'All message types');
   assert.deepEqual(mtFilterForType('videos'), { _: 'inputMessagesFilterVideo' });
   assert.deepEqual(mtFilterForType('unknown'), { _: 'inputMessagesFilterEmpty' });
 });
@@ -186,4 +186,15 @@ test('describeFilters includes active filters', () => {
   assert.match(description, /matches \/\^IMG\/i/);
   assert.match(description, /pinned skipped/);
   assert.match(description, /up to 25 messages/);
+});
+
+test('everyone scope requires verified explicit admin target and is otherwise off', () => {
+  assert.equal(normalizeFilters({}, target).includeOthers, false);
+  assert.throws(() => normalizeFilters({ includeOthers: true }, target), { code: 'MODERATION_FORBIDDEN' });
+  const admin = { ...target, includeOthers: true, canDeleteOthers: true };
+  const normalized = normalizeFilters({ includeOthers: true, skipPinned: false }, admin);
+  const foreign = message(1, { from_id: { _: 'peerUser', user_id: 7 } });
+  assert.equal(localMatches(foreign, normalizeFilters({}, target), { selfUserId: 42 }), false);
+  assert.equal(localMatches(foreign, normalized, { selfUserId: 42 }), true);
+  assert(describeFilters(normalized).some(text => text.includes('Everyone')));
 });

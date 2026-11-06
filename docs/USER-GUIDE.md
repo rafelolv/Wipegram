@@ -17,7 +17,7 @@ Open the chat and let its messages load. If Wipegram says the chat is not loaded
 
 ### The button does not appear
 
-Wipegram adds a small **W** button to the chat topbar. If the current Telegram layout has no topbar tools, it adds a floating **W** button instead. You can also press `Alt+Shift+W`.
+Wipegram adds a small **W** button to the chat topbar. A second floating **Wipegram** button stays available above the composer while a chat is open. On narrow screens it shows only the W mark. You can also press `Alt+Shift+W`.
 
 If neither appears:
 
@@ -118,8 +118,8 @@ Press **Scan messages**. Wipegram only reads at this stage; nothing is deleted.
 
 ### What the progress shows
 
-- **Checked** — messages read from Telegram during this scan.
-- Auto can read the same message in both search and history; **Found** counts matching IDs only once.
+- **Yours checked** — unique messages authored by you that were checked. Other authors and duplicate reads do not increase it.
+- Auto can read shared history pages to recover messages missing from sender search. Raw rows read are recorded separately as `inspected` in the report, and never expand the normal-mode deletion scope.
 - **Found** — matching messages owned by you, after local filters.
 - **Deleted** — zero until you start deleting.
 - **Failed** — deletions Telegram refused or that failed after retries.
@@ -135,6 +135,8 @@ Each row shows the date, message ID, media badge, and a short preview. Use **Rep
 If the preview looks wrong, change the filters and scan again. Pressing **Scan again** replaces the previous result set; it does not delete anything.
 
 ## 5. Confirm and delete
+
+Normal mode includes only your messages, even if you are an admin. To moderate a group or channel, expand **Admin mode** and explicitly enable **Include everyone's messages**. This requires verified owner/delete-messages rights, invalidates the old preview and forces a new scan. It is never saved; closing the panel or changing account/chat resets it. The confirmation clearly identifies everyone's scope, requires typing `DELETE` even for one message, and still requires clicking **Delete forever**. Permission is rechecked before every admin API request; a denial stops the operation.
 
 Press **Delete N messages**. A confirmation dialog repeats:
 
@@ -196,7 +198,7 @@ Reports may contain private chat names and message text. Store or share them car
 | Forum, all topics | Supported by unchecking **Current topic only**. |
 | Saved Messages | Supported in the main Saved Messages view. |
 | Saved sub-conversation | Blocked. Open the main Saved Messages view instead. |
-| Broadcast channel | Blocked. Posts use the channel identity; personal authorship cannot be verified. Open the linked discussion group to clean your comments. |
+| Broadcast channel | Blocked in own-message mode. Explicit admin mode requires verified owner/delete-messages rights. |
 | Direct messages to a channel | Blocked. Open a normal chat instead. |
 | Chat preview | Blocked. Open the actual chat. |
 | Web A | Unsupported notice only. Use Web K. |

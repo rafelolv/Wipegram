@@ -1,3 +1,6 @@
+import { createNodes } from './dom.js';
+import logoTemplate from './logo.html?dom';
+
 const STYLE_ID = 'wipegram-launcher-styles';
 
 function injectStyles() {
@@ -12,56 +15,15 @@ function injectStyles() {
       justify-content: center;
     }
 
-    .wipegram-launcher-tile {
-      display: grid;
-      place-items: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-      background: transparent;
-      box-shadow: none;
-      color: #3390ec;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 12.5px;
-      font-weight: 800;
-      line-height: 1;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .wipegram-launcher:hover .wipegram-launcher-tile {
-      background: rgba(51, 144, 236, 0.1);
-    }
-
-    .wipegram-fab {
-      position: fixed;
-      top: 66px;
-      right: 14px;
-      z-index: 2147482990;
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      padding: 0;
-      border: 1px solid rgba(16, 24, 40, 0.12);
-      border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .wipegram-fab:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.28);
-    }
-
-    html.night .wipegram-fab,
-    html.tinted .wipegram-fab,
-    body.night .wipegram-fab,
-    body.tinted .wipegram-fab {
-      border-color: rgba(255, 255, 255, 0.12);
-      background: #212121;
-    }
+    .wipegram-launcher-tile { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: #101211; border: 1px solid #4ade80; }
+    .wipegram-launcher-mark { display: block; width: 28px; height: 28px; }
+    .wipegram-launcher:hover .wipegram-launcher-tile { box-shadow: 0 0 0 3px #4ade8026; }
+    .wipegram-fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); right: 18px; z-index: 2147482990; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 7px; border: 1px solid #4ade80; border-radius: 12px; background: #101211; color: #e8ebe9; box-shadow: 0 4px 18px #0004; font: 600 13px/1 system-ui, sans-serif; cursor: pointer; transition: transform 0.12s ease; }
+    .wipegram-fab .wipegram-launcher-tile { border: 0; }
+    .wipegram-fab:hover { transform: translateY(-2px); background: #1b1e1c; }
+    .wipegram-fab:focus-visible, .wipegram-launcher:focus-visible { outline: 3px solid #4ade80; outline-offset: 3px; }
+    @media (max-width: 680px) { .wipegram-fab { right: 12px; width: 44px; padding: 0; justify-content: center; } .wipegram-fab-label { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .wipegram-fab { transition: none; } }
   `;
   (document.head || document.documentElement).appendChild(style);
 }
@@ -70,15 +32,15 @@ function makeGlyph() {
   const glyph = document.createElement('span');
   glyph.className = 'wipegram-launcher-tile';
   glyph.setAttribute('aria-hidden', 'true');
-  glyph.textContent = 'W';
+  glyph.appendChild(createNodes(logoTemplate));
   return glyph;
 }
 
 /**
  * Adds a native-looking W button to the chat topbar. Telegram re-renders the
  * topbar often, so a throttled observer plus a low-frequency interval put the
- * button back when needed. A floating fallback covers layouts without
- * `.chat-utils`.
+ * button back when needed. A second floating button stays available whenever
+ * a chat is open, including layouts without `.chat-utils`.
  */
 export function createWipegramLauncher({ onOpen }) {
   injectStyles();
@@ -98,6 +60,10 @@ export function createWipegramLauncher({ onOpen }) {
   fab.title = 'Open Wipegram (Alt+Shift+W)';
   fab.setAttribute('aria-label', 'Open Wipegram');
   fab.appendChild(makeGlyph());
+  const label = document.createElement('span');
+  label.className = 'wipegram-fab-label';
+  label.textContent = 'Wipegram';
+  fab.appendChild(label);
 
   const open = event => {
     event?.preventDefault?.();
@@ -118,15 +84,13 @@ export function createWipegramLauncher({ onOpen }) {
     const utils = document.querySelector('.chat-utils');
 
     if (utils) {
-      fab.remove();
       if (!utils.contains(button)) {
         const more = utils.lastElementChild;
         utils.insertBefore(button, more && more !== button ? more : null);
       }
-      return;
+    } else {
+      button.remove();
     }
-
-    button.remove();
     const chatOpen = !!window.appImManager?.chat?.peerId;
     if (chatOpen && !fab.isConnected) {
       document.body.appendChild(fab);
@@ -177,7 +141,6 @@ export function createWipegramLauncher({ onOpen }) {
       if (timer) clearInterval(timer);
       window.removeEventListener('keydown', onKeydown, true);
       button.remove();
-      fab.remove();
       document.getElementById(STYLE_ID)?.remove();
     }
   };

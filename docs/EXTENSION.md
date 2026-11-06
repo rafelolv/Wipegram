@@ -9,12 +9,12 @@ npm ci
 npm run check
 ```
 
-Outputs for version 0.2.2:
+Outputs for version 0.3.0:
 
 - `wipegram.user.js`: install in Tampermonkey or Violentmonkey.
 - `dist/chromium/`: load as an unpacked Chromium extension.
 - `dist/firefox/`: load as a temporary Firefox extension.
-- `dist/wipegram-chromium-0.2.2.zip` and `dist/wipegram-firefox-0.2.2.zip`: unsigned local packages.
+- `dist/wipegram-chromium-0.3.0.zip` and `dist/wipegram-firefox-0.3.0.zip`: unsigned local packages.
 - `dist/SHA256SUMS`: checksums of both ZIPs.
 
 ZIPs have sorted entries and fixed timestamps. Rebuilding unchanged sources with the same toolchain produces identical archives. Outputs in `dist/` are ignored by Git; edit sources and regenerate.
@@ -36,6 +36,8 @@ Requires Chromium 111 or newer. If using a ZIP, extract it first and load the ex
 4. Reload Telegram Web K and open the **W** panel.
 
 Temporary add-ons disappear after a browser restart. ZIPs are unsigned and are not permanent production add-ons; permanent installation in standard Firefox requires Mozilla signing. No store submission, signing or publication is performed by these build commands.
+
+The [Firefox submission workflow](FIREFOX-PUBLISHING.md) runs separately after a requested GitHub release, using `AMO_JWT_ISSUER` and `AMO_JWT_SECRET` repository secrets. First submission and updates require Mozilla processing; no public store listing is implied by the local ZIPs or automation setup.
 
 ## Runtime scope
 

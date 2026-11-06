@@ -1,0 +1,101 @@
+name: Publish Firefox
+on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+    secrets:
+      AMO_JWT_ISSUER:
+        required: true
+      AMO_JWT_SECRET:
+        required: true
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing stable GitHub release tag, for example v0.2.2
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: firefox-store-publication
+  cancel-in-progress: false
+jobs:
+  submit:
+    if: github.repository == 'rafelolv/Wipegram' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RELEASE_TAG: ${{ inputs.release_tag }}
+      NO_UPDATE_NOTIFIER: '1'
+    steps:
+      - name: Check release tag and credentials
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]{0,8})\.(0|[1-9][0-9]{0,8})\.(0|[1-9][0-9]{0,8})$ ]]; then
+            echo '::error::A stable vMAJOR.MINOR.PATCH release tag is required.'
+            exit 1
+          fi
+          if [[ -z "$AMO_JWT_ISSUER" || -z "$AMO_JWT_SECRET" ]]; then
+            echo '::error::Configure AMO_JWT_ISSUER and AMO_JWT_SECRET as repository Actions secrets.'
+            exit 1
+          fi
+          echo "VERSION=${RELEASE_TAG#v}" >> "$GITHUB_ENV"
+      - name: Check out automation
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Retain verifier for existing release tags
+        run: cp scripts/prepare-firefox-publish.mjs "$RUNNER_TEMP/prepare-firefox-publish.mjs"
+      - name: Check out exact release source
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ inputs.release_tag }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Download and verify stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PREVIEW=$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease --jq '(.isDraft or .isPrerelease)')
+          test "$PREVIEW" = false
+          mkdir -p "$RUNNER_TEMP/amo-release"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "wipegram-firefox-$VERSION.zip" --pattern SHA256SUMS --dir "$RUNNER_TEMP/amo-release"
+          node "$RUNNER_TEMP/prepare-firefox-publish.mjs" "$RELEASE_TAG" "$RUNNER_TEMP/amo-release" "$RUNNER_TEMP/amo-input"
+      - name: Install pinned Mozilla tooling
+        run: npm install --prefix "$RUNNER_TEMP/amo-tools" --ignore-scripts --no-audit --no-fund --save-exact web-ext@10.8.0
+      - name: Validate Firefox package
+        run: '"$RUNNER_TEMP/amo-tools/node_modules/.bin/web-ext" lint --source-dir dist/firefox --no-config-discovery --warnings-as-errors'
+      - name: Refuse existing or older AMO versions
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: node "$RUNNER_TEMP/prepare-firefox-publish.mjs" --preflight "$RUNNER_TEMP/amo-input"
+      - name: Submit listed Firefox version with reviewer source
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          "$RUNNER_TEMP/amo-tools/node_modules/.bin/web-ext" sign \
+            --source-dir dist/firefox \
+            --channel listed \
+            --amo-base-url https://addons.mozilla.org/api/v5/ \
+            --approval-timeout 0 \
+            --timeout 300000 \
+            --amo-metadata "$RUNNER_TEMP/amo-input/amo-metadata.json" \
+            --upload-source-code "$RUNNER_TEMP/amo-input/source.zip" \
+            --artifacts-dir "$RUNNER_TEMP/amo-artifacts" \
+            --no-config-discovery --no-input
+          {
+            echo "### Firefox $VERSION submitted"
+            echo 'Submission succeeded. Mozilla signing/review and public availability remain separate.'
+            echo 'Check https://addons.mozilla.org/developers/addons for the actual review state.'
+          } >> "$GITHUB_STEP_SUMMARY"

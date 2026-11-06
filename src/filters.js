@@ -2,7 +2,7 @@ import { WipegramError } from './errors.js';
 import { clamp, truncate } from './util.js';
 
 export const MESSAGE_TYPES = [
-  { value: 'all', label: 'All messages', filter: 'inputMessagesFilterEmpty' },
+  { value: 'all', label: 'All message types', filter: 'inputMessagesFilterEmpty' },
   { value: 'text', label: 'Text only', filter: 'inputMessagesFilterEmpty' },
   { value: 'photos', label: 'Photos', filter: 'inputMessagesFilterPhotos' },
   { value: 'videos', label: 'Videos', filter: 'inputMessagesFilterVideo' },
@@ -16,7 +16,7 @@ export const MESSAGE_TYPES = [
 const TYPE_VALUES = new Set(MESSAGE_TYPES.map(type => type.value));
 
 export function typeLabel(value) {
-  return MESSAGE_TYPES.find(type => type.value === value)?.label || 'All messages';
+  return MESSAGE_TYPES.find(type => type.value === value)?.label || 'All message types';
 }
 
 export function mtFilterForType(type) {
@@ -25,6 +25,9 @@ export function mtFilterForType(type) {
 }
 
 export function normalizeFilters(raw = {}, target = {}) {
+  if (raw.includeOthers === true && (!target.canDeleteOthers || target.includeOthers !== true)) {
+    throw new WipegramError('MODERATION_FORBIDDEN', 'Enable admin mode in a group or channel where you can delete messages.');
+  }
   let pattern = '';
   let patternRegex = null;
   if (typeof raw.pattern === 'string' && raw.pattern.trim()) {
@@ -37,6 +40,7 @@ export function normalizeFilters(raw = {}, target = {}) {
   }
 
   const filters = {
+    includeOthers: raw.includeOthers === true,
     query: typeof raw.query === 'string' ? raw.query.trim() : '',
     type: TYPE_VALUES.has(raw.type) ? raw.type : 'all',
     minDate: Number.isFinite(raw.minDate) && raw.minDate > 0 ? raw.minDate : null,
@@ -60,6 +64,7 @@ export function normalizeFilters(raw = {}, target = {}) {
 
 export function describeFilters(filters) {
   const parts = [];
+  parts.push(filters.includeOthers ? 'Everyone — admin mode' : 'Your messages only');
   parts.push(typeLabel(filters.type));
   if (filters.query) parts.push(`contains “${truncate(filters.query, 40)}”`);
   if (filters.pattern) parts.push(`matches /${truncate(filters.pattern, 40)}/i`);
@@ -178,7 +183,7 @@ export function isOwnMessage(message, selfUserId = 0) {
  */
 export function localMatches(message, filters, { mode = 'search', pinnedIds, selfUserId = 0 } = {}) {
   if (!message || message._ !== 'message' || !Number.isInteger(message.id) || message.id <= 0) return false;
-  if (!isOwnMessage(message, selfUserId)) return false;
+  if (filters.includeOthers !== true && !isOwnMessage(message, selfUserId)) return false;
 
   const dateMs = (message.date || 0) * 1000;
   if (filters.minDate && (!dateMs || dateMs < filters.minDate)) return false;

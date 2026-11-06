@@ -33,3 +33,12 @@ jobs:
         run: |
           VERSION="${RELEASE_TAG#v}"
           gh release create "$RELEASE_TAG" wipegram.user.js "dist/wipegram-chromium-$VERSION.zip" "dist/wipegram-firefox-$VERSION.zip" LICENSE dist/release/SHA256SUMS --verify-tag --title "Wipegram $RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md"
+
+  firefox:
+    needs: release
+    uses: ./.github/workflows/publish-firefox.yml
+    with:
+      release_tag: ${{ github.ref_name }}
+    secrets:
+      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+      AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}

@@ -1,11 +1,11 @@
 :root { color-scheme: light dark; font: 14px/1.55 system-ui, sans-serif; }
-body { width: 300px; margin: 0; padding: 22px; background: light-dark(#fff, #212121); color: light-dark(#16181c, #f2f2f2); }
+body { width: 300px; margin: 0; padding: 22px; background: light-dark(#fff, #101211); color: light-dark(#17251d, #e8ebe9); }
 h1 { margin: 0; font-size: 22px; }
 p { margin: 10px 0; }
 ol { padding-left: 20px; }
 li { margin: 9px 0; }
-a { display: block; padding: 10px; border-radius: 9px; text-align: center; background: #2477c9; color: #fff; text-decoration: none; font-weight: 600; }
-a:hover { background: #1d64ac; }
-a:focus-visible { outline: 3px solid #9b7ef5; outline-offset: 3px; }
+a { display: block; padding: 10px; border-radius: 9px; text-align: center; background: #4ade80; color: #101211; text-decoration: none; font-weight: 600; }
+a:hover { background: #86b99a; }
+a:focus-visible { outline: 3px solid #4ade80; outline-offset: 3px; }
 kbd { font: inherit; font-size: 12px; white-space: nowrap; }
-.note { font-size: 12px; color: light-dark(#555b62, #b4b7ba); margin-bottom: 0; }
+.note { font-size: 12px; color: light-dark(#536158, #a5afa8); margin-bottom: 0; }

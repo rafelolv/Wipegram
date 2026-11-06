@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Wipegram
 // @namespace    https://github.com/rafelolv/Wipegram
-// @version      0.2.2
+// @version      0.3.0
 // @description  Scan, review and bulk-delete your own messages in Telegram Web K
 // @author       Rafael (rafaelolv)
 // @copyright    2026 Rafael (rafaelolv)
-// @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFwUlEQVR4nOybXUxcRRSAz9y9Sxfa0C4/BamlVKtRrGlhA1hsicY3jZpo02iiRk3T+GSlzxqxvmtr4ptpmvhCtDG+6EtN+VHbKoGlVXmggmLLX9mCkELZn3un57As2S4zc392m8BevmR37905M+fMmZkz596bq4MN6k5HntNM/jwwaAQOVRyggjG2GdYQnPN5BjCJNo7h6W/4+0Pv8fIOq3pMWtLG9bpg5Cjj7CMUqoJ1CA7UGJj8k765sjPQxhIimdUOaONaXXDmCOPGSQbsEcgHOB8Epn3Ye7zkHDDG04u0TNn64unDmmmcyZvOE4w9CmCexaX84qqi9JP6zyOv4M+3jK12TD7AOZjA2et9J0q/Sf234oDQZ9NPAjMweLBCyGc4v2OA3tzfGuyn0+RI47rnmtme950nsI8+ZnxNfabTpS+M9sdwKtSCd9hLfaYDVvvlzS2BOBvGoFcOHgLzhpvzMdijB2LaYQx6nuo8gYnc9s0F8KqOU/8Z8CqMPaVx4DXgVbj5mI5uqAGPgsugUgPGK8GrcKjEGMA2gVdhsDUvU14nbDgAPI7uRPiJCh2e3l0gLT/bswAxA5Q07/LD3gf8wrI/x+NwcSSurF/gA3i7oUha/us/MfhrMgF2ceSAuMnhWJP8eik8Goee6+oOvHegCGorxGoHJv3ogFll/X1VfqUNnUNRcIKjJTA4ZUBk3pSWN1X7lfW3Bpi08wSVkYwKlQ6yjWx0guMY8NO1mLSscafaAS0PFYAVVjIqHSrbZDh2QNewXMnj232wpUA+god2WztAJUNtkw43tslw7IDeG3G4HRUvA0wtoUEyQhpLBkArSEaT+JDaJh0iyCayzSmOHYBxEH75V65ItkZDD/oh4Fevb4JkSNZJ2wTZZHJwjKs8oHNIEQeqxVPYzvS3kpW1bWWTClcO+Bn32rghdnf1Ng2ChatH+qADB4hkqU1qWwTZQja5wZUDophn9NyQJxuZHdhRrEmNF0GyVEfVZjpkS9R+7nMPrlPhLsWUy1yrLQ+LjV9MJD8iMuuo1n+Xy+lPuHaAKuPK3KsP1ogdcGkkBpdHxMZnxgHV/u80+0vHtQNuLXBpzl1SpMGe0uR+HdDlo0eBSxa8Qjt02LScNFJb1KYIsoFscUtWV4Oqqdew3OkDu8Sjb+CeRZ3vwI8h2L98mAw0L9dtuE/Tn8jOAYrMq2ln0vhDktQ2PJaA+Rhf+tCxiFTdVFtObbBDVg4YumXA2Jw4K0wlMy2S6H3h75jwOJ1UXVliRLrJhmzI+oaIzPhCtPm1/QHYVijO/i5ciwqP06G61Eah35luJ2TtgK5heQQ+2ii+cTGAgSuSFrjoeEASUGVtWOm2S9YOCI8mpBdHstEXrVvZWpa1QTpJd7bk5J5g57Czq7AOwdTtcDidneqUkRsHONiKxucMGJ5eHbjoPyq7HzpV5MQBlNHJLo4yOa+4a3Pe5h0d0nVpZA05gC5ELv9nb0qqRs7uqJKuaPbLf4mcPRewk5H9f8eEq+Nyy6mMZHKhyy45cwCltJyrl4GdfdtKhnR0rEUHzC5yuDqhDmJ2priVDOkgXbkip4/GVFNzMcHh9+vWcYJkSNaNDjfk1gGKC5Nu3LcT1st7SaZbscdne/GTCQudiuRuPq1DNh6Pg8fZcAAHnv015XqFw6wGnE2AV2EwoeGzRs86ALPKCVwCrB88C+vXcBp8D17Fx9qX7jeFTk31oTfqwEPg9L/S11q+P7kNcnYSPAYD1pb8XcZLsyA1+nS8kgiZmv4OvVAE+Q72kXHfm6nTFQeE3w9eMUF7C/IYem0Od703ek+U/JH6755UONxaes4E/jKKLkC+QSMP2kt9rWXfpf8tfOqw74uZOt1ItCffuMwDOB80ffoRmuWZRcqXp+uLI++Cxj5ezy9Pc8Y/Dc+UfWX/5WkBodNTz2JrL+Bh01p/fR5tG0XbLprg+zH8QbDbqt5dAAAA//9cbsYHAAAABklEQVQDAPfVVQN4VEoAAAAAAElFTkSuQmCC
+// @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAGuUlEQVR4nOyb709TVxjHv+fSQhloWxCKJk6dmhiBZIOpKC6hbvjCZdE44zLnlmxDX/nGvdmbLdvwT5jvpmbJlukyTcwSDUILxcQyJjAUmROSJSQoBcS240f51d6dU1tS2nPOvS1vtJfPC+695zlP0vPc5zznOc/lmKADq9X6tkrIIYWQ3SrUDYQQB20uwIvFtKqqowTkCb12EuBGIBBo01IiEpnJarc2EKJ8Te834OWEGiPyXdAfvETvF3kdeAZQ1trXHqcDb6TW3I4sgHrtAP37VfBZ8Gr0MYEUA1iLrMcJlB/pbT6yi5lwRP1wMhD4PbExJ/HBZrMdpTb5lc7xXGQfZvq2P7C8kvfPXGiuP9645AEFdnsl7dGJ7HvzyYQQUffRANnLHpRYo0IHfwXZP3hGPgj5CbGxR//QaH+aXnbCKBBUxMYcnQKFVrvtXzrvS2Ag6MowFnwW2JZDA98JopATMBh0iS+w5FkGTHQS1MGg0Oy2RqG+sBkGhUDdYaLXzTAo1APKFJoXlsGgEBVlJhr982BUCKwKDM6qAWBwDG8Ak0z4eUMD8vMtXNn5788L9SwWCxpONXBlF364gNnZ2Yx0Z2ZCuHTxolDXvn8zCnc6uLLFmQWM/NyT0i41wK5db6Kuro4r897xoqenhyurqanBmTNnuLIHfQ/g8XggQqbranHhkkgxh2DLlwdgWb+GK/Zdu89tl06Bdk+7UFZVXS2UOQ84M5Jpyd1ul1BW9NYW4eAZo9f6uO1SA7jdbqGsurpKKDt48KBQ5qyTG0CkGw6H0dzcItRzvF8plE32jWB64ClXJjXA2NgYHj0a4Mp279rNbS8vL4fdboeIUkdptE+6ul1372J6epory3+tGLaaTRDx5HKvUKa5CrQL5mtBYQG2btuW0q7l4tE+zjp+u0TX5RJ7o+NIOS3y8Cv8C4EQJtyDQl0dBhDHgeqq1GkgCprL+jj5A5XpNjU1cdsViwklh3YI9UavP6DzRxXKNQ3Q3dONyclJriw5EJaUlqCiogJasD60EKNbt7+/H+Pj41zZuvrtMNv4pUz6hQi+3/jBL46uRMgj8IJkD9AKcIkkBzuZrtsljv6Oo+LgF/hjCPOjk5ChywCiOLDx1Y3L3qSe+S/qm8n8L6wsw5rK9UK9kV/EwS+OTg/wRN2Jxx6auDDMZjNqa2uhF9aX6WjpPh5+jIEB/kpUJnn7syOT8HcMQQtdBpiamkJ3Nz/ri+cD+/bVIjeX/0HpVtOtlDbWl+kw2OCFus23uO05VguK3xF/uvRdvS/98htH92aovZ0fB6piccB5oI4rD4VCaDzXyJXFdaTZXwvf/Utp5M/JN3NlkcXI8+ivA90G8LTxP7WzyJ2XlyfM4DyeNkw8ncCfnZ0pMmdsOayvr+fq+v3+6CqUDJuMpUf4yRRjonUQ4aB4w5WIbgMMDg7C5/NxZR+dPImioiKurCnm/q2tqQZ0OBw4duyYULelhZ/62vduQsHWdRAxclk7+MVJqx7gdrdy20+fPsVtn5mZoVPndvS+TeBBZ784CxEugfuXSfL+6YFxTPX5oJe0DHA7NphkkpOaOCxuzNIYwBgaGsLw8HBKn+LiYq4uqxl0dHhT2nMda2DbvwUifNfkiU8yaRnA672D+fl53f2bkqJ/c3Mz9MI8ZmFhIaXdcXgnFBP/Z4dDCxi/8RDpkJYB2A/yer26+rI3mBw4PW0e6MXNS35o0aPkPXHwG7/5EJHZRaRD2jVB2eYoEfYG5+bmlrV1dXVFcwot2N6fFzMyLXrISNsAsiJJIk2c5CcSiUSXRS06vB3cvX+mRQ8ZaRtAViSJw3P/OG2tHmjBM/JKih4yMiqLt0uKmgye+8dh+wrm4jJcnN3fSooeMjI0gDwO8Nw/DnPt7u5uofxeb2/K3n+lRQ8ZGRlAViSRuX+ctlax3MVJtlZa9JCR8ZchUZFE5v6JfUTwih8rLXrIILYie2a+kyWsfhyFwVk1AAyOQpeRORgVFUGF5lb6qwdZhkrgU1RCDGsAoqo+9p+ime0isgGCXuoB4eswKBFErkS3V1a7rYfutN6AkVDVewF/4PXoMkhUNMJoqPiWXZY22IbygtjbZ7dLiRD1gk/BDhRlP7R2TD6OPywZIBAI3FPDkU+QxdCkj8Y99eS0379UQFh2bpDu4/8251n+Ugg5TB/NyC5CKsjRYNLByZS9QPRkZUTd//y4aXYQHUtE3fuf338jWaZ1ePozQpRv8HIfnj4X9AcvII3D0ynQb39OWjZ6l64Se1784/N4TF3dG1bVm1OBwG0tpf8BAAD//99godMAAAAGSURBVAMAUbSeMM6fwl0AAAAASUVORK5CYII=
 // @homepageURL  https://github.com/rafelolv/Wipegram
 // @supportURL   https://github.com/rafelolv/Wipegram/issues
 // @downloadURL  https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js
@@ -128,6 +128,7 @@ Additional permissions must be granted explicitly in writing.
     return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
   }
   var FATAL_TYPES = /* @__PURE__ */ new Set([
+    "MODERATION_FORBIDDEN",
     "ACCOUNT_CHANGED",
     "SESSION_REVOKED",
     "AUTH_KEY_UNREGISTERED",
@@ -186,7 +187,7 @@ Additional permissions must be granted explicitly in writing.
     NO_CHAT: "Open a chat first, then press Scan messages.",
     PEER_NOT_LOADED: "Telegram has not loaded this chat yet. Close and reopen it, then try again.",
     UNSUPPORTED_CHAT: "This kind of chat is not supported. Open a normal chat, group or Saved Messages.",
-    BROADCAST_CHANNEL: "Broadcast posts are published as the channel, so personal authorship cannot be verified. Open its discussion group or a private chat instead.",
+    BROADCAST_CHANNEL: "Broadcast posts use the channel identity. Use its discussion group for your own comments, or explicitly enable Admin mode if you have deletion rights.",
     INVALID_FILTER: "Check the filters and try again.",
     FLOOD_TOO_LONG: "Telegram asked Wipegram to pause for too long. Stop here and try again later.",
     CHANNEL_PRIVATE: "You are no longer a member of this chat, or Telegram no longer lets this session read it.",
@@ -330,7 +331,7 @@ Additional permissions must be granted explicitly in writing.
 
   // src/filters.js
   var MESSAGE_TYPES = [
-    { value: "all", label: "All messages", filter: "inputMessagesFilterEmpty" },
+    { value: "all", label: "All message types", filter: "inputMessagesFilterEmpty" },
     { value: "text", label: "Text only", filter: "inputMessagesFilterEmpty" },
     { value: "photos", label: "Photos", filter: "inputMessagesFilterPhotos" },
     { value: "videos", label: "Videos", filter: "inputMessagesFilterVideo" },
@@ -342,13 +343,16 @@ Additional permissions must be granted explicitly in writing.
   ];
   var TYPE_VALUES = new Set(MESSAGE_TYPES.map((type) => type.value));
   function typeLabel(value) {
-    return MESSAGE_TYPES.find((type) => type.value === value)?.label || "All messages";
+    return MESSAGE_TYPES.find((type) => type.value === value)?.label || "All message types";
   }
   function mtFilterForType(type) {
     const definition = MESSAGE_TYPES.find((item) => item.value === type) || MESSAGE_TYPES[0];
     return { _: definition.filter };
   }
   function normalizeFilters(raw = {}, target = {}) {
+    if (raw.includeOthers === true && (!target.canDeleteOthers || target.includeOthers !== true)) {
+      throw new WipegramError("MODERATION_FORBIDDEN", "Enable admin mode in a group or channel where you can delete messages.");
+    }
     let pattern = "";
     let patternRegex = null;
     if (typeof raw.pattern === "string" && raw.pattern.trim()) {
@@ -360,6 +364,7 @@ Additional permissions must be granted explicitly in writing.
       }
     }
     const filters = {
+      includeOthers: raw.includeOthers === true,
       query: typeof raw.query === "string" ? raw.query.trim() : "",
       type: TYPE_VALUES.has(raw.type) ? raw.type : "all",
       minDate: Number.isFinite(raw.minDate) && raw.minDate > 0 ? raw.minDate : null,
@@ -380,6 +385,7 @@ Additional permissions must be granted explicitly in writing.
   }
   function describeFilters(filters) {
     const parts = [];
+    parts.push(filters.includeOthers ? "Everyone — admin mode" : "Your messages only");
     parts.push(typeLabel(filters.type));
     if (filters.query) parts.push(`contains “${truncate(filters.query, 40)}”`);
     if (filters.pattern) parts.push(`matches /${truncate(filters.pattern, 40)}/i`);
@@ -496,7 +502,7 @@ Additional permissions must be granted explicitly in writing.
   }
   function localMatches(message, filters, { mode = "search", pinnedIds, selfUserId = 0 } = {}) {
     if (!message || message._ !== "message" || !Number.isInteger(message.id) || message.id <= 0) return false;
-    if (!isOwnMessage(message, selfUserId)) return false;
+    if (filters.includeOthers !== true && !isOwnMessage(message, selfUserId)) return false;
     const dateMs = (message.date || 0) * 1e3;
     if (filters.minDate && (!dateMs || dateMs < filters.minDate)) return false;
     if (filters.maxDate && (!dateMs || dateMs > filters.maxDate)) return false;
@@ -541,14 +547,24 @@ Additional permissions must be granted explicitly in writing.
     if (typeof myId.toUserId === "function") return myId.toUserId();
     return Number(myId) || 0;
   }
-  function getCurrentTarget() {
-    const root = window.rootScope;
+  function canModerate(peer) {
+    return ["chat", "channel"].includes(peer?._) && !peer.pFlags?.min && !peer.pFlags?.left && !peer.pFlags?.kicked && !peer.pFlags?.deactivated && (peer.pFlags?.creator === true || peer.admin_rights?.pFlags?.delete_messages === true);
+  }
+  function getCurrentTarget({
+    includeOthers = false,
+    root = globalThis.window?.rootScope,
+    app = globalThis.window?.appImManager,
+    mirror = globalThis.window?.apiManagerProxy
+  } = {}) {
+    if (typeof includeOthers !== "boolean") {
+      throw new WipegramError("MODERATION_FORBIDDEN", "Admin mode requires an explicit boolean opt-in.", { fatal: true });
+    }
     const managers = root?.managers;
     const apiManager = managers?.apiManager;
     if (!apiManager) {
       throw new WipegramError("NOT_READY", "Telegram Web is still loading. Wait a moment and try again.");
     }
-    const chat = window.appImManager?.chat;
+    const chat = app?.chat;
     if (!chat || !chat.peerId) {
       throw new WipegramError("NO_CHAT", "Open a chat first, then press Scan messages.");
     }
@@ -558,17 +574,20 @@ Additional permissions must be granted explicitly in writing.
     if (!["chat", "saved", "discussion"].includes(chat.type)) {
       throw new WipegramError("UNSUPPORTED_CHAT", "Open a normal chat, group or Saved Messages.");
     }
-    if (chat.isBroadcast) {
-      throw new WipegramError("BROADCAST_CHANNEL", "Broadcast posts are published as the channel, so personal authorship cannot be verified. Open its discussion group or a private chat instead.");
+    if (chat.isBroadcast && !includeOthers) {
+      throw new WipegramError("BROADCAST_CHANNEL", "Broadcast posts use the channel identity. Use its discussion group for your own comments, or explicitly enable Admin mode if you have deletion rights.");
     }
     if (chat.isMonoforum) {
       throw new WipegramError("UNSUPPORTED_CHAT", "Direct messages to a channel are not supported yet. Open the conversation from the normal chat list.");
     }
     const peerId = chat.peerId;
-    const mirror = window.apiManagerProxy;
     const peer = mirror?.getPeer ? mirror.getPeer(peerId) : managers.appPeersManager.getPeer(peerId);
     if (!peer || typeof peer.then === "function") {
       throw new WipegramError("PEER_NOT_LOADED", "Telegram has not loaded this chat yet. Close and reopen it, then try again.");
+    }
+    const canDeleteOthers = canModerate(peer);
+    if (includeOthers && !canDeleteOthers) {
+      throw new WipegramError("MODERATION_FORBIDDEN", "Admin mode requires verified owner or delete-messages permission in this group or channel.", { fatal: true });
     }
     const isChannel = peer._ === "channel";
     let inputPeer;
@@ -622,12 +641,14 @@ Additional permissions must be granted explicitly in writing.
       topMsgId: threadId ? midToServerId(threadId) : 0,
       topicTitle: isSaved ? "" : chat.topicTitle || "",
       chatType: chat.type,
-      isForum: isSaved ? false : !!chat.isForum
+      isForum: isSaved ? false : !!chat.isForum,
+      canDeleteOthers,
+      includeOthers: includeOthers === true
     };
   }
   function targetKey(target) {
     if (!target) return "";
-    return `${target.selfId || 0}:${target.peerId}:${target.threadId || 0}`;
+    return `${target.selfId || 0}:${target.peerId}:${target.threadId || 0}:${target.includeOthers ? "everyone" : "own"}`;
   }
   function messagesOf(result) {
     const messages = Array.isArray(result?.messages) ? result.messages : [];
@@ -638,6 +659,7 @@ Additional permissions must be granted explicitly in writing.
     const ids = rawMessages.map((message) => message?.id).filter((id) => Number.isInteger(id) && id > 0);
     return {
       messages: messagesOf(result),
+      receivedCount: rawMessages.length,
       count: Number.isFinite(result?.count) ? result.count : 0,
       notModified: result?._ === "messages.messagesNotModified",
       nextOffsetId: ids.length ? Math.min(...ids) : 0,
@@ -645,9 +667,14 @@ Additional permissions must be granted explicitly in writing.
     };
   }
   var TelegramApi = class {
-    constructor({ root = () => window.rootScope, app = () => window.appImManager } = {}) {
+    constructor({
+      root = () => window.rootScope,
+      app = () => window.appImManager,
+      mirror = () => globalThis.window?.apiManagerProxy
+    } = {}) {
       this.getRoot = root;
       this.getApp = app;
+      this.getMirror = mirror;
     }
     get managers() {
       return this.getRoot()?.managers;
@@ -658,29 +685,46 @@ Additional permissions must be granted explicitly in writing.
     isReady() {
       return !!this.apiManager;
     }
-    getCurrentTarget() {
-      return getCurrentTarget();
+    getCurrentTarget(options = {}) {
+      return getCurrentTarget({ ...options, root: this.getRoot(), app: this.getApp(), mirror: this.getMirror() });
     }
     async invoke(method, params, options = {}) {
-      const { expectedSelfId, ...apiOptions } = options;
+      const { expectedSelfId, moderationTarget, ...apiOptions } = options;
       if (expectedSelfId && currentSelfId(this.getRoot()) !== expectedSelfId) {
         throw new WipegramError("ACCOUNT_CHANGED", "The Telegram account changed. Scan again before deleting.", { fatal: true });
+      }
+      if (moderationTarget) {
+        let current;
+        try {
+          current = this.getCurrentTarget({ includeOthers: true });
+        } catch {
+          throw new WipegramError("MODERATION_FORBIDDEN", "Admin permission could not be verified. Scan again before deleting.", { fatal: true });
+        }
+        if (current.selfId !== moderationTarget.selfId || current.peerId !== moderationTarget.peerId || moderationTarget.threadId && current.threadId !== moderationTarget.threadId) {
+          throw new WipegramError("MODERATION_FORBIDDEN", "Admin target or account changed. Scan again before deleting.", { fatal: true });
+        }
       }
       const apiManager = this.apiManager;
       if (!apiManager) {
         throw new WipegramError("NOT_READY", "Telegram Web is still loading. Wait a moment and try again.");
       }
-      return apiManager.invokeApi(method, params, {
-        noErrorBox: true,
-        floodMaxTimeout: 0,
-        ...apiOptions
-      });
+      try {
+        return await apiManager.invokeApi(method, params, {
+          noErrorBox: true,
+          floodMaxTimeout: 0,
+          ...apiOptions
+        });
+      } catch (error) {
+        if (moderationTarget && ["CHAT_ADMIN_REQUIRED", "RIGHT_FORBIDDEN", "USER_NOT_PARTICIPANT"].includes(error?.type || error?.code || error?.message)) {
+          throw new WipegramError("MODERATION_FORBIDDEN", "Telegram refused admin permission. Stop and verify your role before scanning again.", { fatal: true });
+        }
+        throw error;
+      }
     }
     async searchPage({ target, query = "", filter, minDate, maxDate, offsetId = 0, limit = PAGE_SIZE }) {
       const params = {
         peer: target.inputPeer,
         q: query || "",
-        from_id: { _: "inputPeerSelf" },
         filter,
         min_date: minDate ? toUnixSeconds(minDate) - 1 : 0,
         max_date: maxDate ? toUnixSeconds(maxDate) + 1 : 0,
@@ -691,8 +735,9 @@ Additional permissions must be granted explicitly in writing.
         min_id: 0,
         hash: 0
       };
+      if (!target.includeOthers) params.from_id = { _: "inputPeerSelf" };
       if (target.topMsgId) params.top_msg_id = target.topMsgId;
-      return normalizeMessagesResult(await this.invoke("messages.search", params, { expectedSelfId: target.selfId }));
+      return normalizeMessagesResult(await this.invoke("messages.search", params, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null }));
     }
     async historyPage({ target, offsetId = 0, offsetDate = 0, limit = PAGE_SIZE }) {
       if (target.topMsgId) {
@@ -706,7 +751,7 @@ Additional permissions must be granted explicitly in writing.
           max_id: 0,
           min_id: 0,
           hash: 0
-        }, { expectedSelfId: target.selfId }));
+        }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null }));
       }
       return normalizeMessagesResult(await this.invoke("messages.getHistory", {
         peer: target.inputPeer,
@@ -717,7 +762,7 @@ Additional permissions must be granted explicitly in writing.
         max_id: 0,
         min_id: 0,
         hash: 0
-      }, { expectedSelfId: target.selfId }));
+      }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null }));
     }
     async getPinnedIds({ target, signal }) {
       const ids = /* @__PURE__ */ new Set();
@@ -738,7 +783,7 @@ Additional permissions must be granted explicitly in writing.
           hash: 0
         };
         if (target.topMsgId) params.top_msg_id = target.topMsgId;
-        const raw = await this.invoke("messages.search", params, { expectedSelfId: target.selfId });
+        const raw = await this.invoke("messages.search", params, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null });
         const result = normalizeMessagesResult(raw);
         if (result.notModified || result.incomplete) {
           throw new WipegramError("PINNED_UNAVAILABLE", "Telegram did not return the pinned messages. Scan stopped to protect them.");
@@ -764,12 +809,12 @@ Additional permissions must be granted explicitly in writing.
         return this.invoke("channels.deleteMessages", {
           channel: target.inputChannel,
           id: ids
-        }, { expectedSelfId: target.selfId });
+        }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null });
       }
       return this.invoke("messages.deleteMessages", {
         revoke: true,
         id: ids
-      }, { expectedSelfId: target.selfId });
+      }, { expectedSelfId: target.selfId, moderationTarget: target.includeOthers ? target : null });
     }
   };
   function waitForTelegram(timeoutMs = 3e4) {
@@ -928,16 +973,19 @@ Additional permissions must be granted explicitly in writing.
     async scan({ target, filters, signal }) {
       if (!target) throw new WipegramError("NO_CHAT", "Open a chat first, then press Scan messages.");
       if (!filters) throw new WipegramError("INVALID_FILTER", "No filters were provided.");
+      this.validateScope(target, filters);
       const startedAt = Date.now();
       const floodCounter = { count: 0, seconds: 0 };
       const matched = /* @__PURE__ */ new Map();
       const limit = filters.maxMessages || 0;
       const explicitMode = filters.scanMethod || "auto";
-      let mode = explicitMode === "history" ? "history" : "search";
-      let allowFallback = explicitMode === "auto";
+      let mode = explicitMode === "history" || filters.includeOthers ? "history" : "search";
+      let allowFallback = explicitMode === "auto" && !filters.includeOthers;
       let offsetId = 0;
       let pages = 0;
       let scanned = 0;
+      let inspected = 0;
+      const checkedIds = /* @__PURE__ */ new Set();
       let totalFound = 0;
       const seenCursors = /* @__PURE__ */ new Set();
       const switchToHistory = (type, details = {}) => {
@@ -1003,14 +1051,18 @@ Additional permissions must be granted explicitly in writing.
             throw new WipegramError("INCOMPLETE_RESPONSE", "Telegram did not return a complete message page. Scan again before deleting.");
           }
           const messages = page.messages || [];
-          if (page.count) totalFound = Math.max(totalFound, page.count);
-          scanned += messages.length;
+          if (page.count && (mode === "search" || filters.includeOthers)) totalFound = Math.max(totalFound, page.count);
+          inspected += page.receivedCount ?? messages.length;
           let oldestMs = 0;
           for (const message of messages) {
             if (!Number.isInteger(message?.id) || message.id <= 0) continue;
             if (message.date) {
               const ms = message.date * 1e3;
               if (!oldestMs || ms < oldestMs) oldestMs = ms;
+            }
+            if (message._ === "message" && (filters.includeOthers || isOwnMessage(message, target.selfId))) {
+              checkedIds.add(message.id);
+              scanned = checkedIds.size;
             }
             if (matched.has(message.id)) continue;
             if (!localMatches(message, filters, {
@@ -1025,6 +1077,7 @@ Additional permissions must be granted explicitly in writing.
             mode,
             pages,
             scanned,
+            inspected,
             matched: matched.size,
             total: totalFound,
             oldestDate: oldestMs || null
@@ -1062,6 +1115,7 @@ Additional permissions must be granted explicitly in writing.
         mode,
         pages,
         scanned,
+        inspected,
         matched: entries.length,
         totalFound,
         floodWaits: floodCounter.count,
@@ -1081,11 +1135,20 @@ Additional permissions must be granted explicitly in writing.
      * failures, so the UI can always show what happened. Abort and Telegram flood
      * limits are reported in `stats.stopped` / `stats.error`.
      */
+    validateScope(target, filters) {
+      if (filters.includeOthers !== void 0 && typeof filters.includeOthers !== "boolean" || target.includeOthers !== void 0 && typeof target.includeOthers !== "boolean" || filters.includeOthers === true !== (target.includeOthers === true) || filters.includeOthers === true && target.canDeleteOthers !== true) {
+        throw new WipegramError("MODERATION_FORBIDDEN", "Message scope changed or admin permission is unavailable. Scan again.", { fatal: true });
+      }
+    }
+    validateCandidates(target, filters, entries) {
+      this.validateScope(target, filters);
+      if (entries.some((message) => message?._ !== "message" || !filters.includeOthers && !isOwnMessage(message, target.selfId))) {
+        throw new WipegramError("INVALID_CANDIDATE", "A deletion candidate is outside the confirmed message scope. Scan again.", { fatal: true });
+      }
+    }
     async delete({ target, entries, filters = {}, signal }) {
       if (!target) throw new WipegramError("NO_CHAT", "Open a chat and scan before deleting.");
-      if ((entries || []).some((message) => message?._ !== "message" || !isOwnMessage(message, target.selfId))) {
-        throw new WipegramError("INVALID_CANDIDATE", "A deletion candidate is not one of your own messages. Scan again.");
-      }
+      this.validateCandidates(target, filters, entries || []);
       const startedAt = Date.now();
       const floodCounter = { count: 0, seconds: 0 };
       const unique = [...new Map((entries || []).filter((message) => Number.isInteger(message?.id) && message.id > 0).map((message) => [message.id, message])).values()];
@@ -1141,10 +1204,10 @@ Additional permissions must be granted explicitly in writing.
           stats.batches += 1;
           let batchFailed = false;
           try {
-            await this.retry(() => this.api.deleteBatch({
-              target,
-              ids: batch.map((message) => message.id)
-            }), {
+            await this.retry(() => {
+              this.validateCandidates(target, filters, batch);
+              return this.api.deleteBatch({ target, ids: batch.map((message) => message.id) });
+            }, {
               signal,
               label: `delete batch (${batch.length} messages)`,
               counter: floodCounter
@@ -1166,10 +1229,10 @@ Additional permissions must be granted explicitly in writing.
             for (const message of batch) {
               this.checkAbort(signal);
               try {
-                await this.retry(() => this.api.deleteBatch({
-                  target,
-                  ids: [message.id]
-                }), {
+                await this.retry(() => {
+                  this.validateCandidates(target, filters, [message]);
+                  return this.api.deleteBatch({ target, ids: [message.id] });
+                }, {
                   signal,
                   label: `delete message ${message.id}`,
                   attempts: 1,
@@ -1224,6 +1287,43 @@ Additional permissions must be granted explicitly in writing.
     }
   };
 
+  // src/dom.js
+  function createNodes(descriptors) {
+    const fragment = document.createDocumentFragment();
+    for (const descriptor of descriptors) {
+      if (typeof descriptor === "string") {
+        fragment.appendChild(document.createTextNode(descriptor));
+        continue;
+      }
+      const [tag, namespace, attributes, children] = descriptor;
+      const element = document.createElementNS(namespace, tag);
+      for (const [name, value, attributeNamespace] of attributes) {
+        if (attributeNamespace) element.setAttributeNS(attributeNamespace, name, value);
+        else element.setAttribute(name, value);
+      }
+      element.appendChild(createNodes(children));
+      fragment.appendChild(element);
+    }
+    return fragment;
+  }
+  function privacyIcon(hidden) {
+    const namespace = "http://www.w3.org/2000/svg";
+    const paths = hidden ? [["path", [["d", "m3 3 18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.9 5.2A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7c1.4 0 2.7-.3 3.9-.8"]]]] : [["path", [["d", "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"]]], ["circle", [["cx", "12"], ["cy", "12"], ["r", "3"]]]];
+    return createNodes([["svg", namespace, [
+      ["class", "wg-icon"],
+      ["viewBox", "0 0 24 24"],
+      ["fill", "none"],
+      ["stroke", "currentColor"],
+      ["stroke-width", "2"],
+      ["stroke-linecap", "round"],
+      ["stroke-linejoin", "round"],
+      ["aria-hidden", "true"]
+    ], paths.map(([tag, attributes]) => [tag, namespace, attributes, []])]]);
+  }
+
+  // dom-template:src/logo.html
+  var logo_default = [["svg", "http://www.w3.org/2000/svg", [["xmlns", "http://www.w3.org/2000/svg", "http://www.w3.org/2000/xmlns/"], ["viewBox", "0 0 128 128", null], ["class", "wipegram-launcher-mark", null], ["aria-hidden", "true", null]], ["\n  ", "\n  ", ["rect", "http://www.w3.org/2000/svg", [["width", "128", null], ["height", "128", null], ["rx", "28", null], ["fill", "#101211", null]], []], "\n  ", ["path", "http://www.w3.org/2000/svg", [["d", "m14 39 15 51h12l10-30 9 30h12l16-51H74l-9 30-9-30H44L35 69l-7-30Z", null], ["fill", "#e8ebe9", null]], []], "\n  ", ["path", "http://www.w3.org/2000/svg", [["d", "M103 39h15L97 90H82Z", null], ["fill", "#4ade80", null]], []], "\n"]], "\n"];
+
   // src/launcher.js
   var STYLE_ID = "wipegram-launcher-styles";
   function injectStyles() {
@@ -1238,56 +1338,15 @@ Additional permissions must be granted explicitly in writing.
       justify-content: center;
     }
 
-    .wipegram-launcher-tile {
-      display: grid;
-      place-items: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-      background: transparent;
-      box-shadow: none;
-      color: #3390ec;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 12.5px;
-      font-weight: 800;
-      line-height: 1;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .wipegram-launcher:hover .wipegram-launcher-tile {
-      background: rgba(51, 144, 236, 0.1);
-    }
-
-    .wipegram-fab {
-      position: fixed;
-      top: 66px;
-      right: 14px;
-      z-index: 2147482990;
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      padding: 0;
-      border: 1px solid rgba(16, 24, 40, 0.12);
-      border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .wipegram-fab:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.28);
-    }
-
-    html.night .wipegram-fab,
-    html.tinted .wipegram-fab,
-    body.night .wipegram-fab,
-    body.tinted .wipegram-fab {
-      border-color: rgba(255, 255, 255, 0.12);
-      background: #212121;
-    }
+    .wipegram-launcher-tile { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: #101211; border: 1px solid #4ade80; }
+    .wipegram-launcher-mark { display: block; width: 28px; height: 28px; }
+    .wipegram-launcher:hover .wipegram-launcher-tile { box-shadow: 0 0 0 3px #4ade8026; }
+    .wipegram-fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); right: 18px; z-index: 2147482990; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 7px; border: 1px solid #4ade80; border-radius: 12px; background: #101211; color: #e8ebe9; box-shadow: 0 4px 18px #0004; font: 600 13px/1 system-ui, sans-serif; cursor: pointer; transition: transform 0.12s ease; }
+    .wipegram-fab .wipegram-launcher-tile { border: 0; }
+    .wipegram-fab:hover { transform: translateY(-2px); background: #1b1e1c; }
+    .wipegram-fab:focus-visible, .wipegram-launcher:focus-visible { outline: 3px solid #4ade80; outline-offset: 3px; }
+    @media (max-width: 680px) { .wipegram-fab { right: 12px; width: 44px; padding: 0; justify-content: center; } .wipegram-fab-label { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .wipegram-fab { transition: none; } }
   `;
     (document.head || document.documentElement).appendChild(style);
   }
@@ -1295,7 +1354,7 @@ Additional permissions must be granted explicitly in writing.
     const glyph = document.createElement("span");
     glyph.className = "wipegram-launcher-tile";
     glyph.setAttribute("aria-hidden", "true");
-    glyph.textContent = "W";
+    glyph.appendChild(createNodes(logo_default));
     return glyph;
   }
   function createWipegramLauncher({ onOpen }) {
@@ -1314,6 +1373,10 @@ Additional permissions must be granted explicitly in writing.
     fab.title = "Open Wipegram (Alt+Shift+W)";
     fab.setAttribute("aria-label", "Open Wipegram");
     fab.appendChild(makeGlyph());
+    const label = document.createElement("span");
+    label.className = "wipegram-fab-label";
+    label.textContent = "Wipegram";
+    fab.appendChild(label);
     const open = (event) => {
       event?.preventDefault?.();
       event?.stopPropagation?.();
@@ -1329,14 +1392,13 @@ Additional permissions must be granted explicitly in writing.
       if (destroyed || !document.body) return;
       const utils = document.querySelector(".chat-utils");
       if (utils) {
-        fab.remove();
         if (!utils.contains(button)) {
           const more = utils.lastElementChild;
           utils.insertBefore(button, more && more !== button ? more : null);
         }
-        return;
+      } else {
+        button.remove();
       }
-      button.remove();
       const chatOpen = !!window.appImManager?.chat?.peerId;
       if (chatOpen && !fab.isConnected) {
         document.body.appendChild(fab);
@@ -1380,7 +1442,6 @@ Additional permissions must be granted explicitly in writing.
         if (timer) clearInterval(timer);
         window.removeEventListener("keydown", onKeydown, true);
         button.remove();
-        fab.remove();
         document.getElementById(STYLE_ID)?.remove();
       }
     };
@@ -1388,35 +1449,31 @@ Additional permissions must be granted explicitly in writing.
 
   // src/styles.css
   var styles_default = `:host {
-  --wg-panel: #ffffff;
-  --wg-header: #ffffff;
-  --wg-elevated: #f6f7f8;
-  --wg-input: #ffffff;
-  --wg-text: #16181c;
-  --wg-muted: #707579;
-  --wg-placeholder: #9aa0a6;
-  --wg-border: rgba(16, 24, 40, 0.09);
-  --wg-border-strong: rgba(16, 24, 40, 0.16);
-  --wg-hover: rgba(16, 24, 40, 0.06);
-  --wg-primary: #3390ec;
-  --wg-primary-hover: #2b7fce;
-  --wg-primary-soft: rgba(51, 144, 236, 0.11);
-  --wg-focus-ring: rgba(51, 144, 236, 0.18);
-  --wg-danger: #dd4444;
-  --wg-danger-hover: #c93636;
-  --wg-danger-soft: rgba(221, 68, 68, 0.1);
-  --wg-danger-border: rgba(221, 68, 68, 0.35);
-  --wg-success: #23945a;
-  --wg-warning: #c07a10;
-  --wg-progress-bg: rgba(16, 24, 40, 0.08);
-  --wg-log-bg: rgba(16, 24, 40, 0.025);
-  --wg-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
-  --wg-toast-bg: #2f3540;
-
   all: initial;
+  --wg-panel: #f9fbfa;
+  --wg-header: #ffffff;
+  --wg-surface: #f0f4f1;
+  --wg-input: #ffffff;
+  --wg-text: #18241c;
+  --wg-muted: #607166;
+  --wg-placeholder: #748078;
+  --wg-border: #d8e1da;
+  --wg-border-strong: #b5c5ba;
+  --wg-primary: #4ade80;
+  --wg-primary-hover: #75e69e;
+  --wg-primary-soft: rgba(74, 222, 128, .1);
+  --wg-link: #20723e;
+  --wg-focus: #248b4a;
+  --wg-hover: rgba(48, 92, 61, .07);
+  --wg-danger: #b1303d;
+  --wg-danger-fill: #b43643;
+  --wg-danger-soft: rgba(180, 54, 67, .08);
+  --wg-danger-border: rgba(180, 54, 67, .35);
+  --wg-success: #227d45;
+  --wg-warning: #956314;
+  --wg-shadow: 0 20px 70px rgba(10, 22, 14, .2);
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0 auto auto 0;
   width: 0;
   height: 0;
   z-index: 2147483000;
@@ -1424,962 +1481,265 @@ Additional permissions must be granted explicitly in writing.
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color-scheme: light;
 }
-
 :host(.wg-night) {
-  --wg-panel: #212121;
-  --wg-header: #212121;
-  --wg-elevated: #2a2a2a;
-  --wg-input: #1b1b1b;
-  --wg-text: #f2f2f2;
-  --wg-muted: #a2a2a2;
-  --wg-placeholder: #757575;
-  --wg-border: rgba(255, 255, 255, 0.09);
-  --wg-border-strong: rgba(255, 255, 255, 0.16);
-  --wg-hover: rgba(255, 255, 255, 0.07);
-  --wg-primary: #4ea4f6;
-  --wg-primary-hover: #65b3ff;
-  --wg-primary-soft: rgba(78, 164, 246, 0.15);
-  --wg-focus-ring: rgba(78, 164, 246, 0.23);
-  --wg-danger: #f16a6a;
-  --wg-danger-hover: #f58484;
-  --wg-danger-soft: rgba(241, 106, 106, 0.13);
-  --wg-danger-border: rgba(241, 106, 106, 0.4);
-  --wg-success: #5ccf92;
-  --wg-warning: #e8b25c;
-  --wg-progress-bg: rgba(255, 255, 255, 0.1);
-  --wg-log-bg: rgba(0, 0, 0, 0.16);
-  --wg-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --wg-toast-bg: #3a3a3a;
-
+  --wg-panel: #101211;
+  --wg-header: #101211;
+  --wg-surface: #1b1e1c;
+  --wg-input: #151816;
+  --wg-text: #e8ebe9;
+  --wg-muted: #a5afa8;
+  --wg-placeholder: #7f8b82;
+  --wg-border: #2d332f;
+  --wg-border-strong: #455248;
+  --wg-link: #86b99a;
+  --wg-focus: #4ade80;
+  --wg-hover: rgba(134, 185, 154, .09);
+  --wg-danger: #f18d97;
+  --wg-danger-soft: rgba(180, 54, 67, .15);
+  --wg-danger-border: #67333a;
+  --wg-success: #86b99a;
+  --wg-warning: #d7b879;
+  --wg-shadow: 0 24px 80px rgba(0, 0, 0, .45);
   color-scheme: dark;
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+*, *::before, *::after { box-sizing: border-box; }
+[hidden], .wg-hidden { display: none !important; }
+button, input, select { font: inherit; }
+button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+button:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--wg-focus);
+  outline-offset: 3px;
 }
-
-[hidden],
-.wg-hidden {
-  display: none !important;
-}
-
-.wg-icon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-}
-
+.wg-icon { width: 18px; height: 18px; flex: 0 0 auto; }
 .wg-panel {
   position: fixed;
   top: 68px;
-  right: 16px;
+  right: 20px;
   display: flex;
   flex-direction: column;
-  width: 420px;
-  max-width: calc(100vw - 24px);
-  max-height: calc(100vh - 88px);
+  width: 1040px;
+  max-width: calc(100vw - 40px);
+  height: min(740px, calc(100vh - 96px));
+  height: min(740px, calc(100dvh - 96px));
+  overflow: hidden;
+  border: 1px solid var(--wg-border);
+  border-radius: 14px;
   background: var(--wg-panel);
   color: var(--wg-text);
-  border: 1px solid var(--wg-border);
-  border-radius: 10px;
   box-shadow: var(--wg-shadow);
-  overflow: hidden;
   pointer-events: auto;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.45;
 }
-
 .wg-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   flex: 0 0 auto;
-  padding: 14px 16px;
+  min-height: 72px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--wg-border);
   background: var(--wg-header);
   cursor: grab;
   user-select: none;
 }
-
-.wg-panel.wg-dragging .wg-header {
-  cursor: grabbing;
-}
-
-.wg-brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-width: 0;
-}
-
-.wg-brand-text {
-  min-width: 0;
-}
-
-.wg-title {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.wg-version {
-  color: var(--wg-placeholder);
-  font-size: 10px;
-  font-weight: 600;
-}
-
-.wg-subtitle {
-  color: var(--wg-muted);
-  font-size: 11.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.wg-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  flex: 0 0 auto;
-}
-
+.wg-panel.wg-dragging .wg-header { cursor: grabbing; }
+.wg-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.wg-brand-logo { width: 42px; height: 42px; flex: 0 0 auto; }
+.wg-title { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 650; letter-spacing: -.5px; }
+.wg-version { padding: 2px 7px; border: 1px solid var(--wg-border); border-radius: 5px; color: var(--wg-muted); font-size: 11px; font-weight: 500; letter-spacing: 0; }
+.wg-subtitle { color: var(--wg-muted); font-size: 11px; }
+.wg-header-actions { display: flex; align-items: center; gap: 8px; }
 .wg-icon-btn {
-  appearance: none;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--wg-muted);
-  cursor: pointer;
-  pointer-events: auto;
-  transition: background 0.12s ease, color 0.12s ease;
+  display: grid; place-items: center;
+  width: 34px; height: 34px; padding: 0;
+  border: 0; border-radius: 6px;
+  background: transparent; color: var(--wg-muted);
+}
+.wg-icon-btn:hover:not(:disabled) { background: var(--wg-hover); color: var(--wg-text); }
+.wg-icon-btn:disabled { opacity: .4; }
+.wg-body { display: grid; grid-template-columns: 58px 330px minmax(0, 1fr); flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.wg-rail { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 8px; border-right: 1px solid var(--wg-border); }
+.wg-rail-link { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--wg-muted); }
+.wg-rail-link:hover { color: var(--wg-text); background: var(--wg-hover); }
+.wg-rail-link.wg-selected { border-color: var(--wg-primary); color: var(--wg-link); background: var(--wg-primary-soft); }
+.wg-rail-bottom { margin-top: auto; }
+.wg-controls { display: flex; flex-direction: column; min-height: 0; min-width: 0; border-right: 1px solid var(--wg-border); background: var(--wg-surface); }
+.wg-controls-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 20px; }
+.wg-controls-scroll, .wg-review-scroll, .wg-log, .wg-modal-card { scrollbar-width: thin; scrollbar-color: var(--wg-border-strong) transparent; overscroll-behavior: contain; }
+.wg-eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; font-size: 11px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+.wg-eyebrow::before { content: ''; width: 3px; height: 12px; border-radius: 1px; background: var(--wg-primary); }
+.wg-target { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; padding: 12px 10px; border: 1px solid var(--wg-border-strong); border-radius: 8px; background: var(--wg-panel); }
+.wg-avatar { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 auto; border-radius: 7px; background: var(--wg-primary-soft); color: var(--wg-link); font-size: 17px; font-weight: 650; }
+.wg-target-text { flex: 1; min-width: 0; }
+.wg-target-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 650; }
+.wg-target-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--wg-muted); font-size: 11px; }
+.wg-target .wg-icon-btn { width: 26px; height: 28px; }
+.wg-alert, .wg-form-error { padding: 10px; border: 1px solid var(--wg-danger-border); border-radius: 6px; background: var(--wg-danger-soft); color: var(--wg-danger); font-size: 12px; line-height: 1.5; }
+.wg-alert { margin-bottom: 16px; }
+.wg-fieldset { display: flex; flex-direction: column; gap: 14px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.wg-fieldset:disabled { opacity: .6; }
+.wg-fieldset:disabled * { pointer-events: none; }
+.wg-section-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 600; }
+.wg-fieldset > .wg-section-head { margin-bottom: 2px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.wg-fieldset > .wg-section-head::before { content: '/'; color: var(--wg-link); font-size: 20px; font-weight: 700; }
+.wg-fieldset > .wg-section-head > span { flex: 1; }
+.wg-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.wg-span2 { grid-column: span 2; }
+.wg-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wg-field > span { color: var(--wg-muted); font-size: 11px; }
+.wg-field input, .wg-field select { width: 100%; min-width: 0; height: 36px; padding: 0 9px; border: 1px solid var(--wg-border-strong); border-radius: 6px; outline: none; background: var(--wg-input); color: var(--wg-text); font-size: 12px; }
+.wg-field input::placeholder { color: var(--wg-placeholder); }
+.wg-field input:focus, .wg-field select:focus { border-color: var(--wg-focus); box-shadow: 0 0 0 2px var(--wg-primary-soft); }
+.wg-field select { cursor: pointer; }
+.wg-field input[type='datetime-local'] { font-size: 10.5px; }
+.wg-checks { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+.wg-check { display: inline-flex; align-items: center; gap: 8px; color: var(--wg-text); font-size: 12px; cursor: pointer; }
+.wg-check input { width: 16px; height: 16px; margin: 0; flex: 0 0 auto; accent-color: var(--wg-primary); }
+.wg-advanced { border: 1px solid var(--wg-border); border-radius: 7px; }
+.wg-advanced summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 11px; list-style: none; color: var(--wg-muted); font-size: 12px; cursor: pointer; }
+.wg-advanced summary::-webkit-details-marker { display: none; }
+.wg-chevron { width: 14px; height: 14px; }
+.wg-advanced[open] .wg-chevron { transform: rotate(180deg); }
+.wg-advanced-grid { padding: 0 11px 12px; }
+.wg-fieldset > .wg-advanced-grid { padding: 0; }
+.wg-advanced > .wg-check { padding: 0 11px 10px; }
+.wg-hint { color: var(--wg-muted); font-size: 11px; line-height: 1.55; }
+.wg-advanced .wg-hint { margin: 0; padding: 0 11px 12px; }
+.wg-actions { display: flex; align-items: center; gap: 12px; }
+.wg-scan-actions { padding: 16px 20px 20px; border-top: 1px solid var(--wg-border); }
+.wg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; height: 40px; padding: 0 16px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: var(--wg-text); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.wg-btn:disabled { opacity: .45; }
+.wg-primary { flex: 1; height: 46px; background: var(--wg-primary); color: #101211; }
+.wg-primary:hover:not(:disabled) { background: var(--wg-primary-hover); }
+.wg-stop { flex: 1; height: 46px; border-color: var(--wg-danger-border); background: var(--wg-danger-soft); color: var(--wg-danger); }
+.wg-danger { border-color: var(--wg-danger-border); background: var(--wg-danger-fill); color: #fff; }
+.wg-danger:hover:not(:disabled) { filter: brightness(1.1); }
+.wg-danger:disabled { background: var(--wg-surface); color: var(--wg-muted); border-color: var(--wg-border); opacity: .6; }
+.wg-ghost { border-color: var(--wg-border); color: var(--wg-muted); }
+.wg-ghost:hover:not(:disabled) { background: var(--wg-hover); color: var(--wg-text); }
+.wg-sm { height: 28px; padding: 0 9px; font-size: 11px; border-radius: 5px; }
+.wg-link { border: 0; padding: 3px 0; background: none; color: var(--wg-muted); font: inherit; font-size: 11px; cursor: pointer; }
+.wg-link:hover { color: var(--wg-link); }
+.wg-review { display: flex; flex-direction: column; gap: 16px; min-height: 0; min-width: 0; padding: 22px 24px 20px; }
+.wg-review-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wg-review-header h2 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -.3px; }
+.wg-review-header h2::before { content: '//'; margin-right: 12px; color: var(--wg-primary); font-size: 23px; font-weight: 750; }
+.wg-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); flex: 0 0 auto; padding: 16px 0; border-block: 1px solid var(--wg-border); }
+.wg-metric { display: flex; flex-direction: column; padding: 0 14px; gap: 3px; border-right: 1px solid var(--wg-border); }
+.wg-metric:first-child { padding-left: 0; }
+.wg-metric:last-child { border-right: 0; }
+.wg-metric span { order: 1; font-size: 24px; line-height: 1.2; font-weight: 600; font-variant-numeric: tabular-nums; }
+.wg-metric small { color: var(--wg-muted); font-size: 10px; white-space: nowrap; }
+.wg-progress-wrap { display: flex; flex: 0 0 auto; flex-direction: column; gap: 7px; }
+.wg-progress { height: 3px; overflow: hidden; border-radius: 2px; background: var(--wg-border); }
+.wg-progress-bar { width: 0; height: 100%; background: var(--wg-primary); transition: width .2s ease; }
+.wg-progress-bar.wg-indeterminate { width: 35%; animation: wg-indeterminate 1.2s ease-in-out infinite alternate; }
+.wg-status { min-height: 16px; color: var(--wg-muted); font-size: 12px; }
+.wg-review-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.wg-empty { position: relative; display: grid; place-items: center; min-height: 260px; height: calc(100% - 40px); overflow: hidden; text-align: center; }
+.wg-empty::before, .wg-empty::after { content: ''; position: absolute; bottom: -100px; right: 2px; width: 90px; height: 340px; background: var(--wg-primary); opacity: .035; transform: skew(-28deg); pointer-events: none; }
+.wg-empty::after { right: 120px; height: 260px; width: 55px; }
+.wg-empty-content { position: relative; z-index: 1; padding: 20px; }
+.wg-empty-logo { width: 76px; height: 76px; }
+.wg-empty h3 { margin: 10px 0 8px; font-size: 24px; font-weight: 600; letter-spacing: -.4px; }
+.wg-empty p { max-width: 320px; margin: 0 auto; color: var(--wg-muted); font-size: 13px; line-height: 1.6; }
+.wg-results > .wg-section-head { margin: 4px 0 12px; }
+.wg-results-list { display: flex; flex-direction: column; }
+.wg-result { padding: 12px 2px; border-bottom: 1px solid var(--wg-border); }
+.wg-result-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+.wg-result-date, .wg-badge { color: var(--wg-muted); font-size: 10px; }
+.wg-result-text { display: -webkit-box; overflow: hidden; color: var(--wg-text); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.wg-count { color: var(--wg-muted); font-size: 11px; font-weight: 400; }
+.wg-results-more { padding-top: 8px; }
+.wg-activity { margin-top: 12px; padding: 10px 0; border-top: 1px solid var(--wg-border); }
+.wg-activity summary { color: var(--wg-muted); font-weight: 400; cursor: pointer; }
+.wg-activity summary::after { content: '⌄'; }
+.wg-activity summary .wg-count { margin-left: auto; }
+.wg-log { display: flex; flex-direction: column; gap: 7px; max-height: 160px; overflow-y: auto; padding: 12px 0 0; font-size: 11px; line-height: 1.45; }
+.wg-log-entry { display: flex; align-items: baseline; gap: 8px; }
+.wg-log-time { flex: 0 0 auto; color: var(--wg-placeholder); font-size: 10px; font-variant-numeric: tabular-nums; }
+.wg-log-message { color: var(--wg-muted); overflow-wrap: anywhere; }
+.wg-log-success .wg-log-message { color: var(--wg-success); }
+.wg-log-warning .wg-log-message { color: var(--wg-warning); }
+.wg-log-error .wg-log-message { color: var(--wg-danger); }
+.wg-delete-actions { flex: 0 0 auto; padding-top: 16px; border-top: 1px solid var(--wg-border); }
+.wg-delete-actions .wg-btn { min-width: 170px; }
+.wg-delete-hint { color: var(--wg-muted); font-size: 11px; line-height: 1.45; }
+.wg-footer { display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; gap: 12px; min-height: 48px; padding: 9px 20px; border-top: 1px solid var(--wg-border); background: var(--wg-header); font-size: 11px; }
+.wg-author { display: inline-flex; align-items: center; gap: 8px; }
+.wg-author .wg-icon { width: 16px; height: 16px; }
+.wg-author:hover { color: var(--wg-link); }
+.wg-muted { color: var(--wg-muted); }
+.wg-footer-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.wg-license { padding: 3px 7px; border: 1px solid var(--wg-border); border-radius: 4px; }
+.wg-modal { position: fixed; inset: 0; z-index: 2147483001; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(0, 0, 0, .6); pointer-events: auto; }
+.wg-modal-card { display: flex; flex-direction: column; gap: 14px; width: min(390px, 100%); max-height: calc(100vh - 36px); overflow-y: auto; padding: 24px; border: 1px solid var(--wg-border-strong); border-radius: 12px; background: var(--wg-panel); color: var(--wg-text); box-shadow: var(--wg-shadow); font-size: 13px; }
+.wg-modal-card h2 { margin: 0; font-size: 20px; line-height: 1.3; }
+.wg-modal-target { color: var(--wg-muted); font-size: 13px; }
+.wg-modal-filters { margin: 0; padding-left: 18px; color: var(--wg-muted); font-size: 12px; }
+.wg-modal-warning { margin: 0; font-size: 12px; line-height: 1.6; }
+.wg-confirm-field input { height: 40px; font-weight: 600; }
+.wg-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+.wg-modal-actions .wg-btn { min-width: 96px; }
+.wg-toast { position: fixed; left: 50%; bottom: 24px; z-index: 2147483002; max-width: min(420px, calc(100vw - 32px)); padding: 10px 16px; border: 1px solid #455248; border-radius: 7px; background: #1b1e1c; color: #e8ebe9; font-size: 12px; text-align: center; opacity: 0; pointer-events: none; transform: translate(-50%, 8px); transition: opacity .15s ease, transform .15s ease; }
+.wg-toast.wg-show { opacity: 1; transform: translate(-50%, 0); }
+.wg-toast-error { border-color: #b43643; }
+.wg-toast-warning { border-color: #956314; }
+:host(.wg-private) .wg-blur { filter: blur(5px); transition: filter .15s ease; }
+:host(.wg-private) .wg-blur:hover { filter: none; }
+#status-text[data-tone='error'] { color: var(--wg-danger); }
+#status-text[data-tone='warning'] { color: var(--wg-warning); }
+@keyframes wg-indeterminate { from { transform: translateX(0); } to { transform: translateX(185%); } }
+@media (max-width: 950px) {
+  .wg-panel { right: 12px; max-width: calc(100vw - 24px); }
+  .wg-body { grid-template-columns: 290px minmax(0, 1fr); }
+  .wg-rail { display: none; }
+  .wg-review { padding: 20px; }
+  .wg-metric { padding-inline: 8px; }
+}
+@media (max-width: 680px) {
+  .wg-panel { top: 8px !important; left: 8px !important; right: 8px !important; width: auto; max-width: none; height: calc(100vh - 16px); height: calc(100dvh - 16px); border-radius: 10px; }
+  .wg-header { min-height: 62px; padding: 10px 14px; cursor: default; }
+  .wg-title { font-size: 19px; }
+  .wg-brand-logo { width: 34px; height: 34px; }
+  .wg-body { display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: thin; }
+  .wg-controls { flex: 0 0 auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--wg-border); }
+  .wg-controls-scroll { overflow: visible; padding: 18px; }
+  .wg-target { margin-bottom: 20px; }
+  .wg-scan-actions { padding: 14px 18px; }
+  .wg-review { flex: 0 0 auto; min-height: 440px; padding: 18px; }
+  .wg-review-scroll { overflow: visible; flex: 0 0 auto; }
+  .wg-results-list { max-height: 300px; overflow-y: auto; }
+  .wg-empty { min-height: 230px; height: auto; }
+  .wg-empty h3 { font-size: 21px; }
+  .wg-metric span { font-size: 22px; }
+  .wg-metric small { font-size: 10px; }
+  .wg-footer { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
+  .wg-footer-actions { margin-left: auto; gap: 10px; }
+  .wg-delete-actions { flex-wrap: wrap; }
+  .wg-delete-actions .wg-btn { min-width: 0; flex: 1; }
+  .wg-delete-hint { flex: 1; min-width: 100px; }
 }
-
-.wg-icon-btn:hover:not(:disabled) {
-  background: var(--wg-hover);
-  color: var(--wg-text);
-}
-
-.wg-icon-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.wg-icon-btn:focus-visible {
-  outline: 2px solid var(--wg-primary);
-  outline-offset: 1px;
-}
-
-.wg-body {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: 18px;
-  min-height: 0;
-  padding: 18px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--wg-border-strong) transparent;
-}
-
-.wg-body::-webkit-scrollbar,
-.wg-results-list::-webkit-scrollbar,
-.wg-log::-webkit-scrollbar {
-  width: 7px;
-}
-
-.wg-body::-webkit-scrollbar-thumb,
-.wg-results-list::-webkit-scrollbar-thumb,
-.wg-log::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: var(--wg-border-strong);
-}
-
-.wg-target {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--wg-border);
-}
-
-.wg-avatar {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--wg-elevated);
-  color: var(--wg-muted);
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.wg-avatar-muted {
-  background: var(--wg-border-strong);
-  color: var(--wg-muted);
-}
-
-.wg-target-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.wg-target-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.wg-target-meta {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--wg-muted);
-  font-size: 11.5px;
-}
-
-.wg-alert {
-  padding: 9px 11px;
-  border: 1px solid var(--wg-danger-border);
-  border-radius: 10px;
-  background: var(--wg-danger-soft);
-  color: var(--wg-danger);
-  font-size: 12.5px;
-  line-height: 1.4;
-}
-
-.wg-fieldset {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.wg-fieldset:disabled {
-  opacity: 0.65;
-}
-
-.wg-fieldset:disabled * {
-  pointer-events: none;
-}
-
-.wg-section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  color: var(--wg-text);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.wg-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px 10px;
-}
-
-.wg-span2 {
-  grid-column: span 2;
-}
-
-.wg-field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-}
-
-.wg-field > span {
-  color: var(--wg-muted);
-  font-size: 11.5px;
-  font-weight: 600;
-}
-
-.wg-field input,
-.wg-field select {
-  width: 100%;
-  min-width: 0;
-  height: 34px;
-  padding: 0 10px;
-  border: 1px solid var(--wg-border-strong);
-  border-radius: 8px;
-  background: var(--wg-input);
-  color: var(--wg-text);
-  font: inherit;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.12s ease, box-shadow 0.12s ease;
-}
-
-.wg-field select {
-  appearance: none;
-  padding-right: 28px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999ea4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 9px center;
-  cursor: pointer;
-}
-
-.wg-field input::placeholder {
-  color: var(--wg-placeholder);
-}
-
-.wg-field input:focus,
-.wg-field select:focus {
-  border-color: var(--wg-primary);
-  box-shadow: 0 0 0 3px var(--wg-focus-ring);
-}
-
-.wg-field input:disabled,
-.wg-field select:disabled {
-  cursor: not-allowed;
-}
-
-.wg-checks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-}
-
-.wg-check {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--wg-text);
-  font-size: 12.5px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.wg-check input {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: var(--wg-primary);
-  cursor: pointer;
-}
-
-.wg-advanced {
-  border-top: 1px solid var(--wg-border);
-}
-
-.wg-advanced summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  color: var(--wg-muted);
-  font-size: 12.5px;
-  font-weight: 500;
-  list-style: none;
-  cursor: pointer;
-}
-
-.wg-advanced summary::-webkit-details-marker {
-  display: none;
-}
-
-.wg-advanced summary:focus-visible {
-  outline: 2px solid var(--wg-primary);
-  outline-offset: -2px;
-}
-
-.wg-chevron {
-  width: 14px;
-  height: 14px;
-  transition: transform 0.15s ease;
-}
-
-.wg-advanced[open] .wg-chevron {
-  transform: rotate(180deg);
-}
-
-.wg-advanced-grid {
-  padding: 0 0 12px;
-}
-
-.wg-advanced .wg-hint {
-  margin: 0;
-  padding: 0 0 12px;
-}
-
-.wg-hint {
-  color: var(--wg-muted);
-  font-size: 11.5px;
-  line-height: 1.45;
-}
-
-.wg-form-error {
-  padding: 8px 10px;
-  border: 1px solid var(--wg-danger-border);
-  border-radius: 8px;
-  background: var(--wg-danger-soft);
-  color: var(--wg-danger);
-  font-size: 12.5px;
-}
-
-.wg-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.wg-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  height: 38px;
-  padding: 0 14px;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--wg-text);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 650;
-  white-space: nowrap;
-  cursor: pointer;
-  pointer-events: auto;
-  user-select: none;
-  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, opacity 0.12s ease;
-}
-
-.wg-btn:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-.wg-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.wg-btn:focus-visible {
-  outline: 2px solid var(--wg-primary);
-  outline-offset: 2px;
-}
-
-.wg-btn .wg-icon {
-  width: 17px;
-  height: 17px;
-}
-
-.wg-primary {
-  flex: 1;
-  background: var(--wg-primary);
-  color: #ffffff;
-}
-
-.wg-primary:hover:not(:disabled) {
-  background: var(--wg-primary-hover);
-}
-
-.wg-danger {
-  flex: 1;
-  background: var(--wg-danger);
-  color: #ffffff;
-}
-
-.wg-danger:hover:not(:disabled) {
-  background: var(--wg-danger-hover);
-}
-
-.wg-stop {
-  flex: 1;
-  border-color: var(--wg-danger-border);
-  color: var(--wg-danger);
-}
-
-.wg-stop:hover:not(:disabled) {
-  background: var(--wg-danger-soft);
-}
-
-.wg-ghost {
-  border-color: var(--wg-border-strong);
-  color: var(--wg-muted);
-}
-
-.wg-ghost:hover:not(:disabled) {
-  background: var(--wg-hover);
-  color: var(--wg-text);
-}
-
-.wg-sm {
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 8px;
-  font-size: 12px;
-}
-
-.wg-sm .wg-icon {
-  width: 14px;
-  height: 14px;
-}
-
-.wg-link {
-  text-decoration: none;
-  padding: 2px 4px;
-  border: 0;
-  border-radius: 5px;
-  background: none;
-  color: var(--wg-primary);
-  font: inherit;
-  font-size: 11.5px;
-  font-weight: 650;
-  letter-spacing: 0;
-  text-transform: none;
-  cursor: pointer;
-}
-
-.wg-link:hover {
-  background: var(--wg-primary-soft);
-}
-
-.wg-link:focus-visible {
-  outline: 2px solid var(--wg-primary);
-}
-
-.wg-progress-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.wg-progress {
-  height: 5px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--wg-progress-bg);
-}
-
-.wg-progress-bar {
-  width: 0;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--wg-primary);
-  transition: width 0.25s ease;
-}
-
-.wg-progress-bar.wg-indeterminate {
-  width: 35%;
-  animation: wg-indeterminate 1.2s ease-in-out infinite alternate;
-}
-
-.wg-status {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  min-height: 18px;
-  color: var(--wg-muted);
-  font-size: 12.5px;
-}
-
-.wg-metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 12px 0;
-  border-block: 1px solid var(--wg-border);
-}
-
-.wg-metric {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 8px;
-}
-
-.wg-metric span {
-  font-size: 15px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.wg-metric small {
-  color: var(--wg-muted);
-  font-size: 11px;
-}
-
-.wg-results {
-  border-top: 1px solid var(--wg-border);
-  padding-top: 10px;
-}
-
-.wg-results-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 216px;
-  overflow-y: auto;
-  padding-right: 3px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--wg-border-strong) transparent;
-}
-
-.wg-result {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--wg-border);
-}
-
-.wg-result-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 3px;
-}
-
-.wg-result-date {
-  color: var(--wg-muted);
-  font-size: 10.5px;
-  font-variant-numeric: tabular-nums;
-}
-
-.wg-badge {
-  color: var(--wg-muted);
-  font-size: 11px;
-}
-
-.wg-result-text {
-  display: -webkit-box;
-  overflow: hidden;
-  color: var(--wg-text);
-  font-size: 12px;
-  line-height: 1.4;
-  word-break: break-word;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.wg-count {
-  color: var(--wg-muted);
-  font-weight: 500;
-}
-
-.wg-results-more {
-  padding: 6px 2px 0;
-}
-
-.wg-activity {
-  border-top: 1px solid var(--wg-border);
-  padding-top: 10px;
-}
-
-.wg-log {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 108px;
-  overflow-y: auto;
-  padding-top: 10px;
-  font-size: 11.5px;
-  line-height: 1.4;
-  scrollbar-width: thin;
-  scrollbar-color: var(--wg-border-strong) transparent;
-}
-
-.wg-log-entry {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-}
-
-.wg-log-time {
-  flex: 0 0 auto;
-  color: var(--wg-placeholder);
-  font-size: 10px;
-  font-variant-numeric: tabular-nums;
-}
-
-.wg-log-message {
-  color: var(--wg-muted);
-  word-break: break-word;
-}
-
-.wg-log-success .wg-log-message {
-  color: var(--wg-success);
-}
-
-.wg-log-warning .wg-log-message {
-  color: var(--wg-warning);
-}
-
-.wg-log-error .wg-log-message {
-  color: var(--wg-danger);
-}
-
-.wg-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  border-top: 1px solid var(--wg-border);
-  padding-top: 12px;
-}
-
-.wg-footer-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 6px;
-}
-
-.wg-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 2147483001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  background: rgba(0, 0, 0, 0.42);
-  pointer-events: auto;
-}
-
-.wg-modal-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: min(360px, 100%);
-  max-height: calc(100vh - 36px);
-  overflow-y: auto;
-  padding: 20px;
-  border: 1px solid var(--wg-border);
-  border-radius: 10px;
-  background: var(--wg-panel);
-  color: var(--wg-text);
-  box-shadow: var(--wg-shadow);
-}
-
-.wg-modal-card h2 {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.25;
-}
-
-.wg-modal-target {
-  margin-top: -4px;
-  color: var(--wg-muted);
-  font-size: 12.5px;
-  font-weight: 600;
-}
-
-.wg-modal-filters {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 0;
-  padding-left: 18px;
-  color: var(--wg-muted);
-  font-size: 12px;
-}
-
-.wg-modal-warning {
-  margin: 0;
-  color: var(--wg-muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.wg-confirm-field {
-  margin-top: 2px;
-}
-
-.wg-confirm-field input {
-  font-weight: 600;
-}
-
-.wg-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.wg-modal-actions .wg-btn {
-  flex: 0 0 auto;
-  min-width: 96px;
-}
-
-.wg-toast {
-  position: fixed;
-  left: 50%;
-  bottom: 28px;
-  z-index: 2147483002;
-  max-width: min(420px, calc(100vw - 32px));
-  padding: 9px 14px;
-  border-radius: 10px;
-  background: var(--wg-toast-bg);
-  color: #ffffff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
-  font-size: 12.5px;
-  font-weight: 500;
-  text-align: center;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, 12px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-.wg-toast.wg-show {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-.wg-toast-success {
-  background: #2ea86b;
-}
-
-.wg-toast-warning {
-  background: #c27b12;
-}
-
-.wg-toast-error {
-  background: #d64545;
-}
-
-:host(.wg-private) .wg-blur {
-  filter: blur(5px);
-  transition: filter 0.15s ease;
-  cursor: help;
-}
-
-:host(.wg-private) .wg-blur:hover {
-  filter: none;
-}
-
-@keyframes wg-indeterminate {
-  from { transform: translateX(0); }
-  to { transform: translateX(185%); }
-}
-
-.wg-ready .wg-actions .wg-primary {
-  background: transparent;
-  border-color: var(--wg-border-strong);
-  color: var(--wg-text);
-}
-
-.wg-activity summary {
-  cursor: pointer;
-}
-
-.wg-activity summary:focus-visible {
-  outline: 2px solid var(--wg-primary);
-  outline-offset: 3px;
-}
-
-#status-text[data-tone="error"] { color: var(--wg-danger); }
-#status-text[data-tone="warning"] { color: var(--wg-warning); }
-
-@media (max-width: 520px) {
-  .wg-panel {
-    top: 8px !important;
-    right: 8px !important;
-    left: 8px !important;
-    width: auto;
-    max-height: calc(100vh - 16px);
-    max-height: calc(100dvh - 16px);
-    border-radius: 10px;
-  }
-
-  .wg-header {
-    padding: 12px 13px;
-    cursor: default;
-  }
-
-  .wg-body {
-    padding: 12px;
-  }
-
-  .wg-results-list {
-    max-height: 160px;
-  }
-
-  .wg-log {
-    max-height: 88px;
-  }
-}
-
 @media (max-width: 360px) {
-  .wg-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .wg-span2 {
-    grid-column: auto;
-  }
-
-  .wg-metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .wg-grid { grid-template-columns: minmax(0, 1fr); }
+  .wg-span2 { grid-column: auto; }
+  .wg-author .wg-muted { display: none; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 `;
 
   // dom-template:src/panel.html
-  var panel_default = [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-panel", null], ["id", "panel", null], ["role", "dialog", null], ["aria-label", "Wipegram", null], ["tabindex", "-1", null], ["hidden", "", null]], ["\n  ", ["header", "http://www.w3.org/1999/xhtml", [["class", "wg-header", null], ["id", "drag-handle", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-title", null]], ["Wipegram ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-version", null]], ["v0.2.2"]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-subtitle", null]], ["Your messages only"]], "\n      "]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-header-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "privacy-btn", null], ["title", "Toggle privacy mode", null], ["aria-label", "Toggle privacy mode", null], ["aria-pressed", "false", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z", null]], []], ["circle", "http://www.w3.org/2000/svg", [["cx", "12", null], ["cy", "12", null], ["r", "3", null]], []]]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "close-btn", null], ["title", "Close Wipegram", null], ["aria-label", "Close Wipegram", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M18 6 6 18M6 6l12 12", null]], []]]]]], "\n    "]], "\n  "]], "\n\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-body", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-avatar", null], ["id", "target-avatar", null]], ["?"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-name wg-blur", null], ["id", "target-name", null]], ["Open a chat"]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-meta wg-blur", null], ["id", "target-meta", null]], ["Wipegram works in private chats, groups and Saved Messages"]], "\n      "]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "refresh-btn", null], ["title", "Refresh current chat", null], ["aria-label", "Refresh current chat", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6", null]], []]]]]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-alert wg-hidden", null], ["id", "target-warning", null]], []], "\n\n    ", ["fieldset", "http://www.w3.org/1999/xhtml", [["class", "wg-fieldset", null], ["id", "filters-fieldset", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Filters"]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Message type"]], "\n          ", ["select", "http://www.w3.org/1999/xhtml", [["id", "type-select", null]], [["option", "http://www.w3.org/1999/xhtml", [["value", "all", null]], ["All messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "text", null]], ["Text only"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "photos", null]], ["Photos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "videos", null]], ["Videos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "files", null]], ["Files"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "links", null]], ["Links"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "music", null]], ["Music"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "voice", null]], ["Voice messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "gifs", null]], ["GIFs"]]]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Text contains"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "query-input", null], ["placeholder", "Optional words", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n        "]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Date & pattern filters ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-span2", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Regex pattern"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "pattern-input", null], ["placeholder", "Optional, e.g. ^hello|invoice", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Newer than"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "min-date", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Older than"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "max-date", null]], []], "\n          "]], "\n        "]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-checks", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "skip-pinned", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Skip pinned messages"]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null], ["id", "topic-wrap", null], ["hidden", "", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "topic-scope", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Current topic only"]], "\n        "]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Advanced options ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Scan method"]], "\n            ", ["select", "http://www.w3.org/1999/xhtml", [["id", "scan-method", null]], ["\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "auto", null]], ["Auto (recommended)"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "search", null]], ["Telegram sender search"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "history", null]], ["Full history walk"]], "\n            "]], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Max messages"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "max-messages", null], ["min", "0", null], ["step", "1", null], ["placeholder", "Unlimited", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between batches (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "delete-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between scan pages (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "search-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n        "]], "\n        ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-hint", null]], ["Auto searches your messages, then checks chat history for anything missing from search. A message limit stops either scan once reached."]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-form-error wg-hidden", null], ["id", "form-error", null]], []], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-primary", null], ["id", "scan-btn", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["circle", "http://www.w3.org/2000/svg", [["cx", "11", null], ["cy", "11", null], ["r", "7", null]], []], ["path", "http://www.w3.org/2000/svg", [["d", "m20 20-3.4-3.4", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "scan-label", null]], ["Scan messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "delete-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "delete-label", null]], ["Delete messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-stop", null], ["id", "stop-btn", null], ["hidden", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["rect", "http://www.w3.org/2000/svg", [["x", "6", null], ["y", "6", null], ["width", "12", null], ["height", "12", null], ["rx", "2", null], ["fill", "currentColor", null], ["stroke", "none", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Stop"]]]], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-wrap", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress", null]], [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-bar", null], ["id", "progress-bar", null]], []]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-status", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [["id", "status-text", null]], ["Choose filters, then scan the open chat."]], "\n      "]], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metrics", null], ["hidden", "", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-checked", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Checked"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-found", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Found"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-deleted", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Deleted"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-failed", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Failed"]]]], "\n    "]], "\n\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-results", null], ["id", "results", null], ["hidden", "", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Found messages ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "results-count", null]], []]]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-link", null], ["id", "results-toggle", null], ["hidden", "", null]], ["Show all"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-results-list", null], ["id", "results-list", null]], []], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-hint wg-results-more", null], ["id", "results-more", null], ["hidden", "", null]], []], "\n    "]], "\n\n    ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-activity", null]], ["\n      ", ["summary", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Activity"]], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "log-count", null]], ["0"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-log", null], ["id", "log", null], ["role", "log", null], ["aria-live", "polite", null]], []], "\n    "]], "\n\n    ", ["footer", "http://www.w3.org/1999/xhtml", [["class", "wg-footer", null]], ["\n      ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-link", null], ["href", "https://github.com/rafelolv/Wipegram/blob/main/docs/USER-GUIDE.md", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null]], ["Help"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-footer-actions", null]], ["\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "reset-btn", null]], ["Reset"]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "report-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 3v12M7 10l5 5 5-5M4 21h16", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Report"]]]], "\n      "]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal", null], ["id", "modal", null], ["hidden", "", null]], ["\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-card", null], ["role", "alertdialog", null], ["aria-modal", "true", null], ["aria-labelledby", "modal-title", null], ["aria-describedby", "modal-warning", null]], ["\n    ", ["h2", "http://www.w3.org/1999/xhtml", [["id", "modal-title", null]], ["Delete messages?"]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-target wg-blur", null], ["id", "modal-target", null]], []], "\n    ", ["ul", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-filters", null], ["id", "modal-filters", null]], []], "\n    ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-warning", null], ["id", "modal-warning", null]], []], "\n    ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-confirm-field", null], ["id", "confirm-field", null], ["hidden", "", null]], ["\n      ", ["span", "http://www.w3.org/1999/xhtml", [], ["Type ", ["strong", "http://www.w3.org/1999/xhtml", [], ["DELETE"]], " to confirm"]], "\n      ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "confirm-input", null], ["autocomplete", "off", null], ["spellcheck", "false", null], ["autocapitalize", "characters", null]], []], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost", null], ["id", "confirm-cancel", null]], ["Cancel"]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "confirm-delete", null]], ["Delete forever"]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-toast", null], ["id", "toast", null], ["role", "status", null], ["aria-live", "polite", null], ["hidden", "", null]], []], "\n"];
-
-  // src/dom.js
-  function createNodes(descriptors) {
-    const fragment = document.createDocumentFragment();
-    for (const descriptor of descriptors) {
-      if (typeof descriptor === "string") {
-        fragment.appendChild(document.createTextNode(descriptor));
-        continue;
-      }
-      const [tag, namespace, attributes, children] = descriptor;
-      const element = document.createElementNS(namespace, tag);
-      for (const [name, value, attributeNamespace] of attributes) {
-        if (attributeNamespace) element.setAttributeNS(attributeNamespace, name, value);
-        else element.setAttribute(name, value);
-      }
-      element.appendChild(createNodes(children));
-      fragment.appendChild(element);
-    }
-    return fragment;
-  }
-  function privacyIcon(hidden) {
-    const namespace = "http://www.w3.org/2000/svg";
-    const paths = hidden ? [["path", [["d", "m3 3 18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.9 5.2A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7c1.4 0 2.7-.3 3.9-.8"]]]] : [["path", [["d", "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"]]], ["circle", [["cx", "12"], ["cy", "12"], ["r", "3"]]]];
-    return createNodes([["svg", namespace, [
-      ["class", "wg-icon"],
-      ["viewBox", "0 0 24 24"],
-      ["fill", "none"],
-      ["stroke", "currentColor"],
-      ["stroke-width", "2"],
-      ["stroke-linecap", "round"],
-      ["stroke-linejoin", "round"],
-      ["aria-hidden", "true"]
-    ], paths.map(([tag, attributes]) => [tag, namespace, attributes, []])]]);
-  }
+  var panel_default = [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-panel", null], ["id", "panel", null], ["role", "dialog", null], ["aria-label", "Wipegram", null], ["tabindex", "-1", null], ["hidden", "", null]], ["\n  ", ["header", "http://www.w3.org/1999/xhtml", [["class", "wg-header", null], ["id", "drag-handle", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand", null]], ["\n      ", ["svg", "http://www.w3.org/2000/svg", [["xmlns", "http://www.w3.org/2000/svg", "http://www.w3.org/2000/xmlns/"], ["viewBox", "0 0 128 128", null], ["class", "wg-brand-logo", null], ["aria-hidden", "true", null]], ["\n  ", "\n  ", ["rect", "http://www.w3.org/2000/svg", [["width", "128", null], ["height", "128", null], ["rx", "28", null], ["fill", "#101211", null]], []], "\n  ", ["path", "http://www.w3.org/2000/svg", [["d", "m14 39 15 51h12l10-30 9 30h12l16-51H74l-9 30-9-30H44L35 69l-7-30Z", null], ["fill", "#e8ebe9", null]], []], "\n  ", ["path", "http://www.w3.org/2000/svg", [["d", "M103 39h15L97 90H82Z", null], ["fill", "#4ade80", null]], []], "\n"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-title", null]], ["Wipegram ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-version", null]], ["v0.3.0"]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-subtitle", null], ["id", "scope-label", null]], ["Your messages only"]], "\n      "]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-header-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "privacy-btn", null], ["title", "Toggle privacy mode", null], ["aria-label", "Toggle privacy mode", null], ["aria-pressed", "false", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "1.7", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z", null]], []], ["circle", "http://www.w3.org/2000/svg", [["cx", "12", null], ["cy", "12", null], ["r", "3", null]], []]]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "close-btn", null], ["title", "Close Wipegram", null], ["aria-label", "Close Wipegram", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "1.7", null], ["stroke-linecap", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 6 12 12M18 6 6 18", null]], []]]]]], "\n    "]], "\n  "]], "\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-body", null]], ["\n    ", ["nav", "http://www.w3.org/1999/xhtml", [["class", "wg-rail", null], ["aria-label", "Wipegram shortcuts", null]], ["\n      ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-rail-link wg-selected", null], ["href", "https://web.telegram.org/k/", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null], ["aria-label", "Open Telegram Web K", null], ["title", "Telegram Web K", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon", null], ["viewBox", "0 0 24 24", null], ["fill", "currentColor", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m21 3-4 18-6-5-3 3v-5l10-8-12 7-5-2Z", null]], []]]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-rail-link", null], ["id", "filters-shortcut", null], ["title", "Focus filters", null], ["aria-label", "Focus filters", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "1.6", null], ["stroke-linecap", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M4 6h16M4 12h16M4 18h16M8 3v6M16 9v6M10 15v6", null]], []]]]]], "\n      ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-rail-link wg-rail-bottom", null], ["href", "https://github.com/rafelolv", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null], ["aria-label", "Rafael on GitHub", null], ["title", "Rafael on GitHub", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon", null], ["viewBox", "0 0 24 24", null], ["fill", "currentColor", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.64-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.1.39-1.99 1.03-2.69-.1-.26-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.03A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.66.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.58 4.94.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z", null]], []]]]]], "\n    "]], "\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-controls", null], ["aria-label", "Chat and filters", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-controls-scroll", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-eyebrow", null]], ["Target"]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-avatar", null], ["id", "target-avatar", null]], ["?"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-name wg-blur", null], ["id", "target-name", null]], ["Open a chat"]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-meta wg-blur", null], ["id", "target-meta", null]], ["Wipegram works in private chats, groups and Saved Messages"]], "\n      "]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "refresh-btn", null], ["title", "Refresh current chat", null], ["aria-label", "Refresh current chat", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6", null]], []]]]]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-alert wg-hidden", null], ["id", "target-warning", null]], []], "\n\n    ", ["fieldset", "http://www.w3.org/1999/xhtml", [["class", "wg-fieldset", null], ["id", "filters-fieldset", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Filters"]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Message type"]], "\n          ", ["select", "http://www.w3.org/1999/xhtml", [["id", "type-select", null]], [["option", "http://www.w3.org/1999/xhtml", [["value", "all", null]], ["All message types"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "text", null]], ["Text only"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "photos", null]], ["Photos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "videos", null]], ["Videos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "files", null]], ["Files"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "links", null]], ["Links"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "music", null]], ["Music"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "voice", null]], ["Voice messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "gifs", null]], ["GIFs"]]]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Text contains"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "query-input", null], ["placeholder", "Optional words", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n        "]], "\n      "]], "\n\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Newer than"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "min-date", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Older than"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "max-date", null]], []], "\n          "]], "\n        "]], "\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Text pattern ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-span2", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Regex pattern"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "pattern-input", null], ["placeholder", "Optional, e.g. ^hello|invoice", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n          "]], "\n        "]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-checks", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "skip-pinned", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Skip pinned messages"]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null], ["id", "topic-wrap", null], ["hidden", "", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "topic-scope", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Current topic only"]], "\n        "]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Admin mode ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "include-others", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Include everyone's messages"]], "\n        "]], "\n        ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-hint", null]], ["Off by default. Requires group or channel owner/delete-messages permission. Deletes other people's messages only after a new scan and explicit confirmation."]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Advanced options ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Scan method"]], "\n            ", ["select", "http://www.w3.org/1999/xhtml", [["id", "scan-method", null]], ["\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "auto", null]], ["Auto (recommended)"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "search", null]], ["Telegram sender search"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "history", null]], ["Full history walk"]], "\n            "]], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Max messages"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "max-messages", null], ["min", "0", null], ["step", "1", null], ["placeholder", "Unlimited", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between batches (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "delete-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between scan pages (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "search-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n        "]], "\n        ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-hint", null]], ["Auto searches your messages, then checks chat history for anything missing from search. A message limit stops either scan once reached."]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-form-error wg-hidden", null], ["id", "form-error", null]], []], "\n    "]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-scan-actions wg-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-primary", null], ["id", "scan-btn", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["circle", "http://www.w3.org/2000/svg", [["cx", "11", null], ["cy", "11", null], ["r", "7", null]], []], ["path", "http://www.w3.org/2000/svg", [["d", "m20 20-3.4-3.4", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "scan-label", null]], ["Scan messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-stop", null], ["id", "stop-btn", null], ["hidden", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["rect", "http://www.w3.org/2000/svg", [["x", "6", null], ["y", "6", null], ["width", "12", null], ["height", "12", null], ["rx", "2", null], ["fill", "currentColor", null], ["stroke", "none", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Stop"]]]], "\n      "]], "\n    "]], "\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-review", null], ["aria-label", "Scan results and activity", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-review-header", null]], [["h2", "http://www.w3.org/1999/xhtml", [], ["Activity"]], ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-link", null], ["id", "clear-log-btn", null]], ["Clear log"]]]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metrics", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-checked", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [["id", "checked-label", null]], ["Yours checked"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-found", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Found"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-deleted", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Deleted"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-failed", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Failed"]]]], "\n    "]], "\n\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-wrap", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress", null]], [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-bar", null], ["id", "progress-bar", null]], []]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-status", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "status-text", null]], ["Choose filters, then scan the open chat."]]]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-review-scroll", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-empty", null], ["id", "ready-state", null]], ["\n          ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-empty-content", null]], [["svg", "http://www.w3.org/2000/svg", [["xmlns", "http://www.w3.org/2000/svg", "http://www.w3.org/2000/xmlns/"], ["viewBox", "0 0 128 128", null], ["class", "wg-empty-logo", null], ["aria-hidden", "true", null]], ["\n  ", "\n  ", ["rect", "http://www.w3.org/2000/svg", [["width", "128", null], ["height", "128", null], ["rx", "28", null], ["fill", "#101211", null]], []], "\n  ", ["path", "http://www.w3.org/2000/svg", [["d", "m14 39 15 51h12l10-30 9 30h12l16-51H74l-9 30-9-30H44L35 69l-7-30Z", null], ["fill", "#e8ebe9", null]], []], "\n  ", ["path", "http://www.w3.org/2000/svg", [["d", "M103 39h15L97 90H82Z", null], ["fill", "#4ade80", null]], []], "\n"]], ["h3", "http://www.w3.org/1999/xhtml", [["id", "ready-title", null]], ["Ready to scan"]], ["p", "http://www.w3.org/1999/xhtml", [["id", "ready-description", null]], ["Choose your chat and filters, then scan for messages."]]]], "\n        "]], "\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-results", null], ["id", "results", null], ["hidden", "", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Found messages ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "results-count", null]], []]]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-link", null], ["id", "results-toggle", null], ["hidden", "", null]], ["Show all"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-results-list", null], ["id", "results-list", null]], []], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-hint wg-results-more", null], ["id", "results-more", null], ["hidden", "", null]], []], "\n    "]], "\n\n    ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-activity", null]], ["\n      ", ["summary", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Run log"]], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "log-count", null]], ["0"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-log", null], ["id", "log", null], ["role", "log", null], ["aria-live", "polite", null]], []], "\n    "]], "\n\n\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-delete-actions wg-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "delete-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "delete-label", null]], ["Delete messages"]]]], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-delete-hint", null]], ["Review your matches before deleting."]], "\n      "]], "\n    "]], "\n  "]], "\n  ", ["footer", "http://www.w3.org/1999/xhtml", [["class", "wg-footer", null]], ["\n    ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-author", null], ["href", "https://github.com/rafelolv", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon", null], ["viewBox", "0 0 24 24", null], ["fill", "currentColor", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.64-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.1.39-1.99 1.03-2.69-.1-.26-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.03A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.66.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.58 4.94.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Rafael ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-muted", null]], ["(rafaelolv)"]]]]]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-footer-actions", null]], ["\n      ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-link wg-license", null], ["href", "https://github.com/rafelolv/Wipegram/blob/main/LICENSE", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null], ["title", "Wipegram Proprietary License 1.0", null]], ["Proprietary license"]], "\n      ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-link", null], ["href", "https://github.com/rafelolv/Wipegram/blob/main/docs/USER-GUIDE.md", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null]], ["Help"]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "reset-btn", null]], ["Reset"]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "report-btn", null], ["disabled", "", null]], ["Report"]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal", null], ["id", "modal", null], ["hidden", "", null]], ["\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-card", null], ["role", "alertdialog", null], ["aria-modal", "true", null], ["aria-labelledby", "modal-title", null], ["aria-describedby", "modal-warning", null]], ["\n    ", ["h2", "http://www.w3.org/1999/xhtml", [["id", "modal-title", null]], ["Delete messages?"]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-target wg-blur", null], ["id", "modal-target", null]], []], "\n    ", ["ul", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-filters", null], ["id", "modal-filters", null]], []], "\n    ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-warning", null], ["id", "modal-warning", null]], []], "\n    ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-confirm-field", null], ["id", "confirm-field", null], ["hidden", "", null]], ["\n      ", ["span", "http://www.w3.org/1999/xhtml", [], ["Type ", ["strong", "http://www.w3.org/1999/xhtml", [], ["DELETE"]], " to confirm"]], "\n      ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "confirm-input", null], ["autocomplete", "off", null], ["spellcheck", "false", null], ["autocapitalize", "characters", null]], []], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost", null], ["id", "confirm-cancel", null]], ["Cancel"]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "confirm-delete", null]], ["Delete forever"]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-toast", null], ["id", "toast", null], ["role", "status", null], ["aria-live", "polite", null], ["hidden", "", null]], []], "\n"];
 
   // src/ui.js
-  var APP_VERSION = false ? "dev" : "0.2.2";
+  var APP_VERSION = false ? "dev" : "0.3.0";
   var TYPE_CONFIRM_THRESHOLD = 100;
   var VISIBLE_RESULTS = 8;
   var MAX_RENDERED_RESULTS = 200;
@@ -2435,6 +1795,7 @@ Additional permissions must be granted explicitly in writing.
       this.busy = false;
       this.abortController = null;
       this.modalOpen = false;
+      this.includeOthers = false;
       this.showAllResults = false;
       this.privacy = false;
       this.logs = [];
@@ -2494,6 +1855,13 @@ Additional permissions must be granted explicitly in writing.
       this.confirmCancel = this.shadow.getElementById("confirm-cancel");
       this.toastElement = this.shadow.getElementById("toast");
       this.privacyButton = this.shadow.getElementById("privacy-btn");
+      this.scopeCheckbox = this.shadow.getElementById("include-others");
+      this.scopeLabel = this.shadow.getElementById("scope-label");
+      this.checkedLabel = this.shadow.getElementById("checked-label");
+      this.readyState = this.shadow.getElementById("ready-state");
+      this.readyTitle = this.shadow.getElementById("ready-title");
+      this.readyDescription = this.shadow.getElementById("ready-description");
+      this.progressWrap = this.shadow.querySelector(".wg-progress-wrap");
       this.bindEvents();
       this.restorePrivacy();
       this.watchTheme();
@@ -2517,6 +1885,18 @@ Additional permissions must be granted explicitly in writing.
       this.confirmCancel.addEventListener("click", () => this.hideConfirm());
       this.confirmDelete.addEventListener("click", () => this.confirmDeleteMessages());
       this.confirmInput.addEventListener("input", () => this.updateConfirmState());
+      this.shadow.getElementById("clear-log-btn").addEventListener("click", () => this.clearLog());
+      this.shadow.getElementById("filters-shortcut").addEventListener("click", () => {
+        this.shadow.getElementById("type-select").focus({ preventScroll: false });
+      });
+      this.scopeCheckbox.addEventListener("change", () => {
+        this.includeOthers = this.scopeCheckbox.checked;
+        this.hideConfirm();
+        this.invalidateResults(null, { silent: true });
+        this.refreshTarget({ quiet: true });
+        if (this.targetError) this.showToast(this.targetError.message, "warning");
+        this.setStatus("Message scope changed. Scan again before deleting.");
+      });
       this.modal.addEventListener("click", (event) => {
         if (event.target === this.modal) this.hideConfirm();
       });
@@ -2628,6 +2008,11 @@ Additional permissions must be granted explicitly in writing.
         return;
       }
       this.hideConfirm();
+      if (this.includeOthers) {
+        this.includeOthers = false;
+        this.scopeCheckbox.checked = false;
+        this.invalidateResults(null, { silent: true });
+      }
       this.panel.hidden = true;
       this.panel.classList.remove("wg-open");
       this.stopPolling();
@@ -2653,8 +2038,18 @@ Additional permissions must be granted explicitly in writing.
     }
     currentTargetInfo() {
       try {
-        return { target: this.api.getCurrentTarget(), error: null };
+        let target = this.api.getCurrentTarget({ includeOthers: this.includeOthers });
+        if (this.includeOthers && this.target && (target.peerId !== this.target.peerId || target.selfId !== this.target.selfId)) {
+          this.includeOthers = false;
+          this.scopeCheckbox.checked = false;
+          target = this.api.getCurrentTarget({ includeOthers: false });
+        }
+        return { target, error: null };
       } catch (error) {
+        if (this.includeOthers) {
+          this.includeOthers = false;
+          this.scopeCheckbox.checked = false;
+        }
         return { target: null, error: normalizeError(error) };
       }
     }
@@ -2687,6 +2082,8 @@ Additional permissions must be granted explicitly in writing.
     }
     renderTarget() {
       if (!this.panel) return;
+      this.scopeLabel.textContent = this.includeOthers ? "Everyone — admin mode" : "Your messages only";
+      this.checkedLabel.textContent = this.includeOthers ? "Checked" : "Yours checked";
       const target = this.target;
       const error = this.targetError;
       if (target) {
@@ -2724,7 +2121,7 @@ Additional permissions must be granted explicitly in writing.
       this.fieldset.disabled = this.busy;
       this.shadow.getElementById("refresh-btn").disabled = this.busy;
       this.scanButton.hidden = this.busy;
-      this.deleteButton.hidden = this.busy || !hasResults || this.phase !== "ready";
+      this.deleteButton.hidden = this.busy;
       this.stopButton.hidden = !this.busy;
       this.stopButton.disabled = false;
       this.scanButton.disabled = this.busy || !this.target;
@@ -2733,7 +2130,11 @@ Additional permissions must be granted explicitly in writing.
       this.scanLabel.textContent = this.scanSnapshot ? "Scan again" : "Scan messages";
       this.reportButton.disabled = this.busy || !this.scanSnapshot;
       this.resetButton.disabled = this.busy;
-      this.metrics.hidden = !this.busy && !this.scanSnapshot;
+      this.metrics.hidden = false;
+      this.progressWrap.hidden = !this.busy && !this.scanSnapshot;
+      this.readyState.hidden = hasResults;
+      this.readyTitle.textContent = this.busy ? "Scan in progress" : this.phase === "done" ? "Cleanup finished" : this.scanSnapshot ? "No matching messages" : "Ready to scan";
+      this.readyDescription.textContent = !this.target ? "Open a supported Telegram chat to get started." : this.busy ? "You can stop at any time. Review the results before deleting." : this.scanSnapshot ? "Adjust your filters and scan again when you are ready." : "Choose your chat and filters, then scan for messages.";
       this.panel.classList.toggle("wg-ready", hasResults && this.phase === "ready");
     }
     setBusy(busy, phase = this.phase) {
@@ -2818,6 +2219,7 @@ Additional permissions must be granted explicitly in writing.
     }
     readFilters() {
       const raw = {
+        includeOthers: this.includeOthers,
         query: this.shadow.getElementById("query-input").value,
         pattern: this.shadow.getElementById("pattern-input").value,
         type: this.shadow.getElementById("type-select").value,
@@ -2862,7 +2264,7 @@ Additional permissions must be granted explicitly in writing.
       this.filters = filters;
       this.resetMetrics();
       this.setProgress("indeterminate");
-      this.setStatus("Scanning for your messages…", "info");
+      this.setStatus(filters.includeOthers ? "Scanning everyone’s messages — admin mode…" : "Scanning for your messages…", "info");
       this.addLog("info", `Scan started (${filters.scanMethod} mode).`);
       const scanTarget = filters.topicScope ? target : { ...target, topMsgId: 0, threadId: 0, topicTitle: "" };
       const originalKey = targetKey(target);
@@ -2950,8 +2352,8 @@ Additional permissions must be granted explicitly in writing.
       }
       const target = this.scanSnapshot.target;
       const count = this.entries.length;
-      const requireType = count > TYPE_CONFIRM_THRESHOLD;
-      this.modalTitle.textContent = `Delete ${formatNumber(count)} message${count === 1 ? "" : "s"}?`;
+      const requireType = count > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot.filters.includeOthers === true;
+      this.modalTitle.textContent = `${this.scanSnapshot.filters.includeOthers ? "Admin: delete" : "Delete"} ${formatNumber(count)} message${count === 1 ? "" : "s"}?`;
       this.modalTarget.textContent = `${target.title}${target.username ? ` (@${target.username})` : ""}`;
       const filterParts = describeFilters(this.scanSnapshot.filters);
       if (this.scanSnapshot.chat.topMsgId && !this.scanSnapshot.filters.topicScope) {
@@ -2962,7 +2364,7 @@ Additional permissions must be granted explicitly in writing.
         item.textContent = part;
         return item;
       }));
-      this.modalWarning.textContent = target.isSaved ? "These messages will be removed from your Saved Messages. Telegram cannot undo this." : "This deletes the messages from your account and, where Telegram permits, for everyone in this chat. Telegram cannot undo this.";
+      this.modalWarning.textContent = this.scanSnapshot.filters.includeOthers ? "Admin mode includes other people’s messages. This deletes the selected messages for everyone. Telegram cannot undo this." : target.isSaved ? "These messages will be removed from your Saved Messages. Telegram cannot undo this." : "This deletes the messages from your account and, where Telegram permits, for everyone in this chat. Telegram cannot undo this.";
       this.confirmField.hidden = !requireType;
       this.confirmInput.value = "";
       this.modalOpen = true;
@@ -2979,7 +2381,7 @@ Additional permissions must be granted explicitly in writing.
     }
     updateConfirmState() {
       const count = this.entries.length;
-      const requireType = count > TYPE_CONFIRM_THRESHOLD;
+      const requireType = count > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers === true;
       this.confirmDelete.disabled = requireType && this.confirmInput.value.trim() !== "DELETE";
     }
     hideConfirm() {
@@ -3001,7 +2403,7 @@ Additional permissions must be granted explicitly in writing.
     }
     async confirmDeleteMessages() {
       if (!this.modalOpen || this.busy) return;
-      if (this.entries.length > TYPE_CONFIRM_THRESHOLD && this.confirmInput.value.trim() !== "DELETE") return;
+      if ((this.entries.length > TYPE_CONFIRM_THRESHOLD || this.scanSnapshot?.filters.includeOthers) && this.confirmInput.value.trim() !== "DELETE") return;
       if (this.targetKey !== this.scanSnapshot?.key) {
         this.hideConfirm();
         this.invalidateResults("The open chat changed. Scan again before deleting.");
@@ -3186,6 +2588,7 @@ Additional permissions must be granted explicitly in writing.
           topicId: target.topMsgId || snapshot.chat.topMsgId || 0
         },
         filters: {
+          includeOthers: !!filters.includeOthers,
           type: filters.type,
           query: filters.query,
           pattern: filters.pattern,
@@ -3221,7 +2624,7 @@ Additional permissions must be granted explicitly in writing.
     handleEngineEvent(event) {
       switch (event.type) {
         case "scan:start":
-          this.setStatus("Scanning for your messages…", "info");
+          this.setStatus(event.filters.includeOthers ? "Scanning everyone’s messages — admin mode…" : "Scanning for your messages…", "info");
           this.setProgress("indeterminate");
           break;
         case "scan:progress": {
@@ -3229,7 +2632,7 @@ Additional permissions must be granted explicitly in writing.
           const checked = formatNumber(event.scanned);
           const found = formatNumber(event.matched);
           this.setStatus(
-            event.mode === "search" ? `Searching… ${found} of your messages found.` : `Scanning history… ${checked} messages checked, ${found} found.`,
+            event.mode === "search" ? `Searching… ${found} of your messages found.` : `Scanning history… ${checked} ${this.includeOthers ? "messages" : "of your messages"} checked, ${found} found.`,
             "info"
           );
           break;
@@ -3541,7 +2944,7 @@ Additional permissions must be granted explicitly in writing.
   }
 
   // src/index.js
-  var VERSION = false ? "dev" : "0.2.2";
+  var VERSION = false ? "dev" : "0.3.0";
   function isWebK() {
     return /^\/k(?:\/|$)/.test(location.pathname);
   }

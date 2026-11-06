@@ -10,6 +10,7 @@ import {
   peerUsername
 } from '../src/telegram.js';
 import { targetKey, MAX_PINNED_PAGES } from '../src/telegram.js';
+import { canModerate } from '../src/telegram.js';
 
 function message(id) {
   return { _: 'message', id, date: 1_700_000_000 + id, pFlags: { out: true }, message: `m${id}` };
@@ -332,4 +333,54 @@ test('stopping during pinned lookup prevents requesting another page', async () 
   });
   await assert.rejects(api.getPinnedIds({ target: { inputPeer: {} }, signal: controller.signal }), { name: 'AbortError' });
   assert.equal(calls.length, 1);
+});
+
+test('only verified owner or delete-messages rights grant admin scope', () => {
+  assert.equal(canModerate({ _: 'user', pFlags: { creator: true } }), false);
+  assert.equal(canModerate({ _: 'chat', pFlags: { admin: true } }), false);
+  assert.equal(canModerate({ _: 'chat', pFlags: { creator: true } }), true);
+  assert.equal(canModerate({ _: 'channel', admin_rights: { pFlags: { delete_messages: true } } }), true);
+  assert.equal(canModerate({ _: 'channel', pFlags: { creator: true, left: true } }), false);
+});
+
+function moderationApi() {
+  const peer = { _: 'channel', id: 55, title: 'Admin group', access_hash: '1', pFlags: { megagroup: true }, admin_rights: { pFlags: { delete_messages: true } } };
+  const calls = [];
+  const root = { myId: 42, managers: { apiManager: { invokeApi: async (method, params) => {
+    calls.push({ method, params });
+    return { _: 'messages.messages', messages: [] };
+  } } } };
+  const app = { chat: { peerId: -55, type: 'chat', isBroadcast: false, threadId: 0 } };
+  const api = new TelegramApi({ root: () => root, app: () => app, mirror: () => ({ getPeer: () => peer }) });
+  return { peer, calls, root, app, api };
+}
+
+test('admin target is separate from own target and permission is checked on every request', async () => {
+  const { peer, calls, api } = moderationApi();
+  const own = api.getCurrentTarget();
+  const admin = api.getCurrentTarget({ includeOthers: true });
+  assert.notEqual(targetKey(own), targetKey(admin));
+  await api.historyPage({ target: admin });
+  await api.searchPage({ target: admin, filter: { _: 'inputMessagesFilterEmpty' } });
+  assert.equal(calls[1].params.from_id, undefined);
+  peer.admin_rights.pFlags.delete_messages = false;
+  await assert.rejects(api.deleteBatch({ target: admin, ids: [1] }), { code: 'MODERATION_FORBIDDEN' });
+  assert.equal(calls.length, 2);
+});
+
+test('broadcast access requires explicit admin scope; revoked roles and account changes fail closed', async () => {
+  const { api, app, root, calls } = moderationApi();
+  app.chat.isBroadcast = true;
+  assert.throws(() => api.getCurrentTarget(), { code: 'BROADCAST_CHANNEL' });
+  const target = api.getCurrentTarget({ includeOthers: true });
+  await api.deleteBatch({ target, ids: [1] });
+  root.myId = 43;
+  await assert.rejects(api.deleteBatch({ target, ids: [2] }), { code: 'ACCOUNT_CHANGED' });
+  assert.equal(calls.length, 1);
+});
+
+test('server admin rejection is fatal and cannot fall back to per-message deletes', async () => {
+  const { api, root } = moderationApi();
+  root.managers.apiManager.invokeApi = async () => { throw { type: 'CHAT_ADMIN_REQUIRED' }; };
+  await assert.rejects(api.deleteBatch({ target: api.getCurrentTarget({ includeOthers: true }), ids: [1] }), error => error.code === 'MODERATION_FORBIDDEN' && error.fatal);
 });

@@ -155,7 +155,8 @@ async function main() {
           return { _: 'messages.messages', messages: [], count: 0 };
         }
 
-        const sorted = [...window.__messages].sort((a, b) => b.id - a.id);
+        const sorted = [...window.__messages].filter(message => method !== 'messages.search' || !params.from_id
+          || (message.from_id?._ === 'peerUser' && message.from_id.user_id === selfId)).sort((a, b) => b.id - a.id);
         const offsetId = params?.offset_id || 0;
         const remaining = offsetId ? sorted.filter(item => item.id < offsetId) : sorted;
         return {
@@ -187,9 +188,10 @@ async function main() {
         appPeersManager: new Proxy({}, { get: () => () => { throw new Error('Worker proxy used synchronously'); } })
       }
     };
-    window.apiManagerProxy = { getPeer: () => ({ ...peer, access_hash: '1' }) };
+    window.__peer = peer;
+    window.apiManagerProxy = { getPeer: () => ({ ...window.__peer, access_hash: '1' }) };
     window.appImManager = { chat };
-  }, [message(100), message(101), message(102)]);
+  }, [message(100), message(101), message(102), { ...message(90), pFlags: {}, from_id: { _: 'peerUser', user_id: 7 } }]);
 
   if (!EXTENSION) await page.addScriptTag({ path: SCRIPT });
   await page.waitForSelector('#wipegram-launcher', { timeout: 5_000 });
@@ -198,7 +200,13 @@ async function main() {
   await page.addScriptTag({ path: SCRIPT });
   assert(await page.locator('#wipegram-ui').count() === 1, 'Duplicate runtime mounted');
 
-  await page.click('#wipegram-launcher');
+  assert(await page.locator('#wipegram-fab').isVisible(), 'Second launcher must coexist with the toolbar');
+  await page.evaluate(() => { window.__testToolbar = document.querySelector('.chat-utils'); window.__testToolbar.remove(); });
+  await page.waitForSelector('#wipegram-launcher', { state: 'detached' });
+  assert(await page.locator('#wipegram-fab').isVisible(), 'Floating access must survive a toolbar rerender');
+  await page.evaluate(() => document.querySelector('.topbar').appendChild(window.__testToolbar));
+  await page.waitForSelector('#wipegram-launcher');
+  await page.click('#wipegram-fab');
   await waitForShadow(page, '!root.getElementById("panel").hidden');
   await waitForShadow(page, 'root.getElementById("scan-btn").disabled === false');
 
@@ -219,6 +227,10 @@ async function main() {
     await page.waitForTimeout(250);
     await page.screenshot({ path: SCREENSHOT });
     await page.locator('#panel').screenshot({ path: path.join(os.tmpdir(), 'wipegram-panel-light.png') });
+    await page.evaluate(() => document.documentElement.classList.add('night'));
+    await page.waitForTimeout(150);
+    await page.locator('#panel').screenshot({ path: path.join(os.tmpdir(), 'wipegram-panel-dark-empty.png') });
+    await page.evaluate(() => document.documentElement.classList.remove('night'));
   }
 
   // A running scan must expose Stop even before the first page completes.
@@ -239,11 +251,13 @@ async function main() {
     return {
       status: root.getElementById('status-text').textContent,
       found: root.getElementById('metric-found').textContent,
+      checked: root.getElementById('metric-checked').textContent,
       results: root.querySelectorAll('.wg-result').length,
       deleteLabel: root.getElementById('delete-label').textContent
     };
   });
   assert(afterScan.found === '3', `Expected 3 found messages, got ${afterScan.found}`);
+  assert(afterScan.checked === '3', `Only unique own messages must be counted, got ${afterScan.checked}`);
   assert(afterScan.results === 3, `Expected 3 result rows, got ${afterScan.results}`);
   assert(/ready to delete/i.test(afterScan.status), `Unexpected scan status: ${afterScan.status}`);
   assert(/Delete 3 messages/.test(afterScan.deleteLabel), `Unexpected delete label: ${afterScan.deleteLabel}`);
@@ -373,7 +387,7 @@ async function main() {
   const layout = await page.evaluate(() => {
     const root = document.getElementById('wipegram-ui').shadowRoot;
     const panel = root.getElementById('panel');
-    const body = root.querySelector('.wg-body');
+    const body = root.querySelector('.wg-review-scroll');
     const footer = root.querySelector('.wg-footer');
     const panelRect = panel.getBoundingClientRect();
     const bodyRect = body.getBoundingClientRect();
@@ -396,14 +410,14 @@ async function main() {
   assert(layout.bodyScroll > layout.bodyClient, 'Long result list did not produce an internal scroll area');
 
   await page.evaluate(() => {
-    const body = document.getElementById('wipegram-ui').shadowRoot.querySelector('.wg-body');
+    const body = document.getElementById('wipegram-ui').shadowRoot.querySelector('.wg-review-scroll');
     body.scrollTop = body.scrollHeight;
   });
   const footerAfterScroll = await page.evaluate(() => {
     const root = document.getElementById('wipegram-ui').shadowRoot;
     const panelRect = root.getElementById('panel').getBoundingClientRect();
     const headerRect = root.querySelector('.wg-header').getBoundingClientRect();
-    const body = root.querySelector('.wg-body');
+    const body = root.querySelector('.wg-review-scroll');
     const bodyRect = body.getBoundingClientRect();
     const footerRect = root.querySelector('.wg-footer').getBoundingClientRect();
     return {
@@ -429,6 +443,17 @@ async function main() {
     Math.abs(footerAfterScroll.headerTop - footerAfterScroll.panelTop) <= 1,
     `Panel header scrolled away: header ${footerAfterScroll.headerTop}, panel ${footerAfterScroll.panelTop}`
   );
+
+  const footerLinks = await page.evaluate(() => {
+    const root = document.getElementById('wipegram-ui').shadowRoot;
+    return { author: root.querySelector('.wg-author').href, license: root.querySelector('.wg-license').href };
+  });
+  assert(footerLinks.author === 'https://github.com/rafelolv', 'Creator GitHub link is missing');
+  assert(footerLinks.license.endsWith('/blob/main/LICENSE'), 'License link is missing');
+  const countBeforeClear = await page.locator('.wg-result').count();
+  await page.click('#clear-log-btn');
+  assert(await page.locator('#log').textContent() === '', 'Clear log must remove log content');
+  assert(await page.locator('.wg-result').count() === countBeforeClear, 'Clear log must preserve the preview');
 
   // Theme + responsive smoke checks.
   await page.evaluate(() => {
@@ -460,6 +485,74 @@ async function main() {
   });
   assert(mobileBox.left >= 0 && mobileBox.right <= mobileBox.viewport, 'Mobile panel overflows the viewport');
   assert(mobileBox.bottom <= mobileBox.viewportHeight, 'Mobile panel is taller than the viewport');
+
+  if (process.env.WIPEGRAM_UI_SCREENSHOT !== '0') {
+    await page.locator('#panel').screenshot({ path: path.join(os.tmpdir(), 'wipegram-panel-mobile.png') });
+  }
+  const mobileContent = await page.evaluate(() => {
+    const root = document.getElementById('wipegram-ui').shadowRoot;
+    const body = root.querySelector('.wg-body');
+    body.scrollTop = body.scrollHeight;
+    return { scrollable: body.scrollHeight > body.clientHeight, width: body.scrollWidth, client: body.clientWidth };
+  });
+  assert(mobileContent.scrollable && mobileContent.width <= mobileContent.client + 1, 'Mobile workspace must scroll vertically without horizontal clipping');
+
+  // Admin scope requires an explicit opt-in, verified rights and typed acceptance.
+  await page.locator('#include-others').evaluate(input => { input.closest('details').open = true; });
+  await page.click('#include-others');
+  await waitForShadow(page, 'root.getElementById("include-others").checked === false');
+  assert(await page.evaluate(() => window.__deleted.length === 0), 'Private chat cannot enable moderation');
+  await page.evaluate(own => {
+    window.__peer = { _: 'channel', id: 55, title: 'Admin group', pFlags: { megagroup: true, creator: true } };
+    window.appImManager.chat.peerId = -55;
+    window.__messages = [own, { ...own, id: 1999, from_id: { _: 'peerUser', user_id: 7 }, pFlags: {} }];
+    window.__deleted = [];
+    window.__wipegram.ui.refreshTarget({ quiet: true });
+  }, message(2000));
+  await page.click('#scan-btn');
+  await waitForShadow(page, 'root.getElementById("delete-btn").disabled === false');
+  assert(await page.evaluate(() => window.__wipegram.ui.entries.length === 1), 'Admin rights alone must not include other authors');
+  await page.check('#include-others');
+  await waitForShadow(page, 'root.getElementById("delete-btn").disabled === true');
+  assert(await page.evaluate(() => window.__wipegram.ui.entries.length === 0), 'Changing author scope must clear the preview');
+  await page.click('#scan-btn');
+  await waitForShadow(page, 'root.getElementById("metric-found").textContent === "2" && !root.getElementById("delete-btn").disabled');
+  await page.click('#delete-btn');
+  await waitForShadow(page, '!root.getElementById("confirm-field").hidden && root.getElementById("confirm-delete").disabled');
+  assert((await page.textContent('#modal-title')).startsWith('Admin:'), 'Admin confirmation must identify broad scope');
+  if (process.env.WIPEGRAM_UI_SCREENSHOT !== '0') {
+    await page.locator('.wg-modal-card').screenshot({ path: path.join(os.tmpdir(), 'wipegram-admin-confirmation.png') });
+  }
+  await page.keyboard.type('DELETE');
+  await page.evaluate(() => { window.__peer.pFlags.creator = false; });
+  await page.click('#confirm-delete');
+  await waitForShadow(page, 'root.getElementById("delete-btn").disabled && !root.getElementById("include-others").checked');
+  assert(await page.evaluate(() => window.__deleted.length === 0), 'Revoked admin permission must prevent deletion');
+  await page.evaluate(() => {
+    window.__peer.pFlags.creator = true;
+    window.__wipegram.ui.refreshTarget({ quiet: true });
+  });
+  await page.check('#include-others');
+  await page.click('#scan-btn');
+  await waitForShadow(page, 'root.getElementById("metric-found").textContent === "2" && !root.getElementById("delete-btn").disabled');
+  await page.click('#delete-btn');
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-input")');
+  await page.keyboard.type('DELETE');
+  await page.click('#confirm-delete');
+  await waitForShadow(page, 'root.getElementById("metric-deleted").textContent === "2"');
+  assert(await page.evaluate(() => window.__deleted.includes(1999)), 'Explicit authorized admin mode must allow other authors');
+  await page.click('#close-btn');
+  await page.click('#wipegram-launcher');
+  await waitForShadow(page, '!root.getElementById("panel").hidden && !root.getElementById("include-others").checked');
+  await page.evaluate(() => {
+    window.__peer = { _: 'user', id: 777, first_name: 'Test', last_name: 'Chat' };
+    window.appImManager.chat.peerId = 777;
+    window.__messages = Array.from({ length: 120 }, (_, index) => ({ _: 'message', id: 1000 + index, date: 1700000000 + index, pFlags: { out: true }, from_id: { _: 'peerUser', user_id: 999 }, message: `bulk message ${index}` }));
+    window.__deleted = [];
+    window.__wipegram.ui.refreshTarget({ quiet: true });
+  });
+  await page.click('#scan-btn');
+  await waitForShadow(page, 'root.getElementById("metric-found").textContent === "120" && !root.getElementById("delete-btn").disabled');
 
   // Changing accounts in the same chat must invalidate an accepted preview,
   // including the interval before the UI's polling timer catches the change.

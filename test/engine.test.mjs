@@ -615,3 +615,63 @@ test('delete refreshes pinned protection after preview and stops if refresh fail
   assert.equal(stopped.stats.error.code, 'PINNED_UNAVAILABLE');
   assert.deepEqual(deleted, [1]);
 });
+
+test('default checked count includes only unique own messages across search and history', async () => {
+  const own = msg(10);
+  const other = msg(9, { pFlags: {}, from_id: { _: 'peerUser', user_id: 7 } });
+  const { engine } = makeEngine({
+    searchPage: async ({ offsetId }) => offsetId ? emptyPage() : page([own]),
+    historyPage: async ({ offsetId }) => offsetId ? emptyPage() : page([own, other], 1000)
+  });
+  const result = await engine.scan({ target, filters: makeFilters() });
+  assert.equal(result.stats.scanned, 1);
+  assert.equal(result.stats.inspected, 3);
+  assert.equal(result.stats.totalFound, 1);
+  assert.deepEqual(result.entries.map(message => message.id), [10]);
+});
+
+test('admin scope requires an explicit target and filter agreement before reads or deletes', async () => {
+  const { engine } = makeEngine({
+    historyPage: async () => { throw new Error('Must not read'); },
+    deleteBatch: async () => { throw new Error('Must not delete'); }
+  });
+  for (const scope of [target, { ...target, includeOthers: true, canDeleteOthers: false }]) {
+    await assert.rejects(engine.scan({ target: scope, filters: { ...makeFilters(), includeOthers: true } }), { code: 'MODERATION_FORBIDDEN' });
+    await assert.rejects(engine.delete({ target: scope, filters: { includeOthers: true }, entries: [msg(1)] }), { code: 'MODERATION_FORBIDDEN' });
+  }
+  await assert.rejects(engine.delete({ target: { ...target, includeOthers: true, canDeleteOthers: true }, entries: [msg(1)] }), { code: 'MODERATION_FORBIDDEN' });
+  await assert.rejects(engine.delete({ target: { ...target, includeOthers: true, canDeleteOthers: true }, filters: { includeOthers: 'true' }, entries: [msg(1)] }), { code: 'MODERATION_FORBIDDEN' });
+});
+
+test('explicit admin mode includes others, still excludes pins and preserves batch deletion rules', async () => {
+  const scope = { ...target, includeOthers: true, canDeleteOthers: true };
+  const foreign = msg(9, { from_id: { _: 'peerUser', user_id: 7 } });
+  const deleted = [];
+  const { engine } = makeEngine({
+    getPinnedIds: async () => new Set([8]),
+    searchPage: async () => { throw new Error('Admin scan must use history'); },
+    historyPage: async ({ offsetId }) => offsetId ? emptyPage() : page([msg(10), foreign, msg(8)]),
+    deleteBatch: async ({ ids }) => deleted.push(...ids)
+  });
+  const filters = normalizeFilters({ includeOthers: true, skipPinned: true }, scope);
+  const result = await engine.scan({ target: scope, filters });
+  assert.deepEqual(result.entries.map(message => message.id), [10, 9]);
+  assert.equal(result.stats.scanned, 3);
+  const deletion = await engine.delete({ target: scope, filters, entries: result.entries });
+  assert.equal(deletion.stats.deleted, 2);
+  assert.deepEqual(deleted, [10, 9]);
+});
+
+test('ownership is rechecked before each delete retry after preview', async () => {
+  const candidate = msg(10);
+  let requests = 0;
+  const { engine } = makeEngine({ deleteBatch: async () => {
+    requests++;
+    candidate.from_id = { _: 'peerUser', user_id: 7 };
+    throw { type: 'NETWORK_ERROR' };
+  } });
+  const result = await engine.delete({ target, entries: [candidate] });
+  assert.equal(requests, 1);
+  assert.equal(result.stats.stopped, true);
+  assert.equal(result.stats.error.code, 'INVALID_CANDIDATE');
+});

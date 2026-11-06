@@ -43,6 +43,7 @@ export function parseFloodWait(error) {
 }
 
 const FATAL_TYPES = new Set([
+  'MODERATION_FORBIDDEN',
   'ACCOUNT_CHANGED',
   'SESSION_REVOKED',
   'AUTH_KEY_UNREGISTERED',
@@ -113,7 +114,7 @@ const MESSAGES = {
   NO_CHAT: 'Open a chat first, then press Scan messages.',
   PEER_NOT_LOADED: 'Telegram has not loaded this chat yet. Close and reopen it, then try again.',
   UNSUPPORTED_CHAT: 'This kind of chat is not supported. Open a normal chat, group or Saved Messages.',
-  BROADCAST_CHANNEL: 'Broadcast posts are published as the channel, so personal authorship cannot be verified. Open its discussion group or a private chat instead.',
+  BROADCAST_CHANNEL: 'Broadcast posts use the channel identity. Use its discussion group for your own comments, or explicitly enable Admin mode if you have deletion rights.',
   INVALID_FILTER: 'Check the filters and try again.',
   FLOOD_TOO_LONG: 'Telegram asked Wipegram to pause for too long. Stop here and try again later.',
   CHANNEL_PRIVATE: 'You are no longer a member of this chat, or Telegram no longer lets this session read it.',

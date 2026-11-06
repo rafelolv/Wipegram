@@ -1,6 +1,7 @@
 import { chromium } from 'playwright-core';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+import { readFile, writeFile } from 'node:fs/promises';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const browser = await chromium.launch({
@@ -23,3 +24,11 @@ try {
 } finally {
   await browser.close();
 }
+
+// Keep the README mark identical to the canonical icon, without remote assets.
+const icon = await readFile(path.join(root, 'images/icon.svg'), 'utf8');
+const artwork = icon.replace(/^[\s\S]*?<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '').replace(/<title\b[^>]*>[\s\S]*?<\/title>/, '').trim();
+const bannerFile = path.join(root, 'docs/readme-banner.svg');
+const banner = await readFile(bannerFile, 'utf8');
+await writeFile(bannerFile, banner.replace(/<!-- BRAND_MARK_START -->[\s\S]*?<!-- BRAND_MARK_END -->/, `<!-- BRAND_MARK_START -->\n  <svg x="56" y="64" width="104" height="104" viewBox="0 0 128 128" aria-hidden="true">${artwork}</svg>\n  <!-- BRAND_MARK_END -->`));
+console.log('Updated docs/readme-banner.svg from images/icon.svg');

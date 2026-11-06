@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/rafelolv/Wipegram/releases/latest"><img src="https://img.shields.io/github/v/release/rafelolv/Wipegram?style=flat-square&amp;color=24bfa5&amp;label=release" alt="Latest release"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/latest"><img src="https://img.shields.io/github/v/release/rafelolv/Wipegram?style=flat-square&amp;color=4ADE80&amp;label=release" alt="Latest release"></a>
   <a href="https://github.com/rafelolv/Wipegram/actions/workflows/ci.yml"><img src="https://github.com/rafelolv/Wipegram/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Proprietary-64748b?style=flat-square" alt="Proprietary license"></a>
-  <a href="https://web.telegram.org/k/"><img src="https://img.shields.io/badge/Telegram-Web_K-26a5e4?style=flat-square&amp;logo=telegram&amp;logoColor=white" alt="For Telegram Web K"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Proprietary-2D332F?style=flat-square" alt="Proprietary license"></a>
+  <a href="https://web.telegram.org/k/"><img src="https://img.shields.io/badge/Telegram-Web_K-86B99A?style=flat-square&amp;logo=telegram&amp;logoColor=white" alt="For Telegram Web K"></a>
 </p>
 
 <p align="center">
@@ -16,13 +16,13 @@
 </p>
 
 <p align="center">
-  <a href="https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js"><img src="https://img.shields.io/badge/Install-Userscript-24bfa5?style=for-the-badge&amp;logo=tampermonkey&amp;logoColor=white" alt="Install Wipegram userscript — recommended"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.2.2/wipegram-chromium-0.2.2.zip"><img src="https://img.shields.io/badge/Download-Chromium-38bdf8?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.2.2"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.2.2/wipegram-firefox-0.2.2.zip"><img src="https://img.shields.io/badge/Download-Firefox-f59e6b?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.2.2"></a>
+  <a href="https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js"><img src="https://img.shields.io/badge/Install-Userscript-4ADE80?style=for-the-badge&amp;logo=tampermonkey&amp;logoColor=white" alt="Install Wipegram userscript — recommended"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.0/wipegram-chromium-0.3.0.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.3.0"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.0/wipegram-firefox-0.3.0.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.3.0"></a>
 </p>
 
 <p align="center">
-  <sub>Userscript recommended · Extension downloads: v0.2.2 · Local, unsigned packages</sub>
+  <sub>Userscript recommended · Extension downloads: v0.3.0 · Local, unsigned packages</sub>
 </p>
 
 <p align="center">
@@ -44,7 +44,7 @@ Wipegram focuses on **your own messages in groups, supergroups, forum topics and
 | Where | When Wipegram helps |
 | --- | --- |
 | **Groups, supergroups and forum topics** | Clean up your own message history while keeping other people's messages intact. |
-| **Channel discussions** | Remove comments you posted as yourself in the channel's linked discussion group. Broadcast posts use the channel identity and remain unsupported. |
+| **Channel discussions** | Remove comments you posted as yourself in the channel's linked discussion group. Broadcast posts require explicit admin mode and verified deletion permission. |
 | **Private conversations** | Delete a filtered selection of your own messages while keeping the rest of the conversation. |
 
 For a complete cleanup of a private conversation, Telegram already lets you **clear the entire history for both people**. Choose the option to delete for both sides in Telegram; you do not need Wipegram for that. See [Telegram's deletion policy](https://telegram.org/privacy#10-deleting-data).
@@ -67,7 +67,7 @@ For a complete cleanup of a private conversation, Telegram already lets you **cl
 1. **Get a userscript manager:** [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/).
 2. **[Install Wipegram](https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js)** and accept the installation in your manager. If the link opens plain text, use your manager's new-script editor and paste the file there.
 3. **[Open Telegram Web K](https://web.telegram.org/k/)**, log in and open a chat. Reload the page if Telegram was already open.
-4. **Click W** in the chat toolbar, or press <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd>. A floating W appears when the toolbar is unavailable.
+4. **Click W** in the chat toolbar, or press <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd>. A second floating Wipegram button stays available above the message composer.
 
 > [!TIP]
 > **Already using the extension ZIP?** Follow the [browser extension guide](docs/EXTENSION.md) for installation and manual updates. Firefox ZIPs are unsigned; permanent installation in standard Firefox requires Mozilla signing.
@@ -91,7 +91,7 @@ Install the generated `wipegram.user.js`, or load a package from `dist/chromium`
 
 | ☀️ Light mode | 🌙 Dark mode |
 | :---: | :---: |
-| <img src="docs/preview-light.png" alt="Wipegram light theme with chat and filter controls" width="400"> | <img src="docs/preview-dark.png" alt="Wipegram dark theme showing scan results" width="400"> |
+| <img src="docs/preview-light.png" alt="Wipegram light theme with chat and filter controls" width="400"> | <img src="docs/preview-dark.png" alt="Wipegram charcoal and green workspace ready to scan" width="400"> |
 | Pick your target and filters. | Review your matches before deleting. |
 
 ## Features
@@ -129,12 +129,18 @@ Install the generated `wipegram.user.js`, or load a package from `dist/chromium`
 | Forum (all topics) | ✅ |
 | Saved Messages (main view) | ✅ |
 | Saved sub-conversations | ❌ Blocked |
-| Broadcast channels | ❌ Blocked: personal authorship of channel posts cannot be verified |
+| Broadcast channels | Admin mode only: verified owner or delete-messages rights required |
 | Direct messages to a channel (monoforum) | ❌ Blocked |
 | Telegram Web A | ❌ Notice only |
 | Secret chats | Not available in Web K |
 
-Broadcast posts appear under the channel identity, including posts published by an administrator. Wipegram does not infer personal authorship from that identity. Open the channel's linked discussion group to remove your personally authored comments. Saved sub-conversations are blocked because they require a different history scope. If a chat is not fully loaded yet, close and reopen it in Telegram, then try again.
+Broadcast posts appear under the channel identity, including posts published by an administrator. Wipegram does not infer personal authorship from that identity: own-message mode blocks these posts. Explicit admin mode can include them when deletion permission is verified. Saved sub-conversations remain blocked because they require a different history scope. If a chat is not fully loaded yet, close and reopen it in Telegram, then try again.
+
+### Message scope
+
+**Your messages only is the default**, even if you are an administrator. The **Yours checked** counter counts unique own messages, and the preview contains only your matches. Auto may read shared history pages to recover messages missing from sender search; other authors are excluded from normal-mode candidates and counts.
+
+To moderate a group or channel, expand **Admin mode** and explicitly enable **Include everyone's messages**. Wipegram requires verified owner/delete-messages permission, clears the previous preview and requires a new scan. Every admin deletion requires typing `DELETE` and explicit confirmation. The option is not saved and resets when the panel closes or the account/chat changes. Permission is checked before every admin request; losing it stops the operation.
 
 ## Filters
 
@@ -173,12 +179,12 @@ No tokens or session strings are copied out of Telegram. The script runs in the 
 
 Wipegram is deliberately conservative:
 
-- **Only your own messages** are candidates. Messages from other people are never shown for deletion.
+- **Only your own messages by default.** Other authors require explicit admin mode and verified group/channel deletion rights.
 - **Delete for everyone where Telegram permits it.** For private chats and groups, `revoke: true` removes the message from both sides when Telegram allows it. For channels/supergroups, `channels.deleteMessages` revokes the messages.
 - **Pinned messages are protected** by default. Pinned IDs are reloaded before deletion, and message-level pinned flags are also checked. Incomplete pagination or lookup failure stops the operation. Unchecking the option is the explicit opt-out. Pins added after the final check can still race with deletion.
 - **Chat/account changes abort the operation.** Account identity is part of every preview key and is verified before every API call. A request already submitted can still finish after Stop or a chat change.
 - **Chat previews and unsupported chats are blocked.** A chat preview is not the real conversation, and Saved sub-conversations are not supported yet.
-- **More than 100 messages require typing `DELETE`.** Smaller batches only need the normal confirmation dialog.
+- **More than 100 messages require typing `DELETE`.** Admin mode requires it for every deletion, regardless of size.
 - **Long flood waits stop the operation.** Wipegram will not silently park your tab for more than 15 minutes.
 - **No undo.** Telegram does not provide an undo for these deletions.
 
@@ -244,7 +250,7 @@ The report can contain chat names and message previews. Treat it as private data
 
 | Problem | What to try |
 | --- | --- |
-| No **W** button | Confirm the userscript is enabled, that you are on `/k/` (not `/a/`), then reload the page. A floating W appears when the topbar has no `.chat-utils`. |
+| No **W** button | Confirm the userscript is enabled, that you are on `/k/` (not `/a/`), then reload the page. A second floating Wipegram button is available while a chat is open. |
 | “Chat unavailable” / “Telegram has not loaded this chat yet” | Close and reopen the chat, wait for messages to load, then press the refresh button in the panel. |
 | “No messages matched these filters” | Broaden the date range, clear text/regex, choose a different message type, or switch to **Full history walk**. |
 | “Pinned messages could not be loaded” | Leave the option on and reload the chat to try again. Only uncheck **Skip pinned messages** if you accept the risk. |
@@ -292,7 +298,7 @@ Set `WIPEGRAM_UI_SCREENSHOT=0` to skip screenshots. The test writes them to `$TM
 | `src/ui.js` | Panel, confirmation flow, progress, report |
 | `src/panel.html`, `src/notice.html`, `src/dom.js` | Trusted templates compiled into DOM descriptors; no runtime HTML parsing |
 | `src/styles.css` | Panel styling, themes, responsive layout |
-| `src/launcher.js` | Topbar button, floating fallback, shortcut |
+| `src/launcher.js` | Topbar button, second floating button, shortcut |
 | `src/unsupported.js` | Web A notice |
 | `src/extension/` | Read-only extension popup |
 | `build/extensions.mjs` | Manifest V3 packages, deterministic ZIPs and SHA-256 checksums |

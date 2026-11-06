@@ -186,17 +186,20 @@ export class WipegramEngine {
   async scan({ target, filters, signal }) {
     if (!target) throw new WipegramError('NO_CHAT', 'Open a chat first, then press Scan messages.');
     if (!filters) throw new WipegramError('INVALID_FILTER', 'No filters were provided.');
+    this.validateScope(target, filters);
 
     const startedAt = Date.now();
     const floodCounter = { count: 0, seconds: 0 };
     const matched = new Map();
     const limit = filters.maxMessages || 0;
     const explicitMode = filters.scanMethod || 'auto';
-    let mode = explicitMode === 'history' ? 'history' : 'search';
-    let allowFallback = explicitMode === 'auto';
+    let mode = explicitMode === 'history' || filters.includeOthers ? 'history' : 'search';
+    let allowFallback = explicitMode === 'auto' && !filters.includeOthers;
     let offsetId = 0;
     let pages = 0;
     let scanned = 0;
+    let inspected = 0;
+    const checkedIds = new Set();
     let totalFound = 0;
     const seenCursors = new Set();
     const switchToHistory = (type, details = {}) => {
@@ -273,8 +276,8 @@ export class WipegramEngine {
           throw new WipegramError('INCOMPLETE_RESPONSE', 'Telegram did not return a complete message page. Scan again before deleting.');
         }
         const messages = page.messages || [];
-        if (page.count) totalFound = Math.max(totalFound, page.count);
-        scanned += messages.length;
+        if (page.count && (mode === 'search' || filters.includeOthers)) totalFound = Math.max(totalFound, page.count);
+        inspected += page.receivedCount ?? messages.length;
 
         let oldestMs = 0;
         for (const message of messages) {
@@ -282,6 +285,11 @@ export class WipegramEngine {
           if (message.date) {
             const ms = message.date * 1000;
             if (!oldestMs || ms < oldestMs) oldestMs = ms;
+          }
+
+          if (message._ === 'message' && (filters.includeOthers || isOwnMessage(message, target.selfId))) {
+            checkedIds.add(message.id);
+            scanned = checkedIds.size;
           }
 
           if (matched.has(message.id)) continue;
@@ -299,6 +307,7 @@ export class WipegramEngine {
           mode,
           pages,
           scanned,
+          inspected,
           matched: matched.size,
           total: totalFound,
           oldestDate: oldestMs || null
@@ -339,6 +348,7 @@ export class WipegramEngine {
       mode,
       pages,
       scanned,
+      inspected,
       matched: entries.length,
       totalFound,
       floodWaits: floodCounter.count,
@@ -360,11 +370,25 @@ export class WipegramEngine {
    * failures, so the UI can always show what happened. Abort and Telegram flood
    * limits are reported in `stats.stopped` / `stats.error`.
    */
+  validateScope(target, filters) {
+    if ((filters.includeOthers !== undefined && typeof filters.includeOthers !== 'boolean')
+      || (target.includeOthers !== undefined && typeof target.includeOthers !== 'boolean')
+      || (filters.includeOthers === true) !== (target.includeOthers === true)
+      || (filters.includeOthers === true && target.canDeleteOthers !== true)) {
+      throw new WipegramError('MODERATION_FORBIDDEN', 'Message scope changed or admin permission is unavailable. Scan again.', { fatal: true });
+    }
+  }
+
+  validateCandidates(target, filters, entries) {
+    this.validateScope(target, filters);
+    if (entries.some(message => message?._ !== 'message' || (!filters.includeOthers && !isOwnMessage(message, target.selfId)))) {
+      throw new WipegramError('INVALID_CANDIDATE', 'A deletion candidate is outside the confirmed message scope. Scan again.', { fatal: true });
+    }
+  }
+
   async delete({ target, entries, filters = {}, signal }) {
     if (!target) throw new WipegramError('NO_CHAT', 'Open a chat and scan before deleting.');
-    if ((entries || []).some(message => message?._ !== 'message' || !isOwnMessage(message, target.selfId))) {
-      throw new WipegramError('INVALID_CANDIDATE', 'A deletion candidate is not one of your own messages. Scan again.');
-    }
+    this.validateCandidates(target, filters, entries || []);
     const startedAt = Date.now();
     const floodCounter = { count: 0, seconds: 0 };
     const unique = [...new Map((entries || [])
@@ -432,10 +456,10 @@ export class WipegramEngine {
 
         let batchFailed = false;
         try {
-          await this.retry(() => this.api.deleteBatch({
-            target,
-            ids: batch.map(message => message.id)
-          }), {
+          await this.retry(() => {
+            this.validateCandidates(target, filters, batch);
+            return this.api.deleteBatch({ target, ids: batch.map(message => message.id) });
+          }, {
             signal,
             label: `delete batch (${batch.length} messages)`,
             counter: floodCounter
@@ -461,10 +485,10 @@ export class WipegramEngine {
             this.checkAbort(signal);
 
             try {
-              await this.retry(() => this.api.deleteBatch({
-                target,
-                ids: [message.id]
-              }), {
+              await this.retry(() => {
+                this.validateCandidates(target, filters, [message]);
+                return this.api.deleteBatch({ target, ids: [message.id] });
+              }, {
                 signal,
                 label: `delete message ${message.id}`,
                 attempts: 1,

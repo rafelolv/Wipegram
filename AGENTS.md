@@ -3,7 +3,7 @@
 Maintained by rafelolv. Follow [docs/MAINTENANCE.md](docs/MAINTENANCE.md).
 
 - Creator display name is `Rafael (rafaelolv)`; official repository URLs remain `rafelolv/Wipegram`. Preserve attribution and the proprietary terms from 0.2.2 onward. Earlier MIT grants and third-party rights remain unchanged; see [docs/LICENSING.md](docs/LICENSING.md).
-- `images/icon.svg` is the canonical distribution icon. Generate its PNGs with `npm run build:icons`, then rebuild packages. Userscript metadata embeds the local 64 px PNG; browser manifests use the local 48/128 px PNGs. Do not add remote icon requests to the runtime.
+- `images/icon.svg` is the canonical distribution icon. Generate its PNGs and the README banner mark with `npm run build:icons`, then rebuild packages. Userscript metadata embeds the local 64 px PNG; browser manifests use the local 48/128 px PNGs. Do not add remote icon requests to the runtime.
 
 ## Development and behavior
 
@@ -17,7 +17,9 @@ Maintained by rafelolv. Follow [docs/MAINTENANCE.md](docs/MAINTENANCE.md).
 
 ## Deletion safeguards
 
-- Operate only on verifiably own messages in supported Telegram Web K chats. Preserve sender checks, account identity, target/topic validation and unsupported-chat blocks. Telegram Web A displays only a notice.
+- Default to verifiably own messages in Telegram Web K. Admin mode is an explicit, non-persisted opt-in for a verified group/channel owner or an administrator with delete-messages permission. Reset it on close, account/chat changes or verification failure. Keep scope in preview keys and reports; changing it invalidates the preview. Preserve account/topic validation and Web A/unsupported-chat blocks.
+- Include other authors or broadcast-channel posts only in verified admin mode. Recheck permission, account and target before every admin API request, including retries. A server permission denial stops the run. Require typed DELETE for every admin deletion, even one message. Preserve own-author guards in normal mode; never infer opt-in from admin rights alone.
+- Count unique own messages as checked in normal mode, separately from the raw history rows inspected for recovery. History reads can include other authors because Telegram getHistory has no sender filter; those rows must never become own-mode candidates.
 - Preserve preview invalidation on target/account/filter changes, explicit confirmation, typed `DELETE` above 100 messages, cancellation and Stop. Dismissing confirmation must never authorize deletion. A submitted request may still finish after Stop.
 - Protect pinned messages by default. Incomplete or failed pinned pagination must stop the operation; refresh protection before deletion. Preserve ownership checks immediately before deletion.
 - Reject invalid regex and reversed/equal date bounds before API access. Preserve pagination guards, batches capped at 100, flood-wait caps, backoff and per-message fallback after rejected batches. Do not borrow Discord or Bot API limits for this MTProto client.
@@ -30,7 +32,8 @@ Maintained by rafelolv. Follow [docs/MAINTENANCE.md](docs/MAINTENANCE.md).
 - Tests use simulated Telegram data. Report actual browsers and unperformed checks separately; automated success does not prove live Telegram compatibility or successful real deletion. Never delete real messages without specific authorization.
 - The userscript is the primary distribution. Chromium and Firefox packages must ship the generated production `wipegram.user.js` byte for byte, with the same version and engine. Keep the popup read-only; no background deletion, extra API permissions or installation actions.
 - `dist/` is ignored, reproducible output. Rebuild both packages for shared runtime or extension changes. Preserve scoped Telegram matches and duplicate-injection protection. Separate tabs currently run independently; do not claim an origin-wide lock exists.
-- Document unsigned local packages, manual updates, Firefox signing and store review separately. Chromium tests do not establish Firefox runtime behavior. Store submission requires explicit authorization; Wipecord's AMO authorization and credentials do not apply here.
+- Document unsigned local packages, manual updates, Firefox signing and store review separately. Chromium tests do not establish Firefox runtime behavior. Requested future Wipegram releases authorize Firefox submission through the dependent Release/Publish Firefox workflow; preparation alone does not submit. Other stores still require explicit authorization.
+- Follow [Firefox publication](docs/FIREFOX-PUBLISHING.md). Use only repository secrets `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`, preserve the Firefox GUID and current tagged license, verify released files and provide tracked reviewer source. Ordinary pushes, pull requests and local builds must not publish. Inspect AMO before retrying ambiguous failures; never resubmit an existing version to repair metadata.
 
 ## Versioning, Git and releases
 

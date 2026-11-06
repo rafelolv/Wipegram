@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title">
   <title id="title">Wipegram</title>
-  <rect width="128" height="128" rx="28" fill="#3390ec"/>
-  <path d="m23 37 17 55h13l11-35 11 35h13l17-55H90l-9 34-10-34H57L47 71l-9-34Z" fill="#fff"/>
+  <rect width="128" height="128" rx="28" fill="#101211"/>
+  <path d="m14 39 15 51h12l10-30 9 30h12l16-51H74l-9 30-9-30H44L35 69l-7-30Z" fill="#e8ebe9"/>
+  <path d="M103 39h15L97 90H82Z" fill="#4ade80"/>
 </svg>

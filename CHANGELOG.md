@@ -4,6 +4,23 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-06
+
+### Changed
+
+- Redesign the workspace with a charcoal and green palette, separate filters and activity, and visible creator, version and license links.
+- Add a second floating launcher alongside the chat toolbar button; refresh the README artwork and previews.
+
+### Added
+
+- Prepare automatic Firefox AMO submission after GitHub releases, with manual dispatch for existing tags, proprietary license metadata, reviewer source uploads and duplicate/version checks and listing character-limit validation.
+- Add an explicit, non-persisted admin mode for everyone’s messages in groups/channels with verified deletion rights, scoped previews and typed confirmation for every admin deletion.
+
+### Fixed
+
+- Count only unique own messages as checked in normal mode, excluding other authors and duplicate reads during search/history verification.
+- Recheck candidate ownership and admin permission before deletion retries; stop when the target, account, scope or admin rights change.
+
 ## [0.2.2] - 2026-11-06
 
 ### Changed
