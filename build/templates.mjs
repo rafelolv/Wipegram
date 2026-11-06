@@ -1,7 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { parseFragment } from 'parse5';
 import { MESSAGE_TYPES } from '../src/filters.js';
+
+const ROOT = fileURLToPath(new URL('../', import.meta.url));
 
 function describe(node) {
   if (node.nodeName === '#text') return node.value;
@@ -20,15 +23,16 @@ export function templatesPlugin(version) {
     name: 'static-dom-templates',
     setup(build) {
       build.onResolve({ filter: /\.html\?dom$/ }, args => ({
-        path: path.resolve(args.resolveDir, args.path.slice(0, -4)),
+        path: path.relative(ROOT, path.resolve(args.resolveDir, args.path.slice(0, -4))).split(path.sep).join('/'),
         namespace: 'dom-template'
       }));
       build.onLoad({ filter: /.*/, namespace: 'dom-template' }, async ({ path: filename }) => {
-        const source = (await readFile(filename, 'utf8'))
+        const absoluteFilename = path.resolve(ROOT, filename);
+        const source = (await readFile(absoluteFilename, 'utf8'))
           .replaceAll('__WIPEGRAM_VERSION__', version)
           .replaceAll('__WIPEGRAM_TYPE_OPTIONS__', MESSAGE_TYPES.map(type => `<option value="${type.value}">${type.label}</option>`).join(''));
         const nodes = parseFragment(source).childNodes.map(describe).filter(node => node !== null);
-        return { contents: `export default ${JSON.stringify(nodes)};`, loader: 'js', watchFiles: [filename, path.resolve('src/filters.js')] };
+        return { contents: `export default ${JSON.stringify(nodes)};`, loader: 'js', watchFiles: [absoluteFilename, path.join(ROOT, 'src/filters.js')] };
       });
     }
   };

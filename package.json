@@ -1,6 +1,6 @@
 {
   "name": "wipegram",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Bulk-delete your own messages in Telegram Web K chats",
   "type": "module",
   "main": "wipegram.user.js",

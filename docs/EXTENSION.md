@@ -9,12 +9,12 @@ npm ci
 npm run check
 ```
 
-Outputs for version 0.2.0:
+Outputs for version 0.2.1:
 
 - `wipegram.user.js`: install in Tampermonkey or Violentmonkey.
 - `dist/chromium/`: load as an unpacked Chromium extension.
 - `dist/firefox/`: load as a temporary Firefox extension.
-- `dist/wipegram-chromium-0.2.0.zip` and `dist/wipegram-firefox-0.2.0.zip`: unsigned local packages.
+- `dist/wipegram-chromium-0.2.1.zip` and `dist/wipegram-firefox-0.2.1.zip`: unsigned local packages.
 - `dist/SHA256SUMS`: checksums of both ZIPs.
 
 ZIPs have sorted entries and fixed timestamps. Rebuilding unchanged sources with the same toolchain produces identical archives. Outputs in `dist/` are ignored by Git; edit sources and regenerate.

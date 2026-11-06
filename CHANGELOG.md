@@ -4,6 +4,16 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-06
+
+### Fixed
+
+- Generate identical userscripts across checkout locations by keeping template identifiers relative to the repository, allowing CI artifact verification and release publication.
+
+### Validation
+
+- Add a regression that builds in two distinct checkout directories and compares the generated userscripts byte for byte.
+
 ## [0.2.0] - 2026-11-06
 
 ### Added
