@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { WipegramEngine, DELETE_BATCH_SIZE, MAX_FLOOD_WAIT_SECONDS } from '../src/engine.js';
+import { WipegramEngine, DELETE_BATCH_SIZE, MAX_FLOOD_WAIT_SECONDS, MIN_SCAN_DELAY_MS } from '../src/engine.js';
 import { normalizeFilters } from '../src/filters.js';
 import { isAbortError } from '../src/errors.js';
 import { TelegramApi, normalizeMessagesResult } from '../src/telegram.js';
@@ -175,8 +175,9 @@ test('auto verifies an empty sender search against history and preserves ownersh
   const { engine, events } = makeEngine(api);
   const result = await engine.scan({ target, filters: makeFilters({ scanMethod: 'auto', skipPinned: true }) });
   assert.deepEqual(result.entries.map(message => message.id), [305]);
-  assert.deepEqual(calls, [0, 302]);
-  assert.equal(result.mode, 'history');
+  assert.deepEqual(calls, [0]);
+  assert.equal(result.mode, 'search');
+  assert.equal(result.stats.recentHistoryPages, 1);
   assert.equal(events.filter(event => event.type === 'scan:verify').length, 1);
 });
 
@@ -231,7 +232,7 @@ for (const isChannel of [false, true]) {
     messages.push(msg(200));
     const fresh = await createEngine().scan({ target: scanTarget, filters });
     assert.deepEqual(fresh.entries.map(message => message.id), [200]);
-    assert.deepEqual(scanOffsets, [0, 100, 0, 200]);
+    assert.deepEqual(scanOffsets, [0, 0]);
   });
 }
 
@@ -674,4 +675,89 @@ test('ownership is rechecked before each delete retry after preview', async () =
   assert.equal(requests, 1);
   assert.equal(result.stats.stopped, true);
   assert.equal(result.stats.error.code, 'INVALID_CANDIDATE');
+});
+
+for (const indexed of [false, true]) {
+  test(`Auto bounds recovery to one page in huge groups (indexed=${indexed})`, async () => {
+    let historyCalls = 0;
+    const foreign = Array.from({ length: 100 }, (_, i) => msg(1000 - i, { pFlags: {}, from_id: { _: 'peerUser', user_id: 7 } }));
+    const { engine } = makeEngine({
+      searchPage: async ({ offsetId }) => indexed && !offsetId ? page([msg(10)]) : emptyPage(),
+      historyPage: async () => {
+        assert.equal(++historyCalls, 1, 'Auto must not walk the entire shared history');
+        return page(foreign, 1_000_000);
+      }
+    });
+    const result = await engine.scan({ target, filters: makeFilters() });
+    assert.equal(historyCalls, 1);
+    assert.deepEqual(result.entries.map(m => m.id), indexed ? [10] : []);
+    assert.equal(result.stats.scanned, indexed ? 1 : 0);
+    assert.equal(result.stats.recentHistoryPages, 1);
+    assert.equal(result.mode, 'search');
+  });
+}
+
+test('scan pacing applies a minimum pause and preserves longer configured pauses', async () => {
+  for (const delay of [0, 1200]) {
+    const sleeps = [];
+    const { engine } = makeEngine({ searchPage: async ({ offsetId }) => offsetId ? emptyPage() : page([msg(10)]) }, { sleeper: async ms => sleeps.push(ms) });
+    await engine.scan({ target, filters: makeFilters({ scanMethod: 'search', searchDelay: delay }) });
+    assert.deepEqual(sleeps, [Math.max(MIN_SCAN_DELAY_MS, delay)]);
+  }
+});
+
+test('Stop during flood wait preserves cooldown for the next sender search or pins request', async () => {
+  let time = 1000;
+  const controller = new AbortController();
+  const sleeps = [];
+  const { engine } = makeEngine({}, { now: () => time, sleeper: async (ms, signal) => {
+    sleeps.push(ms);
+    if (signal) { controller.abort(); throw new DOMException('Stopped', 'AbortError'); }
+    time += ms;
+  } });
+  await assert.rejects(engine.retry(async () => { throw { type: 'FLOOD_WAIT_10' }; }, { signal: controller.signal, label: 'search messages' }), isAbortError);
+  time += 2000;
+  let called = false;
+  await engine.retry(async () => { called = true; assert.equal(time, 11000); }, { label: 'load pinned messages' });
+  assert(called);
+  assert.deepEqual(sleeps, [10000, 8000]);
+});
+
+test('persistent search timeouts exhaust bounded retries without starting a history walk', async () => {
+  let requests = 0;
+  const pauses = [];
+  const { engine } = makeEngine({
+    searchPage: async () => { requests++; throw { code: 500, type: 'TIMEOUT' }; },
+    historyPage: async () => { throw new Error('Must not silently start a full history walk'); }
+  }, { sleeper: async ms => pauses.push(ms) });
+  await assert.rejects(engine.scan({ target, filters: makeFilters() }), error => error.code === 'TIMEOUT');
+  assert.equal(requests, 4);
+  assert.deepEqual(pauses, [1000, 2000, 4000]);
+});
+
+test('persistent batch timeouts stop instead of expanding into 100 individual requests', async () => {
+  const requests = [];
+  const { engine } = makeEngine({ deleteBatch: async ({ ids }) => {
+    requests.push([...ids]);
+    throw { code: 500, type: 'TIMEOUT' };
+  } });
+  const result = await engine.delete({ target, entries: Array.from({ length: 100 }, (_, i) => msg(i + 1)), filters: makeFilters() });
+  assert.equal(requests.length, 4);
+  assert(requests.every(ids => ids.length === 100));
+  assert.equal(result.stats.stopped, true);
+  assert.equal(result.stats.error.code, 'TIMEOUT');
+  assert.equal(result.stats.deleted, 0);
+});
+
+test('persistent individual timeout stops fallback before requesting the next message', async () => {
+  const requests = [];
+  const { engine } = makeEngine({ deleteBatch: async ({ ids }) => {
+    requests.push([...ids]);
+    if (ids.length > 1) throw { code: 400, type: 'MESSAGE_DELETE_FORBIDDEN' };
+    throw { code: 500, type: 'TIMEOUT' };
+  } });
+  const result = await engine.delete({ target, entries: [msg(2), msg(1)], filters: makeFilters() });
+  assert.deepEqual(requests, [[2, 1], [2], [2]]);
+  assert.equal(result.stats.stopped, true);
+  assert.equal(result.stats.error.code, 'TIMEOUT');
 });

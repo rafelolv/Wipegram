@@ -34,6 +34,9 @@ const MAX_TRANSIENT_RETRIES = 3;
 /** Hard stop for a runaway pagination loop. */
 const MAX_SCAN_PAGES = 50_000;
 
+/** Space scan pages without imposing a long delay on small cleanups. */
+export const MIN_SCAN_DELAY_MS = 350;
+
 function floodWaitError(seconds) {
   const minutes = Math.max(1, Math.ceil(seconds / 60));
   return new WipegramError(
@@ -73,6 +76,7 @@ export class WipegramEngine {
     sleeper = sleep,
     batchSize = DELETE_BATCH_SIZE,
     pageSize = PAGE_SIZE,
+    now = Date.now,
     retryDelay = 1_000
   } = {}) {
     if (!api) throw new Error('WipegramEngine requires an api adapter');
@@ -82,6 +86,8 @@ export class WipegramEngine {
     this.batchSize = Math.max(1, Math.min(DELETE_BATCH_SIZE, batchSize));
     this.pageSize = Math.max(1, Math.min(100, pageSize));
     this.retryDelay = Math.max(0, retryDelay);
+    this.now = now;
+    this.cooldowns = new Map();
   }
 
   emit(type, data = {}) {
@@ -98,11 +104,23 @@ export class WipegramEngine {
    * bubble up immediately.
    */
   async retry(fn, { signal, label = 'request', attempts = MAX_TRANSIENT_RETRIES, counter } = {}) {
+    // Pins and sender searches use the same MTProto method. Preserve server
+    // cooldowns across Stop/rescan so a fresh operation cannot retry too early.
+    const group = label === 'load pinned messages' || label === 'search messages' ? 'search' : label.startsWith('delete ') ? 'delete' : label;
     let transient = 0;
     let floods = 0;
 
     for (;;) {
       this.checkAbort(signal);
+      const remaining = (this.cooldowns.get(group) || 0) - this.now();
+      if (remaining > 0) {
+        if (remaining > MAX_FLOOD_WAIT_SECONDS * 1000) throw floodWaitError(Math.ceil(remaining / 1000));
+        if (counter) { counter.count += 1; counter.seconds += Math.ceil(remaining / 1000); }
+        this.emit('flood', { seconds: Math.ceil(remaining / 1000), until: this.cooldowns.get(group), label });
+        await this.sleeper(remaining, signal);
+        this.checkAbort(signal);
+        this.cooldowns.delete(group);
+      }
 
       try {
         return await fn();
@@ -114,6 +132,7 @@ export class WipegramEngine {
 
         const wait = parseFloodWait(error);
         if (wait > 0) {
+          this.cooldowns.set(group, this.now() + wait * 1000);
           if (wait > MAX_FLOOD_WAIT_SECONDS) throw floodWaitError(wait);
           if (++floods > MAX_FLOOD_RETRIES) {
             throw new WipegramError(
@@ -135,6 +154,8 @@ export class WipegramEngine {
           });
 
           await this.sleeper(wait * 1000, signal);
+          this.checkAbort(signal);
+          this.cooldowns.delete(group);
           continue;
         }
 
@@ -180,8 +201,8 @@ export class WipegramEngine {
    * Find the user's own messages in the current target.
    *
    * Search mode asks Telegram for sender=me with the chosen server-side media
-   * filter. Auto mode also verifies history from its newest page because an
-   * empty or partial search result is not proof that no messages remain.
+   * filter. Auto also checks one recent history page for unindexed messages,
+   * never the entire shared history after a successful sender search.
    */
   async scan({ target, filters, signal }) {
     if (!target) throw new WipegramError('NO_CHAT', 'Open a chat first, then press Scan messages.');
@@ -199,11 +220,14 @@ export class WipegramEngine {
     let pages = 0;
     let scanned = 0;
     let inspected = 0;
+    let verifyingRecent = false;
+    let recentHistoryPages = 0;
     const checkedIds = new Set();
     let totalFound = 0;
     const seenCursors = new Set();
     const switchToHistory = (type, details = {}) => {
       allowFallback = false;
+      verifyingRecent = type === 'scan:verify';
       mode = 'history';
       offsetId = 0;
       seenCursors.clear();
@@ -265,6 +289,7 @@ export class WipegramEngine {
 
         this.checkAbort(signal);
         pages += 1;
+        if (verifyingRecent) recentHistoryPages += 1;
         if (page.notModified || page.incomplete) {
           if (allowFallback) {
             switchToHistory('scan:fallback', {
@@ -314,13 +339,16 @@ export class WipegramEngine {
         });
 
         if (limit && matched.size >= limit) break;
+        // A recent-history probe is intentionally bounded even in huge groups.
+        if (verifyingRecent) break;
         const ids = messages.map(message => message?.id).filter(id => Number.isInteger(id) && id > 0);
         const nextOffset = page.nextOffsetId ?? (ids.length ? Math.min(...ids) : 0);
         const reachedMinDate = filters.minDate && oldestMs && oldestMs < filters.minDate;
         const stalled = nextOffset && ((offsetId && nextOffset >= offsetId) || seenCursors.has(nextOffset));
         if (!nextOffset || reachedMinDate || stalled) {
           if (allowFallback) {
-            switchToHistory('scan:verify', { reason: 'Checking chat history for messages missing from sender search.' });
+            switchToHistory('scan:verify', { reason: 'Checking one recent history page for messages missing from sender search. Use Full history walk for older missing messages.' });
+            await this.sleeper(Math.max(MIN_SCAN_DELAY_MS, filters.searchDelay || 0), signal);
             continue;
           }
           if (stalled && mode === 'history' && !reachedMinDate) {
@@ -331,9 +359,7 @@ export class WipegramEngine {
         seenCursors.add(nextOffset);
         offsetId = nextOffset;
 
-        if (filters.searchDelay) {
-          await this.sleeper(filters.searchDelay, signal);
-        }
+        await this.sleeper(Math.max(MIN_SCAN_DELAY_MS, filters.searchDelay || 0), signal);
       }
     } catch (rawError) {
       const error = normalizeError(rawError);
@@ -343,12 +369,14 @@ export class WipegramEngine {
       throw error;
     }
 
+    if (verifyingRecent) mode = 'search';
     const entries = [...matched.values()].sort((a, b) => b.id - a.id);
     const stats = {
       mode,
       pages,
       scanned,
       inspected,
+      recentHistoryPages,
       matched: entries.length,
       totalFound,
       floodWaits: floodCounter.count,
@@ -469,7 +497,8 @@ export class WipegramEngine {
           emitProgress(batch[batch.length - 1]);
         } catch (rawError) {
           const error = normalizeError(rawError);
-          if (isAbortError(error) || error.fatal || error.code === 'FLOOD_TOO_LONG') throw error;
+          // Exhausted transport retries must not multiply into per-message requests.
+          if (isAbortError(error) || error.fatal || isTransientError(error) || error.code === 'FLOOD_TOO_LONG') throw error;
 
           batchFailed = true;
           stats.failedBatches += 1;
@@ -498,7 +527,7 @@ export class WipegramEngine {
               stats.deleted += 1;
             } catch (rawError) {
               const error = normalizeError(rawError);
-              if (isAbortError(error) || error.fatal || error.code === 'FLOOD_TOO_LONG') throw error;
+              if (isAbortError(error) || error.fatal || isTransientError(error) || error.code === 'FLOOD_TOO_LONG') throw error;
 
               if (isAlreadyGoneError(error)) {
                 stats.alreadyGone += 1;

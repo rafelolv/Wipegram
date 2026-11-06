@@ -233,6 +233,14 @@ async function main() {
     await page.evaluate(() => document.documentElement.classList.remove('night'));
   }
 
+  const initialLayout = await page.evaluate(() => {
+    const root = document.getElementById('wipegram-ui').shadowRoot;
+    const review = root.querySelector('.wg-review-scroll');
+    return { rail: root.querySelector('.wg-rail'), settings: root.getElementById('filters-shortcut'), overflow: review.scrollHeight - review.clientHeight };
+  });
+  assert(!initialLayout.rail && !initialLayout.settings, 'Redundant sidebar/settings shortcut must be removed');
+  assert(initialLayout.overflow <= 1, `Empty workspace has unnecessary scrolling: ${initialLayout.overflow}`);
+
   // A running scan must expose Stop even before the first page completes.
   await page.evaluate(() => { window.__holdSearch = true; });
   await page.click('#scan-btn');
@@ -266,6 +274,13 @@ async function main() {
   const privacyClass = await page.evaluate(() => document.getElementById('wipegram-ui').classList.contains('wg-private'));
   assert(privacyClass === true, 'Privacy mode did not apply');
   await waitForShadow(page, 'getComputedStyle(root.getElementById("target-name")).filter === "blur(5px)"');
+
+  await page.fill('#query-input', 'invoice');
+  await waitForShadow(page, 'root.getElementById("delete-btn").disabled && root.getElementById("results").hidden');
+  assert(await page.evaluate(() => window.__wipegram.ui.scanSnapshot === null), 'Editing filters must invalidate the previous preview');
+  await page.fill('#query-input', '');
+  await page.click('#scan-btn');
+  await waitForShadow(page, '!root.getElementById("delete-btn").disabled');
 
   await page.click('#delete-btn');
   await waitForShadow(page, '!root.getElementById("modal").hidden');
@@ -306,6 +321,13 @@ async function main() {
   assert(afterDelete.deleteDisabled === true, 'Delete button must be disabled after deletion');
   assert(/Delete started/.test(afterDelete.logText), 'Activity log is missing the delete start entry');
 
+  const completed = await page.evaluate(() => {
+    const ui = window.__wipegram.ui;
+    return { candidates: ui.entries.length, reportMessages: ui.buildReport().messages.length, title: ui.readyTitle.textContent, hidden: ui.readyState.hidden };
+  });
+  assert(completed.candidates === 0 && completed.reportMessages === 3, 'Completed cleanup must clear stale candidates while preserving report messages');
+  assert(completed.title === 'Cleanup finished' && !completed.hidden, 'Completed cleanup needs a visible completion state');
+
   // New messages after cleanup must be found even while sender search is empty.
   await page.evaluate(freshMessage => {
     window.__messages.push(freshMessage);
@@ -316,10 +338,11 @@ async function main() {
   const freshScan = await page.evaluate(() => ({
     ids: window.__wipegram.ui.entries.map(message => message.id),
     mode: window.__wipegram.ui.scanSnapshot.mode,
+    recentPages: window.__wipegram.ui.scanSnapshot.stats.recentHistoryPages,
     deleted: window.__deleted.length
   }));
   assert(freshScan.ids.length === 1 && freshScan.ids[0] === 103, 'Rescan missed fresh message after cleanup');
-  assert(freshScan.mode === 'history', 'Auto must verify an empty search against history');
+  assert(freshScan.mode === 'search' && freshScan.recentPages === 1, 'Auto must recover fresh messages with one bounded history page');
   assert(freshScan.deleted === 3, 'Rescanning must not authorize additional deletion');
   await page.evaluate(() => { window.__emptySenderSearch = false; });
 
@@ -497,6 +520,17 @@ async function main() {
   });
   assert(mobileContent.scrollable && mobileContent.width <= mobileContent.client + 1, 'Mobile workspace must scroll vertically without horizontal clipping');
 
+  await page.setViewportSize({ width: 320, height: 600 });
+  const narrow = await page.evaluate(() => {
+    const root = document.getElementById('wipegram-ui').shadowRoot;
+    const panel = root.getElementById('panel').getBoundingClientRect();
+    const close = root.getElementById('close-btn').getBoundingClientRect();
+    const brand = root.querySelector('.wg-brand').getBoundingClientRect();
+    return { panelRight: panel.right, closeRight: close.right, closeLeft: close.left, brandRight: brand.right };
+  });
+  assert(narrow.closeRight <= narrow.panelRight && narrow.brandRight <= narrow.closeLeft, 'Narrow screens must keep the title and Close button separate and visible');
+  await page.setViewportSize({ width: 380, height: 720 });
+
   // Admin scope requires an explicit opt-in, verified rights and typed acceptance.
   await page.locator('#include-others').evaluate(input => { input.closest('details').open = true; });
   await page.click('#include-others');
@@ -524,8 +558,12 @@ async function main() {
     await page.locator('.wg-modal-card').screenshot({ path: path.join(os.tmpdir(), 'wipegram-admin-confirmation.png') });
   }
   await page.keyboard.type('DELETE');
-  await page.evaluate(() => { window.__peer.pFlags.creator = false; });
-  await page.click('#confirm-delete');
+  // Change permission and invoke acceptance in the same task, before polling
+  // can close the modal; this exercises the final permission guard itself.
+  await page.evaluate(() => {
+    window.__peer.pFlags.creator = false;
+    document.getElementById('wipegram-ui').shadowRoot.getElementById('confirm-delete').click();
+  });
   await waitForShadow(page, 'root.getElementById("delete-btn").disabled && !root.getElementById("include-others").checked');
   assert(await page.evaluate(() => window.__deleted.length === 0), 'Revoked admin permission must prevent deletion');
   await page.evaluate(() => {
@@ -559,8 +597,10 @@ async function main() {
   await page.click('#delete-btn');
   await waitForShadow(page, '!root.getElementById("modal").hidden');
   await page.fill('#confirm-input', 'DELETE');
-  await page.evaluate(() => { window.rootScope.myId = 1000; });
-  await page.click('#confirm-delete');
+  await page.evaluate(() => {
+    window.rootScope.myId = 1000;
+    document.getElementById('wipegram-ui').shadowRoot.getElementById('confirm-delete').click();
+  });
   await waitForShadow(page, 'root.getElementById("delete-btn").disabled === true');
   assert(await page.evaluate(() => window.__deleted.length === 0), 'Account switch reused another account\'s preview');
 

@@ -22,8 +22,8 @@ function apiWithHandler(handler) {
     root: () => ({
       managers: {
         apiManager: {
-          invokeApi: async (method, params) => {
-            calls.push({ method, params });
+          invokeApi: async (method, params, options) => {
+            calls.push({ method, params, options });
             return handler(method, params);
           }
         }
@@ -383,4 +383,12 @@ test('server admin rejection is fatal and cannot fall back to per-message delete
   const { api, root } = moderationApi();
   root.managers.apiManager.invokeApi = async () => { throw { type: 'CHAT_ADMIN_REQUIRED' }; };
   await assert.rejects(api.deleteBatch({ target: api.getCurrentTarget({ includeOthers: true }), ids: [1] }), error => error.code === 'MODERATION_FORBIDDEN' && error.fatal);
+});
+
+test('adapter leaves retries to the bounded engine instead of hidden Web K retry loops', async () => {
+  const { api, calls } = apiWithHandler(() => { throw { code: 500, type: 'TIMEOUT' }; });
+  await assert.rejects(api.invoke('messages.getHistory', {}), error => error.type === 'TIMEOUT');
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].options.noRetry, true);
+  assert.equal(calls[0].options.floodMaxTimeout, 0);
 });

@@ -17,12 +17,12 @@
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js"><img src="https://img.shields.io/badge/Install-Userscript-4ADE80?style=for-the-badge&amp;logo=tampermonkey&amp;logoColor=white" alt="Install Wipegram userscript — recommended"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.0/wipegram-chromium-0.3.0.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.3.0"></a>
-  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.0/wipegram-firefox-0.3.0.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.3.0"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.1/wipegram-chromium-0.3.1.zip"><img src="https://img.shields.io/badge/Download-Chromium-86B99A?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Download Chromium extension ZIP v0.3.1"></a>
+  <a href="https://github.com/rafelolv/Wipegram/releases/download/v0.3.1/wipegram-firefox-0.3.1.zip"><img src="https://img.shields.io/badge/Download-Firefox-2D332F?style=for-the-badge&amp;logo=firefoxbrowser&amp;logoColor=white" alt="Download unsigned Firefox extension ZIP v0.3.1"></a>
 </p>
 
 <p align="center">
-  <sub>Userscript recommended · Extension downloads: v0.3.0 · Local, unsigned packages</sub>
+  <sub>Userscript recommended · Extension downloads: v0.3.1 · Local, unsigned packages</sub>
 </p>
 
 <p align="center">
@@ -98,7 +98,7 @@ Install the generated `wipegram.user.js`, or load a package from `dist/chromium`
 
 | | Made for your cleanup |
 | --- | --- |
-| 🔎 **Find what matters** | Text, regex, dates, media types and forum-topic filters. Auto verifies sender-search results against chat history. |
+| 🔎 **Find what matters** | Text, regex, dates, media types and forum-topic filters. Auto supplements sender search with one recent history page. |
 | 👀 **Preview first** | Scan before deleting. Inspect matched messages, counts and the activity log. |
 | 🛡️ **Keep control** | Own-message checks, pinned-message protection, account isolation and explicit confirmation. Type `DELETE` above 100 matches. |
 | ⏳ **Respect the pace** | Batches of up to 100 IDs, bounded retries and automatic Telegram flood-wait handling. Stop with partial statistics. |
@@ -138,7 +138,7 @@ Broadcast posts appear under the channel identity, including posts published by 
 
 ### Message scope
 
-**Your messages only is the default**, even if you are an administrator. The **Yours checked** counter counts unique own messages, and the preview contains only your matches. Auto may read shared history pages to recover messages missing from sender search; other authors are excluded from normal-mode candidates and counts.
+**Your messages only is the default**, even if you are an administrator. The **Yours checked** counter counts unique own messages, and the preview contains only your matches. Auto checks one recent shared-history page after completed sender search; other authors are excluded from normal-mode candidates and counts.
 
 To moderate a group or channel, expand **Admin mode** and explicitly enable **Include everyone's messages**. Wipegram requires verified owner/delete-messages permission, clears the previous preview and requires a new scan. Every admin deletion requires typing `DELETE` and explicit confirmation. The option is not saved and resets when the panel closes or the account/chat changes. Permission is checked before every admin request; losing it stops the operation.
 
@@ -153,8 +153,8 @@ To moderate a group or channel, expand **Admin mode** and explicitly enable **In
 | **Skip pinned messages** | On by default. Pinned IDs are loaded before scanning. If they cannot be loaded, the scan aborts with `PINNED_UNAVAILABLE` rather than risk deleting a pinned message. |
 | **Current topic only** | Visible in forum topics. When off, Wipegram scans the whole forum. |
 | **Max messages** | Stops scanning after N matches. `0` or empty means unlimited. |
-| **Scan method** | `Auto` (sender search, then history verification), `Telegram sender search`, or `Full history walk`. A message cap stops either Auto pass once reached. |
-| **Pause between batches / pages** | Optional extra delays in milliseconds, on top of Telegram's own rate limits. |
+| **Scan method** | `Auto` (sender search, then one recent history page), `Telegram sender search`, or `Full history walk`. A message cap stops either Auto pass once reached. |
+| **Pause between batches / pages** | Scan pages use at least 350 ms; set a longer pause if needed. Batch pauses remain optional. |
 
 ## How it works
 

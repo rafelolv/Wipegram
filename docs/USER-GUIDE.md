@@ -102,7 +102,7 @@ Visible when you are inside a forum topic. When checked, the scan is limited to 
 - **Scan method** — `Auto` (recommended), `Telegram sender search`, or `Full history walk`.
 - **Max messages** — stop after this many matches. `0` or empty means unlimited.
 - **Pause between batches (ms)** — extra delay between delete batches, useful on accounts that hit limits quickly.
-- **Pause between scan pages (ms)** — extra delay between search/history pages.
+- **Pause between scan pages (ms)** — at least 350 ms between search/history pages; larger configured values are honored.
 
 ## 4. Scan
 
@@ -110,7 +110,7 @@ Press **Scan messages**. Wipegram only reads at this stage; nothing is deleted.
 
 ### Scan methods
 
-**Auto** is the default. Wipegram first asks Telegram for messages sent by you, using the server-side media filter. When that search ends, it checks the same chat's history from its newest page and applies your filters locally, merging matches without duplicates. An empty search response does not end the scan. This verification can take longer in large chats. A **Max messages** limit stops either pass once enough matches are found. If sender search is unsupported or returns an incomplete response, Auto switches directly to history.
+**Auto** is the default. Wipegram searches for your messages, then checks **one recent history page** (up to 100 messages) for newly sent messages missing from search. It merges your matches without duplicates and does not walk the entire group's shared history after a completed search. Older messages missing from Telegram's search index require **Full history walk**. A **Max messages** limit stops either pass once reached. Unsupported or incomplete sender search still falls back to a full history walk and reports this in the log.
 
 **Telegram sender search** forces the fast path without history verification. If the chat does not support it, the scan fails instead of falling back. If messages are missing from its results, use Auto or Full history walk.
 
@@ -119,7 +119,7 @@ Press **Scan messages**. Wipegram only reads at this stage; nothing is deleted.
 ### What the progress shows
 
 - **Yours checked** — unique messages authored by you that were checked. Other authors and duplicate reads do not increase it.
-- Auto can read shared history pages to recover messages missing from sender search. Raw rows read are recorded separately as `inspected` in the report, and never expand the normal-mode deletion scope.
+- After completed sender search, Auto checks one recent shared-history page for missing messages; unsupported/incomplete search still falls back to full history. Raw rows read are recorded separately as `inspected` in the report, and never expand the normal-mode deletion scope.
 - **Found** — matching messages owned by you, after local filters.
 - **Deleted** — zero until you start deleting.
 - **Failed** — deletions Telegram refused or that failed after retries.
@@ -132,7 +132,7 @@ The status line and activity log report the current mode, fallback events, flood
 
 Each row shows the date, message ID, media badge, and a short preview. Use **Report** to download the full list before deleting if you want an audit trail.
 
-If the preview looks wrong, change the filters and scan again. Pressing **Scan again** replaces the previous result set; it does not delete anything.
+Editing a filter clears the previous preview and any open confirmation; scan again before deleting. If the preview looks wrong, change the filters and scan again. Pressing **Scan again** replaces the previous result set; it does not delete anything.
 
 ## 5. Confirm and delete
 
@@ -152,10 +152,10 @@ The confirmation field receives keyboard focus automatically. Tab stays inside t
 Review the dialog and press **Delete forever**. Wipegram then:
 
 1. Sends IDs in batches of at most 100.
-2. Retries a rejected batch one message at a time, so one bad message does not block the rest.
+2. Retries a Telegram-rejected batch one message at a time, so one bad message does not block the rest. Exhausted network/server retries stop deletion instead of multiplying requests across all messages.
 3. Honors flood waits and transient retries.
 4. Updates the progress bar, metrics, activity log, and final status.
-5. Offers the JSON report with the outcome.
+5. Offers the JSON report with the outcome. Processed preview candidates are cleared; the report retains the original selection. Scan again to refresh remaining messages.
 
 You can press **Stop** while a scan or delete is running. Stopping is not an undo: messages already deleted stay deleted. The status shows how many were completed before the stop.
 

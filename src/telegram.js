@@ -226,6 +226,8 @@ export class TelegramApi {
     try {
       return await apiManager.invokeApi(method, params, {
         noErrorBox: true,
+        // The engine owns bounded retries; Web K otherwise retries 500/UNKNOWN indefinitely.
+        noRetry: true,
         floodMaxTimeout: 0,
         ...apiOptions
       });

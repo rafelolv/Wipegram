@@ -13,11 +13,6 @@
     </div>
   </header>
   <div class="wg-body">
-    <nav class="wg-rail" aria-label="Wipegram shortcuts">
-      <a class="wg-rail-link wg-selected" href="https://web.telegram.org/k/" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram Web K" title="Telegram Web K"><svg class="wg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m21 3-4 18-6-5-3 3v-5l10-8-12 7-5-2Z"/></svg></a>
-      <button type="button" class="wg-rail-link" id="filters-shortcut" title="Focus filters" aria-label="Focus filters"><svg class="wg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16M8 3v6M16 9v6M10 15v6"/></svg></button>
-      <a class="wg-rail-link wg-rail-bottom" href="https://github.com/rafelolv" target="_blank" rel="noopener noreferrer" aria-label="Rafael on GitHub" title="Rafael on GitHub"><svg class="wg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.64-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.1.39-1.99 1.03-2.69-.1-.26-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.03A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.66.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.58 4.94.36.31.68.92.68 1.85v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg></a>
-    </nav>
     <section class="wg-controls" aria-label="Chat and filters">
       <div class="wg-controls-scroll">
         <div class="wg-eyebrow">Target</div>
@@ -47,8 +42,7 @@
         </label>
       </div>
 
-        <div class="wg-grid wg-advanced-grid">
-
+        <div class="wg-grid wg-dates">
           <label class="wg-field">
             <span>Newer than</span>
             <input type="datetime-local" id="min-date">
@@ -58,16 +52,6 @@
             <input type="datetime-local" id="max-date">
           </label>
         </div>
-      <details class="wg-advanced">
-        <summary>Text pattern <svg class="wg-icon wg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-        <div class="wg-grid wg-advanced-grid">
-          <label class="wg-field wg-span2">
-            <span>Regex pattern</span>
-            <input type="text" id="pattern-input" placeholder="Optional, e.g. ^hello|invoice" autocomplete="off" spellcheck="false">
-          </label>
-        </div>
-      </details>
-
       <div class="wg-checks">
         <label class="wg-check">
           <input type="checkbox" id="skip-pinned" checked>
@@ -91,6 +75,11 @@
       <details class="wg-advanced">
         <summary>Advanced options <svg class="wg-icon wg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
         <div class="wg-grid wg-advanced-grid">
+          <label class="wg-field wg-span2">
+            <span>Regex pattern</span>
+            <input type="text" id="pattern-input" placeholder="Optional, e.g. ^hello|invoice" autocomplete="off" spellcheck="false">
+          </label>
+
           <label class="wg-field">
             <span>Scan method</span>
             <select id="scan-method">
@@ -108,11 +97,11 @@
             <input type="number" id="delete-delay" min="0" max="60000" step="100" value="0">
           </label>
           <label class="wg-field">
-            <span>Pause between scan pages (ms)</span>
-            <input type="number" id="search-delay" min="0" max="60000" step="100" value="0">
+            <span>Pause between scan pages (ms, min. 350)</span>
+            <input type="number" id="search-delay" min="350" max="60000" step="50" value="350">
           </label>
         </div>
-        <p class="wg-hint">Auto searches your messages, then checks chat history for anything missing from search. A message limit stops either scan once reached.</p>
+        <p class="wg-hint">Auto searches your messages and checks one recent history page. For older missing messages, choose Full history walk. A message limit stops the scan once reached.</p>
       </details>
 
       <div class="wg-form-error wg-hidden" id="form-error"></div>

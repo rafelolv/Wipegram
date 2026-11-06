@@ -4,7 +4,7 @@ Reviewed on 2026-11-06 against Telegram's MTProto documentation and Web K source
 
 ## Discovery and ownership
 
-[`messages.search`](https://core.telegram.org/method/messages.search) accepts a peer, `from_id`, filters, dates and ID-based pagination. Wipegram uses `inputPeerSelf` for sender search and additionally checks each returned message's sender locally. In Auto mode, completed search results are verified against paginated [`messages.getHistory`](https://core.telegram.org/method/messages.getHistory), or [`messages.getReplies`](https://core.telegram.org/method/messages.getReplies) within the same topic. Unsupported or incomplete search responses switch directly to history. Verification starts at the newest page, preserves filters and pinned protection, deduplicates IDs and stops at the configured message cap. It can require more requests than sender search alone. This policy covers empty or partial search responses without assuming a particular live-server cause for missing results.
+[`messages.search`](https://core.telegram.org/method/messages.search) accepts a peer, `from_id`, filters, dates and ID-based pagination. Wipegram uses `inputPeerSelf` for sender search and additionally checks each returned message's sender locally. In Auto mode, completed sender search is supplemented by **one recent page**, up to 100 rows, from [`messages.getHistory`](https://core.telegram.org/method/messages.getHistory) or [`messages.getReplies`](https://core.telegram.org/method/messages.getReplies) in the current topic. This bounded probe recovers recent unindexed messages without walking an entire busy group's history. It preserves ownership, filters and pins and deduplicates IDs. It is not a complete independent history audit; use Full history walk for older missing messages. Unsupported or incomplete sender-search responses still fall back to paginated history. A configured message cap stops either pass once reached.
 
 Following Telegram's [ID-based pagination](https://core.telegram.org/api/offsets), cursors use all positive IDs returned by a page, including deleted-message placeholders that are excluded from deletion candidates. An incomplete or repeating history page stops the scan with an error; it is not reported as successful completion. Each scan starts with a fresh cursor and candidate set.
 
@@ -29,10 +29,12 @@ Telegram's [RPC error documentation](https://core.telegram.org/api/errors) defin
 Wipegram's own policies:
 
 - Up to 100 messages per scan page and deletion batch.
-- Configurable pauses between pages/batches, in addition to server-directed waits.
+- Scan pages are spaced by at least 350 ms; a configured longer pause is honored. Batch pauses remain configurable. These are application policies, not documented server quotas.
+- Server cooldowns survive Stop/rescan for the same request family within the current engine instance. Pins and sender search share a cooldown because both call messages.search. Reloading the tab or another tab does not share this state.
+- Disable [Web K’s hidden server-error retries](https://github.com/morethanwords/tweb/blob/master/src/lib/appManagers/apiManager.ts) with noRetry so the engine’s bounded retry policy controls these requests. No timeout race resubmits an unresolved deletion.
 - Honor `FLOOD_WAIT_X`, `FLOOD_PREMIUM_WAIT_X` and `SLOWMODE_WAIT_X`.
 - Stop if a requested wait exceeds 15 minutes or more than eight flood waits occur for one request.
-- Up to three transient network/server retries with exponential backoff.
+- Up to three transient network/server retries with exponential backoff. Exhaustion during deletion stops the run; it never triggers per-message fan-out. Individual fallback remains for Telegram batch rejections, and stops if its own transient retries are exhausted.
 - Stop scanning after 50,000 pages rather than loop indefinitely.
 
 Batch size 100 is a conservative application policy. It is not a promise that 100 deletions per request or a particular request frequency will avoid rate limits.

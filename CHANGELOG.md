@@ -4,6 +4,21 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-06
+
+### Changed
+
+- Remove the redundant left navigation rail and settings shortcut; widen the workspace, show complete date fields and move regex into Advanced options.
+
+### Fixed
+
+- Bound Auto recovery after completed sender search to one recent history page instead of walking an entire group; retain explicit full-history scans and fallback for unsupported/incomplete search.
+- Space scan pages by at least 350 ms and preserve server cooldowns across Stop/rescan within the running tab.
+- Disable hidden Web K server-error retries so the engine's bounded retry policy controls timeouts and transient failures.
+- Stop deletion after exhausted transport retries instead of multiplying failed requests across individual messages.
+- Invalidate the old preview and confirmation when filters change; clear processed candidates after deletion while retaining the original report.
+- Remove unnecessary scrolling in the empty workspace and keep the header usable on narrow screens.
+
 ## [0.3.0] - 2026-11-06
 
 ### Changed

@@ -182,9 +182,6 @@ export class WipegramUI {
     this.confirmDelete.addEventListener('click', () => this.confirmDeleteMessages());
     this.confirmInput.addEventListener('input', () => this.updateConfirmState());
     this.shadow.getElementById('clear-log-btn').addEventListener('click', () => this.clearLog());
-    this.shadow.getElementById('filters-shortcut').addEventListener('click', () => {
-      this.shadow.getElementById('type-select').focus({ preventScroll: false });
-    });
     this.scopeCheckbox.addEventListener('change', () => {
       this.includeOthers = this.scopeCheckbox.checked;
       this.hideConfirm();
@@ -197,8 +194,14 @@ export class WipegramUI {
       if (event.target === this.modal) this.hideConfirm();
     });
 
-    this.fieldset.addEventListener('input', () => this.clearFormError());
-    this.fieldset.addEventListener('change', () => this.clearFormError());
+    const filtersChanged = () => {
+      this.clearFormError();
+      if (this.busy || !this.scanSnapshot) return;
+      this.hideConfirm();
+      this.invalidateResults('Filters changed. Scan again before deleting.');
+    };
+    this.fieldset.addEventListener('input', filtersChanged);
+    this.fieldset.addEventListener('change', filtersChanged);
 
     // Page handlers see the Shadow DOM host instead of its editable input.
     // Intercept before document capture, including the sibling confirmation.
@@ -465,10 +468,15 @@ export class WipegramUI {
     this.metrics.hidden = false;
     this.progressWrap.hidden = !this.busy && !this.scanSnapshot;
     this.readyState.hidden = hasResults;
-    this.readyTitle.textContent = this.busy ? 'Scan in progress' : this.phase === 'done' ? 'Cleanup finished' : this.scanSnapshot ? 'No matching messages' : 'Ready to scan';
+    const cleanupTitle = !this.deleteStats ? 'Cleanup interrupted'
+      : this.deleteStats.error || this.deleteStats.failed ? 'Cleanup finished with errors'
+        : this.deleteStats.stopped ? 'Cleanup stopped' : 'Cleanup finished';
+    this.readyTitle.textContent = this.busy ? this.phase === 'deleting' ? 'Deleting messages' : 'Scan in progress'
+      : this.phase === 'done' ? cleanupTitle : this.scanSnapshot ? 'No matching messages' : 'Ready to scan';
     this.readyDescription.textContent = !this.target ? 'Open a supported Telegram chat to get started.'
       : this.busy ? 'You can stop at any time. Review the results before deleting.'
-        : this.scanSnapshot ? 'Adjust your filters and scan again when you are ready.'
+        : this.phase === 'done' ? 'Scan again to refresh remaining messages. Download a report for details.'
+        : this.scanSnapshot ? this.scanSnapshot.filters.scanMethod === 'auto' ? 'For older missing messages, choose Full history walk in Advanced options.' : 'Adjust your filters and scan again when you are ready.'
           : 'Choose your chat and filters, then scan for messages.';
     this.panel.classList.toggle('wg-ready', hasResults && this.phase === 'ready');
   }
@@ -671,8 +679,11 @@ export class WipegramUI {
       });
       this.renderResults();
       this.updateButtons();
+      if (result.stats.recentHistoryPages) {
+        this.addLog('info', 'Auto checked one recent history page. If older messages are missing, choose Full history walk in Advanced options.');
+      }
 
-      const modeText = result.mode === 'history' ? 'full history scan' : 'sender search';
+      const modeText = result.mode === 'history' ? 'full history scan' : result.stats.recentHistoryPages ? 'sender search + recent history' : 'sender search';
       this.addLog('success', `Scan finished with ${formatNumber(result.entries.length)} matching message${result.entries.length === 1 ? '' : 's'} (${modeText}, ${formatDuration(result.stats.durationMs)}).`);
 
       if (!result.entries.length) {
@@ -873,6 +884,10 @@ export class WipegramUI {
       this.addLog('error', normalized.message);
       this.showToast(normalized.message, 'error');
     } finally {
+      // Keep the original snapshot for reports, but require a fresh scan rather
+      // than presenting processed candidates as messages still waiting to delete.
+      this.entries = [];
+      this.renderResults();
       this.abortController = null;
       this.updateButtons();
     }
@@ -1057,7 +1072,7 @@ export class WipegramUI {
         break;
       case 'scan:verify':
         this.addLog('info', event.reason);
-        this.setStatus('Checking history for messages missing from search…', 'info');
+        this.setStatus('Checking recent messages missing from search…', 'info');
         break;
       case 'scan:warning':
         this.addLog('warning', `${event.message}${event.error ? ` (${event.error})` : ''}`);
@@ -1128,7 +1143,7 @@ export class WipegramUI {
     const handle = this.shadow.getElementById('drag-handle');
     handle.addEventListener('pointerdown', event => {
       if (event.button !== 0 || event.target.closest('button')) return;
-      if (window.matchMedia('(max-width: 520px)').matches) return;
+      if (window.matchMedia('(max-width: 680px)').matches) return;
 
       const rect = this.panel.getBoundingClientRect();
       this.drag = {
