@@ -34,7 +34,13 @@ if (metadata) {
   assert(has('// @name         Wipegram'), 'metadata is missing @name Wipegram.');
   assert(has(`// @version      ${pkg.version}`), `metadata version does not match package.json (${pkg.version}).`);
   assert(has(`// @author       ${pkg.author}`), 'metadata @author does not match package.json.');
-  assert(has('// @license      MIT'), 'metadata is missing @license MIT.');
+  assert(has(`// @description  ${pkg.description}`), 'metadata description does not match package.json.');
+  assert(has('// @copyright    2026 Rafael (rafaelolv)'), 'metadata copyright is missing.');
+  assert(has(`// @license      ${pkg.userscriptLicense}; https://github.com/rafelolv/Wipegram/blob/main/LICENSE`), 'metadata proprietary license is missing.');
+  for (const field of ['downloadURL', 'updateURL']) {
+    const value = lines.find(line => line.startsWith(`// @${field} `))?.split(/\s+/)[2];
+    assert(value === 'https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js', `metadata ${field} is missing.`);
+  }
   assert(has('// @grant        none'), 'metadata must use @grant none.');
   assert(has('// @noframes'), 'metadata must use @noframes.');
   assert(has('// @match        https://web.telegram.org/k/*'), 'metadata is missing the Web K match.');
@@ -45,6 +51,15 @@ if (metadata) {
   assert(has('// @homepageURL  https://github.com/rafelolv/Wipegram'), 'metadata homepage URL is missing.');
   assert(has('// @supportURL   https://github.com/rafelolv/Wipegram/issues'), 'metadata support URL is missing.');
 }
+
+const icon = source.match(/^\/\/ @icon +data:image\/png;base64,([^\r\n]+)/m);
+assert(!!icon, 'metadata must embed a local PNG icon.');
+if (icon) {
+  const expected = await readFile(path.join(ROOT, 'images/icon-64.png'));
+  assert(Buffer.from(icon[1], 'base64').equals(expected), 'metadata icon differs from the canonical PNG.');
+}
+const license = await readFile(path.join(ROOT, 'LICENSE'), 'utf8');
+assert(source.includes(`/*!\n${license.trim()}\n*/`), 'userscript must embed the current license text.');
 
 assert(source.includes('window.__wipegram'), 'bundle is missing the Wipegram debug handle.');
 assert(source.includes('messages.deleteMessages'), 'bundle is missing the MTProto DM/group delete call.');

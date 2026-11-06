@@ -40,6 +40,8 @@ If you switch chats in Telegram while the panel is open, Wipegram notices the ch
 
 All filters are optional. Leaving them at their defaults means “all of my messages in this chat, newest first.”
 
+Message type and text search are visible immediately. Expand **Date & pattern filters** for dates and regex, or **Advanced options** for scan limits and delays. Statistics appear when scanning starts; expand **Activity** to read the log.
+
 ### Message type
 
 Choose one of:
@@ -108,15 +110,16 @@ Press **Scan messages**. Wipegram only reads at this stage; nothing is deleted.
 
 ### Scan methods
 
-**Auto** is the default. Wipegram first asks Telegram for messages sent by you, using the server-side media filter. This is fast and efficient. If Telegram rejects sender search in this chat type, or the filter is unsupported, Wipegram logs the reason and automatically falls back to walking the chat history and filtering locally.
+**Auto** is the default. Wipegram first asks Telegram for messages sent by you, using the server-side media filter. When that search ends, it checks the same chat's history from its newest page and applies your filters locally, merging matches without duplicates. An empty search response does not end the scan. This verification can take longer in large chats. A **Max messages** limit stops either pass once enough matches are found. If sender search is unsupported or returns an incomplete response, Auto switches directly to history.
 
-**Telegram sender search** forces the fast path. If the chat does not support it, the scan fails instead of falling back. Use this if you want to know whether a chat supports sender search.
+**Telegram sender search** forces the fast path without history verification. If the chat does not support it, the scan fails instead of falling back. If messages are missing from its results, use Auto or Full history walk.
 
 **Full history walk** reads the chat page by page and applies every filter locally. It is slower and checks more messages, but it works in chats where sender search is not available. In a forum topic it uses `messages.getReplies`; outside a topic it uses `messages.getHistory`.
 
 ### What the progress shows
 
 - **Checked** — messages read from Telegram during this scan.
+- Auto can read the same message in both search and history; **Found** counts matching IDs only once.
 - **Found** — matching messages owned by you, after local filters.
 - **Deleted** — zero until you start deleting.
 - **Failed** — deletions Telegram refused or that failed after retries.
@@ -141,6 +144,8 @@ Press **Delete N messages**. A confirmation dialog repeats:
 - the number of messages.
 
 For **more than 100 messages**, the final button stays disabled until you type `DELETE`. This threshold is deliberately independent of the number of batches: it protects large cleanups from a single accidental click.
+
+The confirmation field receives keyboard focus automatically. Tab stays inside the dialog; Escape or **Cancel** closes it without deleting. Typing `DELETE` only enables the button: you must still explicitly choose **Delete forever**.
 
 Review the dialog and press **Delete forever**. Wipegram then:
 

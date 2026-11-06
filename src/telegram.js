@@ -148,10 +148,16 @@ function messagesOf(result) {
 }
 
 export function normalizeMessagesResult(result) {
+  // Deleted-message placeholders still carry pagination IDs. Drop them from
+  // candidates, but retain their cursor so they cannot hide older history.
+  const rawMessages = Array.isArray(result?.messages) ? result.messages : [];
+  const ids = rawMessages.map(message => message?.id).filter(id => Number.isInteger(id) && id > 0);
   return {
     messages: messagesOf(result),
     count: Number.isFinite(result?.count) ? result.count : 0,
-    notModified: result?._ === 'messages.messagesNotModified'
+    notModified: result?._ === 'messages.messagesNotModified',
+    nextOffsetId: ids.length ? Math.min(...ids) : 0,
+    incomplete: !Array.isArray(result?.messages) || (rawMessages.length > 0 && ids.length === 0)
   };
 }
 
@@ -266,7 +272,7 @@ export class TelegramApi {
 
       const raw = await this.invoke('messages.search', params, { expectedSelfId: target.selfId });
       const result = normalizeMessagesResult(raw);
-      if (result.notModified || !Array.isArray(raw?.messages)) {
+      if (result.notModified || result.incomplete) {
         throw new WipegramError('PINNED_UNAVAILABLE', 'Telegram did not return the pinned messages. Scan stopped to protect them.');
       }
 
@@ -274,9 +280,8 @@ export class TelegramApi {
         if (message._ === 'message' && Number.isInteger(message.id)) ids.add(message.id);
       }
 
-      if (result.messages.length === 0) return ids;
-      const validIds = result.messages.map(message => message.id).filter(id => Number.isInteger(id) && id > 0);
-      const nextOffset = Math.min(...validIds);
+      if (raw.messages.length === 0) return ids;
+      const nextOffset = result.nextOffsetId;
       if (!Number.isFinite(nextOffset) || (offsetId && nextOffset >= offsetId)) {
         throw new WipegramError('PINNED_UNAVAILABLE', 'Pinned-message pagination did not advance. Scan stopped to protect them.');
       }

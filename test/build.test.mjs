@@ -17,7 +17,7 @@ test('userscript is identical across checkout directories', async t => {
   for (const name of ['checkout-one', 'checkout-two']) {
     const checkout = path.join(temporary, name);
     await mkdir(checkout);
-    for (const entry of ['src', 'build', 'build.mjs', 'package.json']) {
+    for (const entry of ['src', 'build', 'build.mjs', 'package.json', 'LICENSE', 'images']) {
       await cp(path.join(root, entry), path.join(checkout, entry), { recursive: true });
     }
     await symlink(path.join(root, 'node_modules'), path.join(checkout, 'node_modules'), 'dir');

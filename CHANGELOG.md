@@ -4,6 +4,28 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-06
+
+### Changed
+
+- Explain the group and channel-discussion focus, Telegram's native private-chat cleanup and the companion Wipecord project in the README.
+- Credit Rafael (rafaelolv) in userscript metadata and extension details, with a local W icon and explicit installation/update links.
+- Introduce proprietary personal-use terms for original material distributed from 0.2.2 onward; previously granted MIT permissions remain unchanged.
+- Simplify the panel with neutral surfaces, optional date/pattern filters, a collapsed activity log and statistics shown after scanning begins.
+
+### Fixed
+
+- Keep typed confirmation and panel keyboard events out of Telegram's composer handlers; contain focus and Tab navigation in confirmation and let Escape cancel it.
+- Show the Stop button during active scans and deletions.
+- Apply privacy-mode blur correctly inside the panel's Shadow DOM.
+- Verify sender-search results against chat history in Auto mode so messages missing from search can still be found after a cleanup or reload.
+- Keep pagination cursors from deleted-message placeholders and reject incomplete or stalled history responses instead of silently reporting an empty or complete scan.
+
+### Validation
+
+- Add Chromium regressions for real confirmation keystrokes, Telegram-style document capture handlers, focus stealing, partial confirmation, cancellation, reopening and stopping a pending scan. Browser checks use simulated Telegram data.
+- Cover scan/delete/new-message/rescan cycles, empty and partial search results, deleted placeholders, filter/ownership/pin protection and cancellation during history verification with simulated responses.
+
 ## [0.2.1] - 2026-11-06
 
 ### Fixed

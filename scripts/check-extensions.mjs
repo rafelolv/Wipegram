@@ -14,6 +14,17 @@ for (const browser of ['chromium', 'firefox']) {
   const manifest = JSON.parse(await readFile(new URL('manifest.json', folder), 'utf8'));
   assert.equal(manifest.version, pkg.version);
   assert.equal(manifest.manifest_version, 3);
+  assert.equal(manifest.author, pkg.author);
+  assert.deepEqual(manifest.icons, { 48: 'icon-48.png', 128: 'icon-128.png' });
+  assert.deepEqual(manifest.action.default_icon, manifest.icons);
+  assert.deepEqual(await readFile(new URL('LICENSE', folder)), await readFile(new URL('LICENSE', root)));
+  for (const size of [48, 128]) {
+    const filename = `icon-${size}.png`;
+    const png = await readFile(new URL(filename, folder));
+    assert.deepEqual(png, await readFile(new URL(`images/${filename}`, root)));
+    assert.equal(png.readUInt32BE(16), size);
+    assert.equal(png.readUInt32BE(20), size);
+  }
   assert.equal(manifest.permissions, undefined, 'No extra API permissions needed');
   assert.equal(manifest.host_permissions, undefined);
   assert.equal(manifest.background, undefined, 'No background deletion');
@@ -38,6 +49,7 @@ for (const browser of ['chromium', 'firefox']) {
   const popup = await readFile(new URL(manifest.action.default_popup, folder), 'utf8');
   assert(!/<(?:script|button|input|form)\b/i.test(popup), 'Popup must not execute deletion');
   assert(!/\bon\w+\s*=/i.test(popup));
+  assert(popup.includes(pkg.author), 'Popup must credit the creator');
 
   const filename = `wipegram-${browser}-${pkg.version}.zip`;
   const archive = await readFile(new URL(`dist/${filename}`, root));
@@ -56,7 +68,7 @@ for (const browser of ['chromium', 'firefox']) {
     names.push(name);
     offset = start + size;
   }
-  assert.deepEqual(names.sort(), ['LICENSE', 'build-info.json', 'manifest.json', 'popup.css', 'popup.html', 'wipegram.user.js'].sort());
+  assert.deepEqual(names.sort(), ['LICENSE', 'build-info.json', 'manifest.json', 'popup.css', 'popup.html', 'wipegram.user.js', 'icon-48.png', 'icon-128.png'].sort());
   assert.equal(archive.readUInt32LE(archive.length - 22), 0x06054b50);
   assert.equal(archive.readUInt16LE(archive.length - 12), names.length);
   console.log(`Extension OK: ${browser} v${pkg.version}, identical runtime, verified ZIP and checksum.`);

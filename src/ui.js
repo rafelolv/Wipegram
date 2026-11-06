@@ -42,13 +42,6 @@ function initialOf(title) {
   return (title || '?').trim().charAt(0).toLocaleUpperCase() || '?';
 }
 
-function hueFor(value) {
-  const text = String(value ?? '');
-  let hash = 0;
-  for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) | 0;
-  return Math.abs(hash) % 360;
-}
-
 function slugify(value) {
   return String(value || 'chat')
     .normalize('NFKD')
@@ -129,7 +122,7 @@ export class WipegramUI {
     this.stopButton = this.shadow.getElementById('stop-btn');
     this.progressBar = this.shadow.getElementById('progress-bar');
     this.statusText = this.shadow.getElementById('status-text');
-    this.statusDot = this.shadow.getElementById('status-dot');
+    this.metrics = this.shadow.querySelector('.wg-metrics');
     this.metricChecked = this.shadow.getElementById('metric-checked');
     this.metricFound = this.shadow.getElementById('metric-found');
     this.metricDeleted = this.shadow.getElementById('metric-deleted');
@@ -187,7 +180,36 @@ export class WipegramUI {
     this.fieldset.addEventListener('input', () => this.clearFormError());
     this.fieldset.addEventListener('change', () => this.clearFormError());
 
-    this.panel.addEventListener('keydown', event => this.onPanelKeydown(event));
+    // Page handlers see the Shadow DOM host instead of its editable input.
+    // Intercept before document capture, including the sibling confirmation.
+    this.onWindowKeyEvent = event => {
+      if (!this.isOpen()) return;
+      const inside = event.composedPath().includes(this.host);
+      if (!inside && !this.modalOpen) return;
+      if (!inside) {
+        event.preventDefault();
+        if (event.type === 'keydown' && event.key === 'Escape') this.hideConfirm();
+        else this.focusConfirmation();
+      } else if (event.type === 'keydown') {
+        this.onPanelKeydown(event);
+      }
+      // Keep native editing/default actions, but exclude page shortcuts.
+      event.stopImmediatePropagation();
+    };
+    for (const type of ['keydown', 'keypress', 'keyup']) {
+      window.addEventListener(type, this.onWindowKeyEvent, true);
+    }
+    this.onWindowFocusIn = event => {
+      if (!this.isOpen()) return;
+      const path = event.composedPath();
+      if (this.modalOpen && !path.includes(this.modal)) {
+        event.stopImmediatePropagation();
+        this.focusConfirmation();
+      } else if (path.includes(this.host)) {
+        event.stopImmediatePropagation();
+      }
+    };
+    window.addEventListener('focusin', this.onWindowFocusIn, true);
     document.addEventListener('keydown', this.onDocumentKeydown = event => {
       if (event.key === 'Escape' && !this.panel.hidden) this.close();
     });
@@ -259,7 +281,8 @@ export class WipegramUI {
   open() {
     this.mount();
     if (this.isOpen()) {
-      this.panel.focus({ preventScroll: true });
+      if (this.modalOpen) this.focusConfirmation();
+      else this.panel.focus({ preventScroll: true });
       return;
     }
 
@@ -269,7 +292,7 @@ export class WipegramUI {
     this.startPolling();
     this.updateTheme();
     this.clampPanel();
-    setTimeout(() => this.panel?.focus({ preventScroll: true }), 30);
+    this.panel.focus({ preventScroll: true });
   }
 
   close() {
@@ -362,7 +385,6 @@ export class WipegramUI {
       this.targetName.textContent = target.title;
       this.targetMeta.textContent = meta.join(' · ');
       this.targetAvatar.textContent = initialOf(target.title);
-      this.targetAvatar.style.setProperty('--wg-hue', `${hueFor(target.peerId)}deg`);
       this.targetAvatar.classList.remove('wg-avatar-muted');
       this.targetWarning.classList.add('wg-hidden');
       this.targetWarning.textContent = '';
@@ -371,7 +393,6 @@ export class WipegramUI {
       this.targetName.textContent = error?.code === 'NO_CHAT' ? 'No chat selected' : 'Chat unavailable';
       this.targetMeta.textContent = error?.message || 'Open a private chat, group or Saved Messages.';
       this.targetAvatar.textContent = '?';
-      this.targetAvatar.style.removeProperty('--wg-hue');
       this.targetAvatar.classList.add('wg-avatar-muted');
       this.topicWrap.hidden = true;
 
@@ -393,7 +414,7 @@ export class WipegramUI {
     this.fieldset.disabled = this.busy;
     this.shadow.getElementById('refresh-btn').disabled = this.busy;
     this.scanButton.hidden = this.busy;
-    this.deleteButton.hidden = this.busy;
+    this.deleteButton.hidden = this.busy || !hasResults || this.phase !== 'ready';
     this.stopButton.hidden = !this.busy;
     this.stopButton.disabled = false;
     this.scanButton.disabled = this.busy || !this.target;
@@ -404,6 +425,8 @@ export class WipegramUI {
     this.scanLabel.textContent = this.scanSnapshot ? 'Scan again' : 'Scan messages';
     this.reportButton.disabled = this.busy || !this.scanSnapshot;
     this.resetButton.disabled = this.busy;
+    this.metrics.hidden = !this.busy && !this.scanSnapshot;
+    this.panel.classList.toggle('wg-ready', hasResults && this.phase === 'ready');
   }
 
   setBusy(busy, phase = this.phase) {
@@ -416,7 +439,7 @@ export class WipegramUI {
   setStatus(text, tone = 'info') {
     if (!this.statusText) return;
     this.statusText.textContent = text;
-    this.statusDot.className = `wg-status-dot wg-tone-${tone}`;
+    this.statusText.dataset.tone = tone;
   }
 
   setProgress(mode, fraction = 0) {
@@ -676,13 +699,15 @@ export class WipegramUI {
     this.modalOpen = true;
     this.modal.hidden = false;
     this.modal.classList.add('wg-show');
+    this.panel.inert = true;
     this.updateConfirmState();
+    this.focusConfirmation();
+  }
 
-    setTimeout(() => {
-      if (!this.modalOpen) return;
-      if (requireType) this.confirmInput.focus();
-      else this.confirmCancel.focus();
-    }, 30);
+  focusConfirmation() {
+    if (!this.modalOpen) return;
+    const target = this.confirmField.hidden ? this.confirmCancel : this.confirmInput;
+    target.focus({ preventScroll: true });
   }
 
   updateConfirmState() {
@@ -696,8 +721,11 @@ export class WipegramUI {
     this.modalOpen = false;
     this.modal.hidden = true;
     this.modal.classList.remove('wg-show');
+    this.panel.inert = false;
     this.confirmInput.value = '';
     this.confirmDelete.disabled = false;
+    this.modalTarget.textContent = '';
+    this.modalFilters.replaceChildren();
     if (!this.busy && this.deleteButton && !this.deleteButton.hidden) {
       try {
         this.deleteButton.focus({ preventScroll: true });
@@ -975,9 +1003,13 @@ export class WipegramUI {
         break;
       }
       case 'scan:fallback':
-        this.addLog('warning', `Sender search is unavailable in this chat. ${event.reason} Continuing with a full history scan.`);
-        this.setStatus('Sender search unavailable — switching to full history…', 'warning');
+        this.addLog('warning', `${event.reason} Continuing with a full history scan.`);
+        this.setStatus('Switching to full history…', 'warning');
         this.showToast('Switching to a full history scan.', 'warning');
+        break;
+      case 'scan:verify':
+        this.addLog('info', event.reason);
+        this.setStatus('Checking history for messages missing from search…', 'info');
         break;
       case 'scan:warning':
         this.addLog('warning', `${event.message}${event.error ? ` (${event.error})` : ''}`);
@@ -1034,10 +1066,10 @@ export class WipegramUI {
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       const active = this.shadow.activeElement;
-      if (event.shiftKey && (active === first || !active)) {
+      if (event.shiftKey && (active === first || !this.modal.contains(active))) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && active === last) {
+      } else if (!event.shiftKey && (active === last || !this.modal.contains(active))) {
         event.preventDefault();
         first.focus();
       }
@@ -1104,6 +1136,10 @@ export class WipegramUI {
     if (this.toastTimer) clearTimeout(this.toastTimer);
     document.removeEventListener('keydown', this.onDocumentKeydown);
     document.removeEventListener('pointerdown', this.onDocumentPointerDown);
+    for (const type of ['keydown', 'keypress', 'keyup']) {
+      window.removeEventListener(type, this.onWindowKeyEvent, true);
+    }
+    window.removeEventListener('focusin', this.onWindowFocusIn, true);
     window.removeEventListener('resize', this.onResize);
     this.host?.remove();
     this.host = null;

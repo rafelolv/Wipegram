@@ -17,10 +17,10 @@ function injectStyles() {
       place-items: center;
       width: 24px;
       height: 24px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #3390ec, #7b5cf0);
-      box-shadow: 0 2px 7px rgba(51, 144, 236, 0.35);
-      color: #ffffff;
+      border-radius: 4px;
+      background: transparent;
+      box-shadow: none;
+      color: #3390ec;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 12.5px;
       font-weight: 800;
@@ -29,8 +29,7 @@ function injectStyles() {
     }
 
     .wipegram-launcher:hover .wipegram-launcher-tile {
-      transform: scale(1.07);
-      box-shadow: 0 3px 10px rgba(51, 144, 236, 0.45);
+      background: rgba(51, 144, 236, 0.1);
     }
 
     .wipegram-fab {

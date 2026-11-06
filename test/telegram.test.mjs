@@ -58,6 +58,27 @@ test('normalizeMessagesResult drops empty messages and keeps counts', () => {
   assert.equal(normalizeMessagesResult({ _: 'messages.messagesNotModified' }).notModified, true);
 });
 
+test('deleted-message placeholders preserve pagination without becoming candidates', () => {
+  const result = normalizeMessagesResult({
+    _: 'messages.messagesSlice',
+    messages: [{ _: 'messageEmpty', id: 100 }, { _: 'messageEmpty', id: 99 }], count: 200
+  });
+  assert.deepEqual(result.messages, []);
+  assert.equal(result.nextOffsetId, 99);
+  assert.equal(result.incomplete, false);
+  assert.equal(normalizeMessagesResult({}).incomplete, true);
+});
+
+test('pinned lookup continues past deleted placeholders to protect older pins', async () => {
+  const { api, calls } = apiWithHandler((method, params) => ({
+    _: 'messages.messagesSlice', messages: !params.offset_id
+      ? [{ _: 'messageEmpty', id: 100 }] : params.offset_id === 100 ? [message(99)] : []
+  }));
+  const ids = await api.getPinnedIds({ target: { inputPeer: { _: 'inputPeerSelf' } } });
+  assert.deepEqual([...ids], [99]);
+  assert.deepEqual(calls.map(call => call.params.offset_id), [0, 100, 99]);
+});
+
 test('searchPage builds a sender-scoped MTProto search request', async () => {
   const { api, calls } = apiWithHandler(() => ({
     _: 'messages.messages',

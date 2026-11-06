@@ -3,17 +3,23 @@ import { readFile } from 'node:fs/promises';
 import { templatesPlugin } from './build/templates.mjs';
 
 const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url), 'utf8'));
+const license = await readFile(new URL('./LICENSE', import.meta.url), 'utf8');
+const icon = await readFile(new URL('./images/icon-64.png', import.meta.url));
 const watch = process.argv.includes('--watch');
 
 const metadata = `// ==UserScript==
 // @name         Wipegram
 // @namespace    https://github.com/rafelolv/Wipegram
 // @version      ${pkg.version}
-// @description  Bulk-delete your own messages in Telegram Web K chats
+// @description  ${pkg.description}
 // @author       ${pkg.author}
+// @copyright    2026 Rafael (rafaelolv)
+// @icon         data:image/png;base64,${icon.toString('base64')}
 // @homepageURL  https://github.com/rafelolv/Wipegram
 // @supportURL   https://github.com/rafelolv/Wipegram/issues
-// @license      MIT
+// @downloadURL  https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js
+// @updateURL    https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js
+// @license      ${pkg.userscriptLicense}; https://github.com/rafelolv/Wipegram/blob/main/LICENSE
 // @match        https://web.telegram.org/k/*
 // @match        https://web.telegram.org/k
 // @match        https://web.telegram.org/a/*
@@ -35,7 +41,7 @@ const options = {
   legalComments: 'none',
   sourcemap: false,
   minify: false,
-  banner: { js: metadata },
+  banner: { js: `${metadata}\n/*!\n${license.trim().replaceAll('*/', '* /')}\n*/` },
   define: {
     __VERSION__: JSON.stringify(pkg.version)
   },

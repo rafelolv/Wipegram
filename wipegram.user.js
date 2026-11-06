@@ -1,12 +1,16 @@
 // ==UserScript==
 // @name         Wipegram
 // @namespace    https://github.com/rafelolv/Wipegram
-// @version      0.2.1
-// @description  Bulk-delete your own messages in Telegram Web K chats
-// @author       Wipegram contributors
+// @version      0.2.2
+// @description  Scan, review and bulk-delete your own messages in Telegram Web K
+// @author       Rafael (rafaelolv)
+// @copyright    2026 Rafael (rafaelolv)
+// @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFwUlEQVR4nOybXUxcRRSAz9y9Sxfa0C4/BamlVKtRrGlhA1hsicY3jZpo02iiRk3T+GSlzxqxvmtr4ptpmvhCtDG+6EtN+VHbKoGlVXmggmLLX9mCkELZn3un57As2S4zc392m8BevmR37905M+fMmZkz596bq4MN6k5HntNM/jwwaAQOVRyggjG2GdYQnPN5BjCJNo7h6W/4+0Pv8fIOq3pMWtLG9bpg5Cjj7CMUqoJ1CA7UGJj8k765sjPQxhIimdUOaONaXXDmCOPGSQbsEcgHOB8Epn3Ye7zkHDDG04u0TNn64unDmmmcyZvOE4w9CmCexaX84qqi9JP6zyOv4M+3jK12TD7AOZjA2et9J0q/Sf234oDQZ9NPAjMweLBCyGc4v2OA3tzfGuyn0+RI47rnmtme950nsI8+ZnxNfabTpS+M9sdwKtSCd9hLfaYDVvvlzS2BOBvGoFcOHgLzhpvzMdijB2LaYQx6nuo8gYnc9s0F8KqOU/8Z8CqMPaVx4DXgVbj5mI5uqAGPgsugUgPGK8GrcKjEGMA2gVdhsDUvU14nbDgAPI7uRPiJCh2e3l0gLT/bswAxA5Q07/LD3gf8wrI/x+NwcSSurF/gA3i7oUha/us/MfhrMgF2ceSAuMnhWJP8eik8Goee6+oOvHegCGorxGoHJv3ogFll/X1VfqUNnUNRcIKjJTA4ZUBk3pSWN1X7lfW3Bpi08wSVkYwKlQ6yjWx0guMY8NO1mLSscafaAS0PFYAVVjIqHSrbZDh2QNewXMnj232wpUA+god2WztAJUNtkw43tslw7IDeG3G4HRUvA0wtoUEyQhpLBkArSEaT+JDaJh0iyCayzSmOHYBxEH75V65ItkZDD/oh4Fevb4JkSNZJ2wTZZHJwjKs8oHNIEQeqxVPYzvS3kpW1bWWTClcO+Bn32rghdnf1Ng2ChatH+qADB4hkqU1qWwTZQja5wZUDophn9NyQJxuZHdhRrEmNF0GyVEfVZjpkS9R+7nMPrlPhLsWUy1yrLQ+LjV9MJD8iMuuo1n+Xy+lPuHaAKuPK3KsP1ogdcGkkBpdHxMZnxgHV/u80+0vHtQNuLXBpzl1SpMGe0uR+HdDlo0eBSxa8Qjt02LScNFJb1KYIsoFscUtWV4Oqqdew3OkDu8Sjb+CeRZ3vwI8h2L98mAw0L9dtuE/Tn8jOAYrMq2ln0vhDktQ2PJaA+Rhf+tCxiFTdVFtObbBDVg4YumXA2Jw4K0wlMy2S6H3h75jwOJ1UXVliRLrJhmzI+oaIzPhCtPm1/QHYVijO/i5ciwqP06G61Eah35luJ2TtgK5heQQ+2ii+cTGAgSuSFrjoeEASUGVtWOm2S9YOCI8mpBdHstEXrVvZWpa1QTpJd7bk5J5g57Czq7AOwdTtcDidneqUkRsHONiKxucMGJ5eHbjoPyq7HzpV5MQBlNHJLo4yOa+4a3Pe5h0d0nVpZA05gC5ELv9nb0qqRs7uqJKuaPbLf4mcPRewk5H9f8eEq+Nyy6mMZHKhyy45cwCltJyrl4GdfdtKhnR0rEUHzC5yuDqhDmJ2priVDOkgXbkip4/GVFNzMcHh9+vWcYJkSNaNDjfk1gGKC5Nu3LcT1st7SaZbscdne/GTCQudiuRuPq1DNh6Pg8fZcAAHnv015XqFw6wGnE2AV2EwoeGzRs86ALPKCVwCrB88C+vXcBp8D17Fx9qX7jeFTk31oTfqwEPg9L/S11q+P7kNcnYSPAYD1pb8XcZLsyA1+nS8kgiZmv4OvVAE+Q72kXHfm6nTFQeE3w9eMUF7C/IYem0Od703ek+U/JH6755UONxaes4E/jKKLkC+QSMP2kt9rWXfpf8tfOqw74uZOt1ItCffuMwDOB80ffoRmuWZRcqXp+uLI++Cxj5ezy9Pc8Y/Dc+UfWX/5WkBodNTz2JrL+Bh01p/fR5tG0XbLprg+zH8QbDbqt5dAAAA//9cbsYHAAAABklEQVQDAPfVVQN4VEoAAAAAAElFTkSuQmCC
 // @homepageURL  https://github.com/rafelolv/Wipegram
 // @supportURL   https://github.com/rafelolv/Wipegram/issues
-// @license      MIT
+// @downloadURL  https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js
+// @updateURL    https://raw.githubusercontent.com/rafelolv/Wipegram/main/wipegram.user.js
+// @license      LicenseRef-Wipegram-Proprietary; https://github.com/rafelolv/Wipegram/blob/main/LICENSE
 // @match        https://web.telegram.org/k/*
 // @match        https://web.telegram.org/k
 // @match        https://web.telegram.org/a/*
@@ -16,6 +20,78 @@
 // @noframes
 // ==/UserScript==
 
+/*!
+Wipegram Proprietary License 1.0
+SPDX-License-Identifier: LicenseRef-Wipegram-Proprietary
+
+Copyright (c) 2026 Rafael (rafaelolv). All rights reserved.
+
+1. Scope and ownership
+
+These terms apply to original Wipegram code, documentation and artwork
+(the "Software") owned by Rafael (rafaelolv) and distributed under this
+license, starting with version 0.2.2. Copyright
+and all rights not expressly granted remain with the copyright holder.
+Visibility of source code does not make this an open-source license.
+
+2. Limited personal-use permission
+
+You may download official, unmodified distributions, install them on your
+own devices, and run them solely for your personal, non-commercial use to
+manage messages in Telegram accounts you control. You may make only the
+local copies needed for installation, execution and personal backup.
+This permission is non-exclusive and non-transferable. You must preserve
+copyright, attribution and license notices in every permitted copy.
+
+3. Reserved rights and restrictions
+
+Except for the permission above, or as required by applicable law or the
+hosting platform's applicable terms, you must obtain prior written
+permission from Rafael (rafaelolv) before you:
+
+- Copy, publish, redistribute, mirror, sublicense, sell, rent or transfer
+  the Software or any substantial part of it.
+- Modify, adapt, translate or create derivative software from it.
+- Use it commercially, offer it as a service, or bundle it with another
+  product or distribution.
+- Remove or alter attribution, copyright, licensing or ownership notices,
+  or present Wipegram or its original material as your own creation.
+- Use the Wipegram name or artwork to imply endorsement or authorization.
+
+No patent or trademark license is granted. Inspection of publicly visible
+source is permitted; it grants no additional reuse or distribution rights.
+
+4. Earlier versions and third-party rights
+
+These terms do not revoke permissions already granted for copies released
+under the MIT License, including Wipegram v0.2.1, or restrict material to
+which a recipient has independent rights under an earlier license.
+Third-party material remains subject to its own copyright and license.
+Nothing here overrides mandatory legal exceptions or rights granted by
+the hosting platform's terms.
+
+5. Termination
+
+Permission under this license terminates if you breach its conditions.
+After termination, stop using and delete copies covered solely by this
+license, except copies you are legally entitled or required to retain.
+Termination does not affect independent rights under earlier licenses.
+
+6. Warranty and liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED
+"AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+THE COPYRIGHT HOLDER IS NOT LIABLE FOR CLAIMS, DAMAGES OR OTHER LIABILITY
+ARISING FROM THE SOFTWARE OR ITS USE. MESSAGE DELETION MAY BE PERMANENT.
+NOTHING IN THIS LICENSE EXCLUDES LIABILITY THAT CANNOT LAWFULLY BE EXCLUDED.
+
+7. Permission requests
+
+Contact Rafael (rafaelolv) through the official Wipegram repository:
+https://github.com/rafelolv/Wipegram
+Additional permissions must be granted explicitly in writing.
+*/
 (() => {
   // src/errors.js
   var WipegramError = class extends Error {
@@ -558,10 +634,14 @@
     return messages.filter((message) => message && message._ !== "messageEmpty");
   }
   function normalizeMessagesResult(result) {
+    const rawMessages = Array.isArray(result?.messages) ? result.messages : [];
+    const ids = rawMessages.map((message) => message?.id).filter((id) => Number.isInteger(id) && id > 0);
     return {
       messages: messagesOf(result),
       count: Number.isFinite(result?.count) ? result.count : 0,
-      notModified: result?._ === "messages.messagesNotModified"
+      notModified: result?._ === "messages.messagesNotModified",
+      nextOffsetId: ids.length ? Math.min(...ids) : 0,
+      incomplete: !Array.isArray(result?.messages) || rawMessages.length > 0 && ids.length === 0
     };
   }
   var TelegramApi = class {
@@ -660,15 +740,14 @@
         if (target.topMsgId) params.top_msg_id = target.topMsgId;
         const raw = await this.invoke("messages.search", params, { expectedSelfId: target.selfId });
         const result = normalizeMessagesResult(raw);
-        if (result.notModified || !Array.isArray(raw?.messages)) {
+        if (result.notModified || result.incomplete) {
           throw new WipegramError("PINNED_UNAVAILABLE", "Telegram did not return the pinned messages. Scan stopped to protect them.");
         }
         for (const message of result.messages) {
           if (message._ === "message" && Number.isInteger(message.id)) ids.add(message.id);
         }
-        if (result.messages.length === 0) return ids;
-        const validIds = result.messages.map((message) => message.id).filter((id) => Number.isInteger(id) && id > 0);
-        const nextOffset = Math.min(...validIds);
+        if (raw.messages.length === 0) return ids;
+        const nextOffset = result.nextOffsetId;
         if (!Number.isFinite(nextOffset) || offsetId && nextOffset >= offsetId) {
           throw new WipegramError("PINNED_UNAVAILABLE", "Pinned-message pagination did not advance. Scan stopped to protect them.");
         }
@@ -843,9 +922,8 @@
      * Find the user's own messages in the current target.
      *
      * Search mode asks Telegram for sender=me with the chosen server-side media
-     * filter, which is fast but unsupported in a few chat types. Auto mode falls
-     * back to walking the full history and filtering locally when Telegram
-     * rejects sender search.
+     * filter. Auto mode also verifies history from its newest page because an
+     * empty or partial search result is not proof that no messages remain.
      */
     async scan({ target, filters, signal }) {
       if (!target) throw new WipegramError("NO_CHAT", "Open a chat first, then press Scan messages.");
@@ -862,6 +940,13 @@
       let scanned = 0;
       let totalFound = 0;
       const seenCursors = /* @__PURE__ */ new Set();
+      const switchToHistory = (type, details = {}) => {
+        allowFallback = false;
+        mode = "history";
+        offsetId = 0;
+        seenCursors.clear();
+        this.emit(type, { ...details, matched: matched.size });
+      };
       this.emit("scan:start", { target, filters, mode });
       const pinnedIds = filters.skipPinned ? await this.fetchPinnedIds(target, signal, floodCounter) : /* @__PURE__ */ new Set();
       try {
@@ -897,20 +982,26 @@
           } catch (rawError) {
             const error = normalizeError(rawError);
             if (allowFallback && isSearchFallbackError(error)) {
-              allowFallback = false;
-              mode = "history";
-              offsetId = 0;
-              seenCursors.clear();
-              this.emit("scan:fallback", {
+              switchToHistory("scan:fallback", {
                 reason: humanError(error),
-                code: error.code || "SEARCH_UNAVAILABLE",
-                matched: matched.size
+                code: error.code || "SEARCH_UNAVAILABLE"
               });
               continue;
             }
             throw error;
           }
+          this.checkAbort(signal);
           pages += 1;
+          if (page.notModified || page.incomplete) {
+            if (allowFallback) {
+              switchToHistory("scan:fallback", {
+                reason: "Telegram returned an incomplete search response.",
+                code: "INCOMPLETE_RESPONSE"
+              });
+              continue;
+            }
+            throw new WipegramError("INCOMPLETE_RESPONSE", "Telegram did not return a complete message page. Scan again before deleting.");
+          }
           const messages = page.messages || [];
           if (page.count) totalFound = Math.max(totalFound, page.count);
           scanned += messages.length;
@@ -939,12 +1030,20 @@
             oldestDate: oldestMs || null
           });
           if (limit && matched.size >= limit) break;
-          if (messages.length === 0) break;
-          if (filters.minDate && oldestMs && oldestMs < filters.minDate) break;
           const ids = messages.map((message) => message?.id).filter((id) => Number.isInteger(id) && id > 0);
-          if (!ids.length) break;
-          const nextOffset = Math.min(...ids);
-          if (!nextOffset || nextOffset === offsetId || seenCursors.has(nextOffset)) break;
+          const nextOffset = page.nextOffsetId ?? (ids.length ? Math.min(...ids) : 0);
+          const reachedMinDate = filters.minDate && oldestMs && oldestMs < filters.minDate;
+          const stalled = nextOffset && (offsetId && nextOffset >= offsetId || seenCursors.has(nextOffset));
+          if (!nextOffset || reachedMinDate || stalled) {
+            if (allowFallback) {
+              switchToHistory("scan:verify", { reason: "Checking chat history for messages missing from sender search." });
+              continue;
+            }
+            if (stalled && mode === "history" && !reachedMinDate) {
+              throw new WipegramError("PAGINATION_STALLED", "Telegram repeated a history page. The scan is incomplete; try again before deleting.");
+            }
+            break;
+          }
           seenCursors.add(nextOffset);
           offsetId = nextOffset;
           if (filters.searchDelay) {
@@ -1144,10 +1243,10 @@
       place-items: center;
       width: 24px;
       height: 24px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #3390ec, #7b5cf0);
-      box-shadow: 0 2px 7px rgba(51, 144, 236, 0.35);
-      color: #ffffff;
+      border-radius: 4px;
+      background: transparent;
+      box-shadow: none;
+      color: #3390ec;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 12.5px;
       font-weight: 800;
@@ -1156,8 +1255,7 @@
     }
 
     .wipegram-launcher:hover .wipegram-launcher-tile {
-      transform: scale(1.07);
-      box-shadow: 0 3px 10px rgba(51, 144, 236, 0.45);
+      background: rgba(51, 144, 236, 0.1);
     }
 
     .wipegram-fab {
@@ -1292,7 +1390,7 @@
   var styles_default = `:host {
   --wg-panel: #ffffff;
   --wg-header: #ffffff;
-  --wg-elevated: #f5f6f7;
+  --wg-elevated: #f6f7f8;
   --wg-input: #ffffff;
   --wg-text: #16181c;
   --wg-muted: #707579;
@@ -1312,7 +1410,7 @@
   --wg-warning: #c07a10;
   --wg-progress-bg: rgba(16, 24, 40, 0.08);
   --wg-log-bg: rgba(16, 24, 40, 0.025);
-  --wg-shadow: 0 18px 60px rgba(15, 23, 42, 0.22), 0 2px 10px rgba(15, 23, 42, 0.08);
+  --wg-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
   --wg-toast-bg: #2f3540;
 
   all: initial;
@@ -1350,7 +1448,7 @@
   --wg-warning: #e8b25c;
   --wg-progress-bg: rgba(255, 255, 255, 0.1);
   --wg-log-bg: rgba(0, 0, 0, 0.16);
-  --wg-shadow: 0 20px 70px rgba(0, 0, 0, 0.55), 0 2px 12px rgba(0, 0, 0, 0.3);
+  --wg-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   --wg-toast-bg: #3a3a3a;
 
   color-scheme: dark;
@@ -1385,13 +1483,12 @@
   background: var(--wg-panel);
   color: var(--wg-text);
   border: 1px solid var(--wg-border);
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: var(--wg-shadow);
   overflow: hidden;
   pointer-events: auto;
   font-size: 14px;
   line-height: 1.4;
-  animation: wg-panel-in 0.16s ease-out;
 }
 
 .wg-header {
@@ -1416,21 +1513,6 @@
   align-items: center;
   gap: 11px;
   min-width: 0;
-}
-
-.wg-logo {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  flex: 0 0 auto;
-  border-radius: 12px;
-  color: #ffffff;
-  background: linear-gradient(135deg, #3390ec, #7b5cf0);
-  box-shadow: 0 4px 14px rgba(51, 144, 236, 0.3);
-  font-size: 19px;
-  font-weight: 800;
-  line-height: 1;
 }
 
 .wg-brand-text {
@@ -1475,7 +1557,7 @@
   height: 32px;
   padding: 0;
   border: 0;
-  border-radius: 9px;
+  border-radius: 6px;
   background: transparent;
   color: var(--wg-muted);
   cursor: pointer;
@@ -1502,9 +1584,9 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
   min-height: 0;
-  padding: 14px 16px 16px;
+  padding: 18px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -1528,27 +1610,21 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
-  border: 1px solid var(--wg-border);
-  border-radius: 12px;
-  background: var(--wg-elevated);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--wg-border);
 }
 
 .wg-avatar {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   flex: 0 0 auto;
   border-radius: 50%;
-  color: #ffffff;
-  background: linear-gradient(
-    135deg,
-    hsl(var(--wg-hue, 210deg) 68% 56%),
-    hsl(calc(var(--wg-hue, 210deg) + 38deg) 68% 44%)
-  );
-  font-size: 17px;
-  font-weight: 700;
+  background: var(--wg-elevated);
+  color: var(--wg-muted);
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .wg-avatar-muted {
@@ -1610,30 +1686,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  color: var(--wg-muted);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.wg-own-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: var(--wg-primary-soft);
-  color: var(--wg-primary);
-  font-size: 10.5px;
-  font-weight: 650;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.wg-own-badge .wg-icon {
-  width: 12px;
-  height: 12px;
+  color: var(--wg-text);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .wg-grid {
@@ -1724,23 +1779,19 @@
 }
 
 .wg-advanced {
-  border: 1px solid var(--wg-border);
-  border-radius: 10px;
-  background: var(--wg-elevated);
-  overflow: hidden;
+  border-top: 1px solid var(--wg-border);
 }
 
 .wg-advanced summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 11px;
+  padding: 12px 0;
   color: var(--wg-muted);
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 500;
   list-style: none;
   cursor: pointer;
-  user-select: none;
 }
 
 .wg-advanced summary::-webkit-details-marker {
@@ -1763,12 +1814,12 @@
 }
 
 .wg-advanced-grid {
-  padding: 2px 11px 2px;
+  padding: 0 0 12px;
 }
 
 .wg-advanced .wg-hint {
   margin: 0;
-  padding: 2px 11px 11px;
+  padding: 0 0 12px;
 }
 
 .wg-hint {
@@ -1799,7 +1850,7 @@
   height: 38px;
   padding: 0 14px;
   border: 1px solid transparent;
-  border-radius: 9px;
+  border-radius: 6px;
   background: transparent;
   color: var(--wg-text);
   font: inherit;
@@ -1884,6 +1935,7 @@
 }
 
 .wg-link {
+  text-decoration: none;
   padding: 2px 4px;
   border: 0;
   border-radius: 5px;
@@ -1922,15 +1974,13 @@
   width: 0;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--wg-primary), #7b5cf0);
+  background: var(--wg-primary);
   transition: width 0.25s ease;
 }
 
 .wg-progress-bar.wg-indeterminate {
-  width: 100%;
-  background: linear-gradient(90deg, transparent, var(--wg-primary), #7b5cf0, transparent);
-  background-size: 200% 100%;
-  animation: wg-indeterminate 1.2s linear infinite;
+  width: 35%;
+  animation: wg-indeterminate 1.2s ease-in-out infinite alternate;
 }
 
 .wg-status {
@@ -1942,46 +1992,18 @@
   font-size: 12.5px;
 }
 
-.wg-status-dot {
-  width: 7px;
-  height: 7px;
-  flex: 0 0 auto;
-  margin-top: 6px;
-  border-radius: 50%;
-  background: var(--wg-muted);
-}
-
-.wg-tone-info {
-  background: var(--wg-primary);
-}
-
-.wg-tone-success {
-  background: var(--wg-success);
-}
-
-.wg-tone-warning {
-  background: var(--wg-warning);
-}
-
-.wg-tone-error {
-  background: var(--wg-danger);
-}
-
 .wg-metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  padding: 12px 0;
+  border-block: 1px solid var(--wg-border);
 }
 
 .wg-metric {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  padding: 8px 6px;
-  border: 1px solid var(--wg-border);
-  border-radius: 9px;
-  background: var(--wg-elevated);
-  text-align: center;
+  gap: 2px;
+  padding: 0 8px;
 }
 
 .wg-metric span {
@@ -1992,10 +2014,7 @@
 
 .wg-metric small {
   color: var(--wg-muted);
-  font-size: 9.5px;
-  font-weight: 650;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 11px;
 }
 
 .wg-results {
@@ -2015,10 +2034,8 @@
 }
 
 .wg-result {
-  padding: 7px 9px;
-  border: 1px solid var(--wg-border);
-  border-radius: 9px;
-  background: var(--wg-elevated);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--wg-border);
 }
 
 .wg-result-top {
@@ -2036,14 +2053,8 @@
 }
 
 .wg-badge {
-  padding: 2px 5px;
-  border-radius: 4px;
-  background: var(--wg-primary-soft);
-  color: var(--wg-primary);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  color: var(--wg-muted);
+  font-size: 11px;
 }
 
 .wg-result-text {
@@ -2074,15 +2085,12 @@
 .wg-log {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   max-height: 108px;
   overflow-y: auto;
-  padding: 7px 8px;
-  border: 1px solid var(--wg-border);
-  border-radius: 9px;
-  background: var(--wg-log-bg);
+  padding-top: 10px;
   font-size: 11.5px;
-  line-height: 1.35;
+  line-height: 1.4;
   scrollbar-width: thin;
   scrollbar-color: var(--wg-border-strong) transparent;
 }
@@ -2119,23 +2127,11 @@
 
 .wg-footer {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
   border-top: 1px solid var(--wg-border);
-  padding-top: 10px;
-}
-
-.wg-privacy-note {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--wg-placeholder);
-  font-size: 10.5px;
-}
-
-.wg-privacy-note .wg-icon {
-  width: 13px;
-  height: 13px;
+  padding-top: 12px;
 }
 
 .wg-footer-actions {
@@ -2153,9 +2149,7 @@
   justify-content: center;
   padding: 18px;
   background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(2px);
   pointer-events: auto;
-  animation: wg-fade 0.12s ease-out;
 }
 
 .wg-modal-card {
@@ -2167,26 +2161,10 @@
   overflow-y: auto;
   padding: 20px;
   border: 1px solid var(--wg-border);
-  border-radius: 16px;
+  border-radius: 10px;
   background: var(--wg-panel);
   color: var(--wg-text);
   box-shadow: var(--wg-shadow);
-  animation: wg-pop 0.16s ease-out;
-}
-
-.wg-modal-icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--wg-danger-soft);
-  color: var(--wg-danger);
-}
-
-.wg-modal-icon .wg-icon {
-  width: 22px;
-  height: 22px;
 }
 
 .wg-modal-card h2 {
@@ -2214,11 +2192,8 @@
 
 .wg-modal-warning {
   margin: 0;
-  padding: 9px 10px;
-  border-radius: 8px;
-  background: var(--wg-danger-soft);
-  color: var(--wg-danger);
-  font-size: 12px;
+  color: var(--wg-muted);
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -2227,9 +2202,7 @@
 }
 
 .wg-confirm-field input {
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .wg-modal-actions {
@@ -2281,55 +2254,38 @@
   background: #d64545;
 }
 
-.wg-private .wg-blur {
+:host(.wg-private) .wg-blur {
   filter: blur(5px);
   transition: filter 0.15s ease;
   cursor: help;
 }
 
-.wg-private .wg-blur:hover {
+:host(.wg-private) .wg-blur:hover {
   filter: none;
 }
 
-@keyframes wg-panel-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px) scale(0.99);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 @keyframes wg-indeterminate {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(185%); }
 }
 
-@keyframes wg-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.wg-ready .wg-actions .wg-primary {
+  background: transparent;
+  border-color: var(--wg-border-strong);
+  color: var(--wg-text);
 }
 
-@keyframes wg-pop {
-  from {
-    opacity: 0;
-    transform: translateY(4px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.wg-activity summary {
+  cursor: pointer;
 }
+
+.wg-activity summary:focus-visible {
+  outline: 2px solid var(--wg-primary);
+  outline-offset: 3px;
+}
+
+#status-text[data-tone="error"] { color: var(--wg-danger); }
+#status-text[data-tone="warning"] { color: var(--wg-warning); }
 
 @media (max-width: 520px) {
   .wg-panel {
@@ -2339,7 +2295,7 @@
     width: auto;
     max-height: calc(100vh - 16px);
     max-height: calc(100dvh - 16px);
-    border-radius: 14px;
+    border-radius: 10px;
   }
 
   .wg-header {
@@ -2386,7 +2342,7 @@
 `;
 
   // dom-template:src/panel.html
-  var panel_default = [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-panel", null], ["id", "panel", null], ["role", "dialog", null], ["aria-label", "Wipegram", null], ["tabindex", "-1", null], ["hidden", "", null]], ["\n  ", ["header", "http://www.w3.org/1999/xhtml", [["class", "wg-header", null], ["id", "drag-handle", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-logo", null], ["aria-hidden", "true", null]], ["W"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-title", null]], ["Wipegram ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-version", null]], ["v0.2.1"]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-subtitle", null]], ["Bulk-delete your own messages"]], "\n      "]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-header-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "privacy-btn", null], ["title", "Toggle privacy mode", null], ["aria-label", "Toggle privacy mode", null], ["aria-pressed", "false", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z", null]], []], ["circle", "http://www.w3.org/2000/svg", [["cx", "12", null], ["cy", "12", null], ["r", "3", null]], []]]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "close-btn", null], ["title", "Close Wipegram", null], ["aria-label", "Close Wipegram", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M18 6 6 18M6 6l12 12", null]], []]]]]], "\n    "]], "\n  "]], "\n\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-body", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-avatar", null], ["id", "target-avatar", null]], ["?"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-name wg-blur", null], ["id", "target-name", null]], ["Open a chat"]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-meta wg-blur", null], ["id", "target-meta", null]], ["Wipegram works in private chats, groups and Saved Messages"]], "\n      "]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "refresh-btn", null], ["title", "Refresh current chat", null], ["aria-label", "Refresh current chat", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6", null]], []]]]]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-alert wg-hidden", null], ["id", "target-warning", null]], []], "\n\n    ", ["fieldset", "http://www.w3.org/1999/xhtml", [["class", "wg-fieldset", null], ["id", "filters-fieldset", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["What to delete"]], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-own-badge", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z", null]], []], ["path", "http://www.w3.org/2000/svg", [["d", "m9 12 2 2 4-4", null]], []]]], " Your messages only"]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Message type"]], "\n          ", ["select", "http://www.w3.org/1999/xhtml", [["id", "type-select", null]], [["option", "http://www.w3.org/1999/xhtml", [["value", "all", null]], ["All messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "text", null]], ["Text only"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "photos", null]], ["Photos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "videos", null]], ["Videos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "files", null]], ["Files"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "links", null]], ["Links"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "music", null]], ["Music"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "voice", null]], ["Voice messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "gifs", null]], ["GIFs"]]]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Text contains"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "query-input", null], ["placeholder", "Optional words", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-span2", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Regex pattern"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "pattern-input", null], ["placeholder", "Optional, e.g. ^hello|invoice", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Newer than"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "min-date", null]], []], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Older than"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "max-date", null]], []], "\n        "]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-checks", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "skip-pinned", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Skip pinned messages"]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null], ["id", "topic-wrap", null], ["hidden", "", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "topic-scope", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Current topic only"]], "\n        "]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Advanced options ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Scan method"]], "\n            ", ["select", "http://www.w3.org/1999/xhtml", [["id", "scan-method", null]], ["\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "auto", null]], ["Auto (recommended)"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "search", null]], ["Telegram sender search"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "history", null]], ["Full history walk"]], "\n            "]], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Max messages"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "max-messages", null], ["min", "0", null], ["step", "1", null], ["placeholder", "Unlimited", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between batches (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "delete-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between scan pages (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "search-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n        "]], "\n        ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-hint", null]], ["Auto uses Telegram's sender search first and falls back to a full history walk if the chat does not support search-by-sender."]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-form-error wg-hidden", null], ["id", "form-error", null]], []], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-primary", null], ["id", "scan-btn", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["circle", "http://www.w3.org/2000/svg", [["cx", "11", null], ["cy", "11", null], ["r", "7", null]], []], ["path", "http://www.w3.org/2000/svg", [["d", "m20 20-3.4-3.4", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "scan-label", null]], ["Scan messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "delete-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "delete-label", null]], ["Delete messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-stop wg-hidden", null], ["id", "stop-btn", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["rect", "http://www.w3.org/2000/svg", [["x", "6", null], ["y", "6", null], ["width", "12", null], ["height", "12", null], ["rx", "2", null], ["fill", "currentColor", null], ["stroke", "none", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Stop"]]]], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-wrap", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress", null]], [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-bar", null], ["id", "progress-bar", null]], []]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-status", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-status-dot", null], ["id", "status-dot", null]], []], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["id", "status-text", null]], ["Choose filters, then scan the open chat."]], "\n      "]], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metrics", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-checked", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Checked"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-found", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Found"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-deleted", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Deleted"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-failed", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Failed"]]]], "\n    "]], "\n\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-results", null], ["id", "results", null], ["hidden", "", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Found messages ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "results-count", null]], []]]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-link", null], ["id", "results-toggle", null], ["hidden", "", null]], ["Show all"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-results-list", null], ["id", "results-list", null]], []], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-hint wg-results-more", null], ["id", "results-more", null], ["hidden", "", null]], []], "\n    "]], "\n\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-activity", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Activity"]], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "log-count", null]], ["0"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-log", null], ["id", "log", null], ["role", "log", null], ["aria-live", "polite", null]], []], "\n    "]], "\n\n    ", ["footer", "http://www.w3.org/1999/xhtml", [["class", "wg-footer", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-privacy-note", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z", null]], []], ["path", "http://www.w3.org/2000/svg", [["d", "m9 12 2 2 4-4", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Runs only in this tab. No tokens, no servers."]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-footer-actions", null]], ["\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "reset-btn", null]], ["Reset"]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "report-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 3v12M7 10l5 5 5-5M4 21h16", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Report"]]]], "\n      "]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal", null], ["id", "modal", null], ["hidden", "", null]], ["\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-card", null], ["role", "alertdialog", null], ["aria-modal", "true", null], ["aria-labelledby", "modal-title", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-icon", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5", null]], []]]]]], "\n    ", ["h2", "http://www.w3.org/1999/xhtml", [["id", "modal-title", null]], ["Delete messages?"]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-target wg-blur", null], ["id", "modal-target", null]], []], "\n    ", ["ul", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-filters", null], ["id", "modal-filters", null]], []], "\n    ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-warning", null], ["id", "modal-warning", null]], []], "\n    ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-confirm-field", null], ["id", "confirm-field", null], ["hidden", "", null]], ["\n      ", ["span", "http://www.w3.org/1999/xhtml", [], ["Type ", ["strong", "http://www.w3.org/1999/xhtml", [], ["DELETE"]], " to confirm"]], "\n      ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "confirm-input", null], ["autocomplete", "off", null], ["spellcheck", "false", null], ["autocapitalize", "characters", null]], []], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost", null], ["id", "confirm-cancel", null]], ["Cancel"]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "confirm-delete", null]], ["Delete forever"]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-toast", null], ["id", "toast", null], ["role", "status", null], ["aria-live", "polite", null], ["hidden", "", null]], []], "\n"];
+  var panel_default = [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-panel", null], ["id", "panel", null], ["role", "dialog", null], ["aria-label", "Wipegram", null], ["tabindex", "-1", null], ["hidden", "", null]], ["\n  ", ["header", "http://www.w3.org/1999/xhtml", [["class", "wg-header", null], ["id", "drag-handle", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-brand-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-title", null]], ["Wipegram ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-version", null]], ["v0.2.2"]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-subtitle", null]], ["Your messages only"]], "\n      "]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-header-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "privacy-btn", null], ["title", "Toggle privacy mode", null], ["aria-label", "Toggle privacy mode", null], ["aria-pressed", "false", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z", null]], []], ["circle", "http://www.w3.org/2000/svg", [["cx", "12", null], ["cy", "12", null], ["r", "3", null]], []]]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "close-btn", null], ["title", "Close Wipegram", null], ["aria-label", "Close Wipegram", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M18 6 6 18M6 6l12 12", null]], []]]]]], "\n    "]], "\n  "]], "\n\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-body", null]], ["\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-avatar", null], ["id", "target-avatar", null]], ["?"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-text", null]], ["\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-name wg-blur", null], ["id", "target-name", null]], ["Open a chat"]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-target-meta wg-blur", null], ["id", "target-meta", null]], ["Wipegram works in private chats, groups and Saved Messages"]], "\n      "]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-icon-btn", null], ["id", "refresh-btn", null], ["title", "Refresh current chat", null], ["aria-label", "Refresh current chat", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6", null]], []]]]]], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-alert wg-hidden", null], ["id", "target-warning", null]], []], "\n\n    ", ["fieldset", "http://www.w3.org/1999/xhtml", [["class", "wg-fieldset", null], ["id", "filters-fieldset", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Filters"]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Message type"]], "\n          ", ["select", "http://www.w3.org/1999/xhtml", [["id", "type-select", null]], [["option", "http://www.w3.org/1999/xhtml", [["value", "all", null]], ["All messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "text", null]], ["Text only"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "photos", null]], ["Photos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "videos", null]], ["Videos"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "files", null]], ["Files"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "links", null]], ["Links"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "music", null]], ["Music"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "voice", null]], ["Voice messages"]], ["option", "http://www.w3.org/1999/xhtml", [["value", "gifs", null]], ["GIFs"]]]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Text contains"]], "\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "query-input", null], ["placeholder", "Optional words", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n        "]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Date & pattern filters ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-span2", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Regex pattern"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "pattern-input", null], ["placeholder", "Optional, e.g. ^hello|invoice", null], ["autocomplete", "off", null], ["spellcheck", "false", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Newer than"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "min-date", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Older than"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "datetime-local", null], ["id", "max-date", null]], []], "\n          "]], "\n        "]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-checks", null]], ["\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "skip-pinned", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Skip pinned messages"]], "\n        "]], "\n        ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-check", null], ["id", "topic-wrap", null], ["hidden", "", null]], ["\n          ", ["input", "http://www.w3.org/1999/xhtml", [["type", "checkbox", null], ["id", "topic-scope", null], ["checked", "", null]], []], "\n          ", ["span", "http://www.w3.org/1999/xhtml", [], ["Current topic only"]], "\n        "]], "\n      "]], "\n\n      ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-advanced", null]], ["\n        ", ["summary", "http://www.w3.org/1999/xhtml", [], ["Advanced options ", ["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon wg-chevron", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "m6 9 6 6 6-6", null]], []]]]]], "\n        ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-grid wg-advanced-grid", null]], ["\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Scan method"]], "\n            ", ["select", "http://www.w3.org/1999/xhtml", [["id", "scan-method", null]], ["\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "auto", null]], ["Auto (recommended)"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "search", null]], ["Telegram sender search"]], "\n              ", ["option", "http://www.w3.org/1999/xhtml", [["value", "history", null]], ["Full history walk"]], "\n            "]], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Max messages"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "max-messages", null], ["min", "0", null], ["step", "1", null], ["placeholder", "Unlimited", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between batches (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "delete-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n          ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field", null]], ["\n            ", ["span", "http://www.w3.org/1999/xhtml", [], ["Pause between scan pages (ms)"]], "\n            ", ["input", "http://www.w3.org/1999/xhtml", [["type", "number", null], ["id", "search-delay", null], ["min", "0", null], ["max", "60000", null], ["step", "100", null], ["value", "0", null]], []], "\n          "]], "\n        "]], "\n        ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-hint", null]], ["Auto searches your messages, then checks chat history for anything missing from search. A message limit stops either scan once reached."]], "\n      "]], "\n\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-form-error wg-hidden", null], ["id", "form-error", null]], []], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-primary", null], ["id", "scan-btn", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["circle", "http://www.w3.org/2000/svg", [["cx", "11", null], ["cy", "11", null], ["r", "7", null]], []], ["path", "http://www.w3.org/2000/svg", [["d", "m20 20-3.4-3.4", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "scan-label", null]], ["Scan messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "delete-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [["id", "delete-label", null]], ["Delete messages"]]]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-stop", null], ["id", "stop-btn", null], ["hidden", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["rect", "http://www.w3.org/2000/svg", [["x", "6", null], ["y", "6", null], ["width", "12", null], ["height", "12", null], ["rx", "2", null], ["fill", "currentColor", null], ["stroke", "none", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Stop"]]]], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-wrap", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress", null]], [["div", "http://www.w3.org/1999/xhtml", [["class", "wg-progress-bar", null], ["id", "progress-bar", null]], []]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-status", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [["id", "status-text", null]], ["Choose filters, then scan the open chat."]], "\n      "]], "\n    "]], "\n\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metrics", null], ["hidden", "", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-checked", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Checked"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-found", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Found"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-deleted", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Deleted"]]]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-metric", null]], [["span", "http://www.w3.org/1999/xhtml", [["id", "metric-failed", null]], ["0"]], ["small", "http://www.w3.org/1999/xhtml", [], ["Failed"]]]], "\n    "]], "\n\n    ", ["section", "http://www.w3.org/1999/xhtml", [["class", "wg-results", null], ["id", "results", null], ["hidden", "", null]], ["\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Found messages ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "results-count", null]], []]]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-link", null], ["id", "results-toggle", null], ["hidden", "", null]], ["Show all"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-results-list", null], ["id", "results-list", null]], []], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-hint wg-results-more", null], ["id", "results-more", null], ["hidden", "", null]], []], "\n    "]], "\n\n    ", ["details", "http://www.w3.org/1999/xhtml", [["class", "wg-activity", null]], ["\n      ", ["summary", "http://www.w3.org/1999/xhtml", [["class", "wg-section-head", null]], ["\n        ", ["span", "http://www.w3.org/1999/xhtml", [], ["Activity"]], "\n        ", ["span", "http://www.w3.org/1999/xhtml", [["class", "wg-count", null], ["id", "log-count", null]], ["0"]], "\n      "]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-log", null], ["id", "log", null], ["role", "log", null], ["aria-live", "polite", null]], []], "\n    "]], "\n\n    ", ["footer", "http://www.w3.org/1999/xhtml", [["class", "wg-footer", null]], ["\n      ", ["a", "http://www.w3.org/1999/xhtml", [["class", "wg-link", null], ["href", "https://github.com/rafelolv/Wipegram/blob/main/docs/USER-GUIDE.md", null], ["target", "_blank", null], ["rel", "noopener noreferrer", null]], ["Help"]], "\n      ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-footer-actions", null]], ["\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "reset-btn", null]], ["Reset"]], "\n        ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost wg-sm", null], ["id", "report-btn", null], ["disabled", "", null]], [["svg", "http://www.w3.org/2000/svg", [["class", "wg-icon ", null], ["viewBox", "0 0 24 24", null], ["fill", "none", null], ["stroke", "currentColor", null], ["stroke-width", "2", null], ["stroke-linecap", "round", null], ["stroke-linejoin", "round", null], ["aria-hidden", "true", null]], [["path", "http://www.w3.org/2000/svg", [["d", "M12 3v12M7 10l5 5 5-5M4 21h16", null]], []]]], ["span", "http://www.w3.org/1999/xhtml", [], ["Report"]]]], "\n      "]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal", null], ["id", "modal", null], ["hidden", "", null]], ["\n  ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-card", null], ["role", "alertdialog", null], ["aria-modal", "true", null], ["aria-labelledby", "modal-title", null], ["aria-describedby", "modal-warning", null]], ["\n    ", ["h2", "http://www.w3.org/1999/xhtml", [["id", "modal-title", null]], ["Delete messages?"]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-target wg-blur", null], ["id", "modal-target", null]], []], "\n    ", ["ul", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-filters", null], ["id", "modal-filters", null]], []], "\n    ", ["p", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-warning", null], ["id", "modal-warning", null]], []], "\n    ", ["label", "http://www.w3.org/1999/xhtml", [["class", "wg-field wg-confirm-field", null], ["id", "confirm-field", null], ["hidden", "", null]], ["\n      ", ["span", "http://www.w3.org/1999/xhtml", [], ["Type ", ["strong", "http://www.w3.org/1999/xhtml", [], ["DELETE"]], " to confirm"]], "\n      ", ["input", "http://www.w3.org/1999/xhtml", [["type", "text", null], ["id", "confirm-input", null], ["autocomplete", "off", null], ["spellcheck", "false", null], ["autocapitalize", "characters", null]], []], "\n    "]], "\n    ", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-modal-actions", null]], ["\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-ghost", null], ["id", "confirm-cancel", null]], ["Cancel"]], "\n      ", ["button", "http://www.w3.org/1999/xhtml", [["type", "button", null], ["class", "wg-btn wg-danger", null], ["id", "confirm-delete", null]], ["Delete forever"]], "\n    "]], "\n  "]], "\n"]], "\n\n", ["div", "http://www.w3.org/1999/xhtml", [["class", "wg-toast", null], ["id", "toast", null], ["role", "status", null], ["aria-live", "polite", null], ["hidden", "", null]], []], "\n"];
 
   // src/dom.js
   function createNodes(descriptors) {
@@ -2423,7 +2379,7 @@
   }
 
   // src/ui.js
-  var APP_VERSION = false ? "dev" : "0.2.1";
+  var APP_VERSION = false ? "dev" : "0.2.2";
   var TYPE_CONFIRM_THRESHOLD = 100;
   var VISIBLE_RESULTS = 8;
   var MAX_RENDERED_RESULTS = 200;
@@ -2443,12 +2399,6 @@
   };
   function initialOf(title) {
     return (title || "?").trim().charAt(0).toLocaleUpperCase() || "?";
-  }
-  function hueFor(value) {
-    const text = String(value ?? "");
-    let hash = 0;
-    for (let i = 0; i < text.length; i++) hash = hash * 31 + text.charCodeAt(i) | 0;
-    return Math.abs(hash) % 360;
   }
   function slugify(value) {
     return String(value || "chat").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 48) || "chat";
@@ -2518,7 +2468,7 @@
       this.stopButton = this.shadow.getElementById("stop-btn");
       this.progressBar = this.shadow.getElementById("progress-bar");
       this.statusText = this.shadow.getElementById("status-text");
-      this.statusDot = this.shadow.getElementById("status-dot");
+      this.metrics = this.shadow.querySelector(".wg-metrics");
       this.metricChecked = this.shadow.getElementById("metric-checked");
       this.metricFound = this.shadow.getElementById("metric-found");
       this.metricDeleted = this.shadow.getElementById("metric-deleted");
@@ -2572,7 +2522,33 @@
       });
       this.fieldset.addEventListener("input", () => this.clearFormError());
       this.fieldset.addEventListener("change", () => this.clearFormError());
-      this.panel.addEventListener("keydown", (event) => this.onPanelKeydown(event));
+      this.onWindowKeyEvent = (event) => {
+        if (!this.isOpen()) return;
+        const inside = event.composedPath().includes(this.host);
+        if (!inside && !this.modalOpen) return;
+        if (!inside) {
+          event.preventDefault();
+          if (event.type === "keydown" && event.key === "Escape") this.hideConfirm();
+          else this.focusConfirmation();
+        } else if (event.type === "keydown") {
+          this.onPanelKeydown(event);
+        }
+        event.stopImmediatePropagation();
+      };
+      for (const type of ["keydown", "keypress", "keyup"]) {
+        window.addEventListener(type, this.onWindowKeyEvent, true);
+      }
+      this.onWindowFocusIn = (event) => {
+        if (!this.isOpen()) return;
+        const path = event.composedPath();
+        if (this.modalOpen && !path.includes(this.modal)) {
+          event.stopImmediatePropagation();
+          this.focusConfirmation();
+        } else if (path.includes(this.host)) {
+          event.stopImmediatePropagation();
+        }
+      };
+      window.addEventListener("focusin", this.onWindowFocusIn, true);
       document.addEventListener("keydown", this.onDocumentKeydown = (event) => {
         if (event.key === "Escape" && !this.panel.hidden) this.close();
       });
@@ -2633,7 +2609,8 @@
     open() {
       this.mount();
       if (this.isOpen()) {
-        this.panel.focus({ preventScroll: true });
+        if (this.modalOpen) this.focusConfirmation();
+        else this.panel.focus({ preventScroll: true });
         return;
       }
       this.panel.hidden = false;
@@ -2642,7 +2619,7 @@
       this.startPolling();
       this.updateTheme();
       this.clampPanel();
-      setTimeout(() => this.panel?.focus({ preventScroll: true }), 30);
+      this.panel.focus({ preventScroll: true });
     }
     close() {
       if (!this.panel || this.panel.hidden) return;
@@ -2721,7 +2698,6 @@
         this.targetName.textContent = target.title;
         this.targetMeta.textContent = meta.join(" · ");
         this.targetAvatar.textContent = initialOf(target.title);
-        this.targetAvatar.style.setProperty("--wg-hue", `${hueFor(target.peerId)}deg`);
         this.targetAvatar.classList.remove("wg-avatar-muted");
         this.targetWarning.classList.add("wg-hidden");
         this.targetWarning.textContent = "";
@@ -2730,7 +2706,6 @@
         this.targetName.textContent = error?.code === "NO_CHAT" ? "No chat selected" : "Chat unavailable";
         this.targetMeta.textContent = error?.message || "Open a private chat, group or Saved Messages.";
         this.targetAvatar.textContent = "?";
-        this.targetAvatar.style.removeProperty("--wg-hue");
         this.targetAvatar.classList.add("wg-avatar-muted");
         this.topicWrap.hidden = true;
         if (error && error.code !== "NO_CHAT") {
@@ -2749,7 +2724,7 @@
       this.fieldset.disabled = this.busy;
       this.shadow.getElementById("refresh-btn").disabled = this.busy;
       this.scanButton.hidden = this.busy;
-      this.deleteButton.hidden = this.busy;
+      this.deleteButton.hidden = this.busy || !hasResults || this.phase !== "ready";
       this.stopButton.hidden = !this.busy;
       this.stopButton.disabled = false;
       this.scanButton.disabled = this.busy || !this.target;
@@ -2758,6 +2733,8 @@
       this.scanLabel.textContent = this.scanSnapshot ? "Scan again" : "Scan messages";
       this.reportButton.disabled = this.busy || !this.scanSnapshot;
       this.resetButton.disabled = this.busy;
+      this.metrics.hidden = !this.busy && !this.scanSnapshot;
+      this.panel.classList.toggle("wg-ready", hasResults && this.phase === "ready");
     }
     setBusy(busy, phase = this.phase) {
       this.busy = busy;
@@ -2768,7 +2745,7 @@
     setStatus(text, tone = "info") {
       if (!this.statusText) return;
       this.statusText.textContent = text;
-      this.statusDot.className = `wg-status-dot wg-tone-${tone}`;
+      this.statusText.dataset.tone = tone;
     }
     setProgress(mode, fraction = 0) {
       if (!this.progressBar) return;
@@ -2991,12 +2968,14 @@
       this.modalOpen = true;
       this.modal.hidden = false;
       this.modal.classList.add("wg-show");
+      this.panel.inert = true;
       this.updateConfirmState();
-      setTimeout(() => {
-        if (!this.modalOpen) return;
-        if (requireType) this.confirmInput.focus();
-        else this.confirmCancel.focus();
-      }, 30);
+      this.focusConfirmation();
+    }
+    focusConfirmation() {
+      if (!this.modalOpen) return;
+      const target = this.confirmField.hidden ? this.confirmCancel : this.confirmInput;
+      target.focus({ preventScroll: true });
     }
     updateConfirmState() {
       const count = this.entries.length;
@@ -3008,8 +2987,11 @@
       this.modalOpen = false;
       this.modal.hidden = true;
       this.modal.classList.remove("wg-show");
+      this.panel.inert = false;
       this.confirmInput.value = "";
       this.confirmDelete.disabled = false;
+      this.modalTarget.textContent = "";
+      this.modalFilters.replaceChildren();
       if (!this.busy && this.deleteButton && !this.deleteButton.hidden) {
         try {
           this.deleteButton.focus({ preventScroll: true });
@@ -3253,9 +3235,13 @@
           break;
         }
         case "scan:fallback":
-          this.addLog("warning", `Sender search is unavailable in this chat. ${event.reason} Continuing with a full history scan.`);
-          this.setStatus("Sender search unavailable — switching to full history…", "warning");
+          this.addLog("warning", `${event.reason} Continuing with a full history scan.`);
+          this.setStatus("Switching to full history…", "warning");
           this.showToast("Switching to a full history scan.", "warning");
+          break;
+        case "scan:verify":
+          this.addLog("info", event.reason);
+          this.setStatus("Checking history for messages missing from search…", "info");
           break;
         case "scan:warning":
           this.addLog("warning", `${event.message}${event.error ? ` (${event.error})` : ""}`);
@@ -3308,10 +3294,10 @@
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
         const active = this.shadow.activeElement;
-        if (event.shiftKey && (active === first || !active)) {
+        if (event.shiftKey && (active === first || !this.modal.contains(active))) {
           event.preventDefault();
           last.focus();
-        } else if (!event.shiftKey && active === last) {
+        } else if (!event.shiftKey && (active === last || !this.modal.contains(active))) {
           event.preventDefault();
           first.focus();
         }
@@ -3371,6 +3357,10 @@
       if (this.toastTimer) clearTimeout(this.toastTimer);
       document.removeEventListener("keydown", this.onDocumentKeydown);
       document.removeEventListener("pointerdown", this.onDocumentPointerDown);
+      for (const type of ["keydown", "keypress", "keyup"]) {
+        window.removeEventListener(type, this.onWindowKeyEvent, true);
+      }
+      window.removeEventListener("focusin", this.onWindowFocusIn, true);
       window.removeEventListener("resize", this.onResize);
       this.host?.remove();
       this.host = null;
@@ -3551,7 +3541,7 @@
   }
 
   // src/index.js
-  var VERSION = false ? "dev" : "0.2.1";
+  var VERSION = false ? "dev" : "0.2.2";
   function isWebK() {
     return /^\/k(?:\/|$)/.test(location.pathname);
   }

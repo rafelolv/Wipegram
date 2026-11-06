@@ -45,6 +45,7 @@ const HARNESS = `<!doctype html>
           </div>
         </div>
         <div class="fake-body">mocked Telegram Web K</div>
+        <div id="telegram-composer" contenteditable="true" role="textbox" aria-label="Telegram message"></div>
       </div>
     </div>
   </body>
@@ -101,6 +102,20 @@ async function main() {
   }
 
   try {
+  await context.addInitScript(() => {
+    window.__keyboardLeaks = [];
+    // Telegram-style type-to-compose sees the retargeted Shadow DOM host,
+    // not the input inside it. Install before Wipegram to test capture order.
+    for (const type of ['keydown', 'keypress', 'keyup']) {
+      document.addEventListener(type, event => {
+        if (!event.composedPath().some(node => node?.id === 'wipegram-ui')) return;
+        window.__keyboardLeaks.push(type);
+        if (type === 'keydown' && event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
+          document.getElementById('telegram-composer')?.focus();
+        }
+      }, true);
+    }
+  });
   const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', error => pageErrors.push(String(error)));
@@ -129,8 +144,14 @@ async function main() {
     };
 
     const invokeApi = async (method, params) => {
-      if (method === 'messages.search') {
+      if (method === 'messages.search' || method === 'messages.getHistory' || method === 'messages.getReplies') {
         if (params?.filter?._ === 'inputMessagesFilterPinned') {
+          return { _: 'messages.messages', messages: [], count: 0 };
+        }
+        if (window.__holdSearch) {
+          await new Promise(resolve => { window.__releaseSearch = resolve; });
+        }
+        if (method === 'messages.search' && window.__emptySenderSearch) {
           return { _: 'messages.messages', messages: [], count: 0 };
         }
 
@@ -146,11 +167,13 @@ async function main() {
 
       if (method === 'messages.deleteMessages') {
         window.__deleted.push(...(params?.id || []));
+        window.__messages = window.__messages.filter(message => !params.id.includes(message.id));
         return { _: 'messages.affectedMessages', pts: 1, pts_count: params?.id?.length || 0 };
       }
 
       if (method === 'channels.deleteMessages') {
         window.__deleted.push(...(params?.id || []));
+        window.__messages = window.__messages.filter(message => !params.id.includes(message.id));
         return { _: 'messages.affectedMessages', pts: 1, pts_count: params?.id?.length || 0 };
       }
 
@@ -195,7 +218,18 @@ async function main() {
   if (process.env.WIPEGRAM_UI_SCREENSHOT !== '0') {
     await page.waitForTimeout(250);
     await page.screenshot({ path: SCREENSHOT });
+    await page.locator('#panel').screenshot({ path: path.join(os.tmpdir(), 'wipegram-panel-light.png') });
   }
+
+  // A running scan must expose Stop even before the first page completes.
+  await page.evaluate(() => { window.__holdSearch = true; });
+  await page.click('#scan-btn');
+  await page.waitForFunction(() => typeof window.__releaseSearch === 'function');
+  await page.waitForSelector('#stop-btn', { state: 'visible' });
+  await page.click('#stop-btn');
+  await page.evaluate(() => { window.__holdSearch = false; window.__releaseSearch(); });
+  await waitForShadow(page, 'root.getElementById("status-text").textContent === "Scan stopped."');
+  assert(await page.evaluate(() => window.__deleted.length === 0), 'Stop during scan must not delete');
 
   await page.click('#scan-btn');
   await waitForShadow(page, 'root.getElementById("delete-btn").disabled === false', 10_000);
@@ -217,6 +251,7 @@ async function main() {
   await page.click('#privacy-btn');
   const privacyClass = await page.evaluate(() => document.getElementById('wipegram-ui').classList.contains('wg-private'));
   assert(privacyClass === true, 'Privacy mode did not apply');
+  await waitForShadow(page, 'getComputedStyle(root.getElementById("target-name")).filter === "blur(5px)"');
 
   await page.click('#delete-btn');
   await waitForShadow(page, '!root.getElementById("modal").hidden');
@@ -225,6 +260,16 @@ async function main() {
     return root.getElementById('modal-title').textContent;
   });
   assert(/Delete 3 messages/.test(modalTitle), `Unexpected modal title: ${modalTitle}`);
+
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-cancel")');
+  await page.keyboard.press('Shift+Tab');
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-delete")');
+  await page.keyboard.press('Tab');
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-cancel")');
+  await page.keyboard.press('Escape');
+  await waitForShadow(page, 'root.getElementById("modal").hidden && !root.getElementById("panel").hidden');
+  assert(await page.evaluate(() => window.__deleted.length === 0), 'Escape must cancel without deleting');
+  await page.click('#delete-btn');
 
   await page.click('#confirm-delete');
   await waitForShadow(page, '/^Done\\. 3 messages deleted\\./.test(root.getElementById("status-text").textContent)', 10_000);
@@ -246,6 +291,23 @@ async function main() {
   assert(afterDelete.reportDisabled === false, 'Report button should be enabled after a scan');
   assert(afterDelete.deleteDisabled === true, 'Delete button must be disabled after deletion');
   assert(/Delete started/.test(afterDelete.logText), 'Activity log is missing the delete start entry');
+
+  // New messages after cleanup must be found even while sender search is empty.
+  await page.evaluate(freshMessage => {
+    window.__messages.push(freshMessage);
+    window.__emptySenderSearch = true;
+  }, message(103));
+  await page.click('#scan-btn');
+  await waitForShadow(page, 'root.getElementById("delete-btn").disabled === false', 10_000);
+  const freshScan = await page.evaluate(() => ({
+    ids: window.__wipegram.ui.entries.map(message => message.id),
+    mode: window.__wipegram.ui.scanSnapshot.mode,
+    deleted: window.__deleted.length
+  }));
+  assert(freshScan.ids.length === 1 && freshScan.ids[0] === 103, 'Rescan missed fresh message after cleanup');
+  assert(freshScan.mode === 'history', 'Auto must verify an empty search against history');
+  assert(freshScan.deleted === 3, 'Rescanning must not authorize additional deletion');
+  await page.evaluate(() => { window.__emptySenderSearch = false; });
 
   // The >100 messages confirmation gate.
   await page.evaluate(() => {
@@ -275,13 +337,36 @@ async function main() {
   assert(confirmState.fieldHidden === false, 'Typed confirmation should be required above 100 messages');
   assert(confirmState.confirmDisabled === true, 'Confirm button must start disabled');
 
-  await page.fill('#confirm-input', 'DELETE');
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-input")');
+  await page.evaluate(() => document.getElementById('telegram-composer').focus());
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-input")');
+  await page.keyboard.type('DELET');
+  assert(await page.isDisabled('#confirm-delete'), 'Partial confirmation must remain disabled');
+  await page.keyboard.type('E');
+  const keyboardState = await page.evaluate(() => ({
+    leaks: window.__keyboardLeaks,
+    composer: document.getElementById('telegram-composer').textContent,
+    confirmation: document.getElementById('wipegram-ui').shadowRoot.getElementById('confirm-input').value
+  }));
+  assert(keyboardState.confirmation === 'DELETE', 'Physical typing must stay in confirmation input');
+  assert(keyboardState.composer === '', 'Confirmation text leaked into Telegram composer');
+  assert(keyboardState.leaks.length === 0, `Telegram received Wipegram keyboard events: ${keyboardState.leaks}`);
   const confirmEnabled = await page.evaluate(() => {
     const root = document.getElementById('wipegram-ui').shadowRoot;
     return root.getElementById('confirm-delete').disabled === false;
   });
   assert(confirmEnabled, 'Confirm button did not enable after typing DELETE');
+  if (process.env.WIPEGRAM_UI_SCREENSHOT !== '0') {
+    await page.locator('.wg-modal-card').screenshot({ path: path.join(os.tmpdir(), 'wipegram-confirmation.png') });
+  }
   await page.click('#confirm-cancel');
+  assert(await page.evaluate(() => window.__deleted.length === 0), 'Typed confirmation alone must not delete');
+  await waitForShadow(page, 'root.activeElement === root.getElementById("delete-btn")');
+  await page.click('#delete-btn');
+  await waitForShadow(page, 'root.activeElement === root.getElementById("confirm-input")');
+  assert(await page.inputValue('#confirm-input') === '', 'Reopening confirmation must clear previous acceptance');
+  await page.keyboard.press('Escape');
+  await waitForShadow(page, 'root.getElementById("modal").hidden && !root.getElementById("panel").hidden');
 
   // Long result lists must scroll inside the panel instead of pushing the
   // footer past the viewport.
@@ -355,6 +440,9 @@ async function main() {
   assert(nightClass, 'Dark theme class did not propagate');
   await page.waitForTimeout(150);
   await page.screenshot({ path: path.join(os.tmpdir(), 'wipegram-ui-test-night.png') });
+  if (process.env.WIPEGRAM_UI_SCREENSHOT !== '0') {
+    await page.locator('#panel').screenshot({ path: path.join(os.tmpdir(), 'wipegram-panel-dark.png') });
+  }
 
   await page.setViewportSize({ width: 380, height: 720 });
   const mobileBox = await page.evaluate(() => {

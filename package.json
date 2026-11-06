@@ -1,7 +1,7 @@
 {
   "name": "wipegram",
-  "version": "0.2.1",
-  "description": "Bulk-delete your own messages in Telegram Web K chats",
+  "version": "0.2.2",
+  "description": "Scan, review and bulk-delete your own messages in Telegram Web K",
   "type": "module",
   "main": "wipegram.user.js",
   "homepage": "https://github.com/rafelolv/Wipegram#readme",
@@ -14,6 +14,7 @@
   },
   "scripts": {
     "build": "node build.mjs",
+    "build:icons": "node scripts/generate-icons.mjs",
     "watch": "node build.mjs --watch",
     "build:extensions": "npm run build && node build/extensions.mjs",
     "test": "node --test test/*.test.mjs",
@@ -32,8 +33,10 @@
     "bulk",
     "userscript"
   ],
-  "author": "Wipegram contributors",
-  "license": "MIT",
+  "author": "Rafael (rafaelolv)",
+  "license": "SEE LICENSE IN LICENSE",
+  "userscriptLicense": "LicenseRef-Wipegram-Proprietary",
+  "private": true,
   "engines": {
     "node": ">=20"
   },

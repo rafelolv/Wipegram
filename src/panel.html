@@ -1,10 +1,9 @@
 <div class="wg-panel" id="panel" role="dialog" aria-label="Wipegram" tabindex="-1" hidden>
   <header class="wg-header" id="drag-handle">
     <div class="wg-brand">
-      <div class="wg-logo" aria-hidden="true">W</div>
       <div class="wg-brand-text">
         <div class="wg-title">Wipegram <span class="wg-version">v__WIPEGRAM_VERSION__</span></div>
-        <div class="wg-subtitle">Bulk-delete your own messages</div>
+        <div class="wg-subtitle">Your messages only</div>
       </div>
     </div>
     <div class="wg-header-actions">
@@ -26,8 +25,7 @@
 
     <fieldset class="wg-fieldset" id="filters-fieldset">
       <div class="wg-section-head">
-        <span>What to delete</span>
-        <span class="wg-own-badge"><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg> Your messages only</span>
+        <span>Filters</span>
       </div>
 
       <div class="wg-grid">
@@ -39,19 +37,25 @@
           <span>Text contains</span>
           <input type="text" id="query-input" placeholder="Optional words" autocomplete="off" spellcheck="false">
         </label>
-        <label class="wg-field wg-span2">
-          <span>Regex pattern</span>
-          <input type="text" id="pattern-input" placeholder="Optional, e.g. ^hello|invoice" autocomplete="off" spellcheck="false">
-        </label>
-        <label class="wg-field">
-          <span>Newer than</span>
-          <input type="datetime-local" id="min-date">
-        </label>
-        <label class="wg-field">
-          <span>Older than</span>
-          <input type="datetime-local" id="max-date">
-        </label>
       </div>
+
+      <details class="wg-advanced">
+        <summary>Date & pattern filters <svg class="wg-icon wg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <div class="wg-grid wg-advanced-grid">
+          <label class="wg-field wg-span2">
+            <span>Regex pattern</span>
+            <input type="text" id="pattern-input" placeholder="Optional, e.g. ^hello|invoice" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="wg-field">
+            <span>Newer than</span>
+            <input type="datetime-local" id="min-date">
+          </label>
+          <label class="wg-field">
+            <span>Older than</span>
+            <input type="datetime-local" id="max-date">
+          </label>
+        </div>
+      </details>
 
       <div class="wg-checks">
         <label class="wg-check">
@@ -88,7 +92,7 @@
             <input type="number" id="search-delay" min="0" max="60000" step="100" value="0">
           </label>
         </div>
-        <p class="wg-hint">Auto uses Telegram's sender search first and falls back to a full history walk if the chat does not support search-by-sender.</p>
+        <p class="wg-hint">Auto searches your messages, then checks chat history for anything missing from search. A message limit stops either scan once reached.</p>
       </details>
 
       <div class="wg-form-error wg-hidden" id="form-error"></div>
@@ -97,18 +101,17 @@
     <div class="wg-actions">
       <button type="button" class="wg-btn wg-primary" id="scan-btn"><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg><span id="scan-label">Scan messages</span></button>
       <button type="button" class="wg-btn wg-danger" id="delete-btn" disabled><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5"/></svg><span id="delete-label">Delete messages</span></button>
-      <button type="button" class="wg-btn wg-stop wg-hidden" id="stop-btn"><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg><span>Stop</span></button>
+      <button type="button" class="wg-btn wg-stop" id="stop-btn" hidden><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg><span>Stop</span></button>
     </div>
 
     <div class="wg-progress-wrap">
       <div class="wg-progress"><div class="wg-progress-bar" id="progress-bar"></div></div>
       <div class="wg-status">
-        <span class="wg-status-dot" id="status-dot"></span>
         <span id="status-text">Choose filters, then scan the open chat.</span>
       </div>
     </div>
 
-    <div class="wg-metrics">
+    <div class="wg-metrics" hidden>
       <div class="wg-metric"><span id="metric-checked">0</span><small>Checked</small></div>
       <div class="wg-metric"><span id="metric-found">0</span><small>Found</small></div>
       <div class="wg-metric"><span id="metric-deleted">0</span><small>Deleted</small></div>
@@ -124,16 +127,16 @@
       <div class="wg-hint wg-results-more" id="results-more" hidden></div>
     </section>
 
-    <section class="wg-activity">
-      <div class="wg-section-head">
+    <details class="wg-activity">
+      <summary class="wg-section-head">
         <span>Activity</span>
         <span class="wg-count" id="log-count">0</span>
-      </div>
+      </summary>
       <div class="wg-log" id="log" role="log" aria-live="polite"></div>
-    </section>
+    </details>
 
     <footer class="wg-footer">
-      <div class="wg-privacy-note"><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg><span>Runs only in this tab. No tokens, no servers.</span></div>
+      <a class="wg-link" href="https://github.com/rafelolv/Wipegram/blob/main/docs/USER-GUIDE.md" target="_blank" rel="noopener noreferrer">Help</a>
       <div class="wg-footer-actions">
         <button type="button" class="wg-btn wg-ghost wg-sm" id="reset-btn">Reset</button>
         <button type="button" class="wg-btn wg-ghost wg-sm" id="report-btn" disabled><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg><span>Report</span></button>
@@ -143,8 +146,7 @@
 </div>
 
 <div class="wg-modal" id="modal" hidden>
-  <div class="wg-modal-card" role="alertdialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="wg-modal-icon"><svg class="wg-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5"/></svg></div>
+  <div class="wg-modal-card" role="alertdialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-warning">
     <h2 id="modal-title">Delete messages?</h2>
     <div class="wg-modal-target wg-blur" id="modal-target"></div>
     <ul class="wg-modal-filters" id="modal-filters"></ul>

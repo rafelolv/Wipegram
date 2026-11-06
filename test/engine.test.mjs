@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { WipegramEngine, DELETE_BATCH_SIZE, MAX_FLOOD_WAIT_SECONDS } from '../src/engine.js';
 import { normalizeFilters } from '../src/filters.js';
 import { isAbortError } from '../src/errors.js';
+import { TelegramApi, normalizeMessagesResult } from '../src/telegram.js';
 
 const target = {
   peerId: 777,
@@ -154,6 +155,160 @@ test('auto mode falls back to history when sender search is unsupported', async 
   assert.equal(result.mode, 'history');
   assert.deepEqual(result.entries.map(item => item.id), [10, 8]);
   assert.ok(events.some(event => event.type === 'scan:fallback'));
+});
+
+test('auto verifies an empty sender search against history and preserves ownership and pins', async () => {
+  const calls = [];
+  const api = {
+    getPinnedIds: async () => new Set([304]),
+    searchPage: async () => emptyPage(),
+    historyPage: async ({ offsetId, target: scope }) => {
+      calls.push(offsetId);
+      assert.equal(scope, target);
+      return offsetId ? emptyPage() : page([
+        msg(305), msg(304),
+        msg(303, { from_id: { _: 'peerUser', user_id: 7 } }),
+        msg(302, { from_id: { _: 'peerChannel', channel_id: 55 } })
+      ]);
+    }
+  };
+  const { engine, events } = makeEngine(api);
+  const result = await engine.scan({ target, filters: makeFilters({ scanMethod: 'auto', skipPinned: true }) });
+  assert.deepEqual(result.entries.map(message => message.id), [305]);
+  assert.deepEqual(calls, [0, 302]);
+  assert.equal(result.mode, 'history');
+  assert.equal(events.filter(event => event.type === 'scan:verify').length, 1);
+});
+
+test('auto finds messages missing from a nonempty search without duplicating results', async () => {
+  const api = {
+    searchPage: async ({ offsetId }) => offsetId ? emptyPage() : page([msg(10, { message: 'hello indexed' })]),
+    historyPage: async ({ offsetId }) => offsetId ? emptyPage() : page([
+      msg(12, { message: 'hello fresh' }),
+      msg(11, { message: 'does not match the text filter' }),
+      msg(10, { message: 'hello indexed' }),
+      msg(9, { message: 'hello pinned', pFlags: { out: true, pinned: true } })
+    ])
+  };
+  const { engine } = makeEngine(api);
+  api.getPinnedIds = async () => new Set();
+  const result = await engine.scan({ target, filters: makeFilters({ scanMethod: 'auto', query: 'hello', skipPinned: true }) });
+  assert.deepEqual(result.entries.map(message => message.id), [12, 10]);
+});
+
+for (const isChannel of [false, true]) {
+  test(`scan after deletion and engine reload finds fresh messages despite empty search (${isChannel ? 'supergroup' : 'private'})`, async () => {
+    let messages = [msg(100)];
+    let searchIndex = [...messages];
+    const scanOffsets = [];
+    const scanTarget = { ...target, isChannel, inputChannel: isChannel ? { _: 'inputChannel', channel_id: 55, access_hash: '1' } : null };
+    const root = {
+      myId: 42,
+      managers: { apiManager: { invokeApi: async (method, params) => {
+        if (method === 'messages.search') {
+          if (params.filter._ === 'inputMessagesFilterPinned') return { _: 'messages.messages', messages: [] };
+          return { _: 'messages.messages', messages: searchIndex.filter(message => !params.offset_id || message.id < params.offset_id) };
+        }
+        if (method === 'messages.getHistory') {
+          scanOffsets.push(params.offset_id);
+          return { _: 'messages.messages', messages: messages.filter(message => !params.offset_id || message.id < params.offset_id) };
+        }
+        if (method.endsWith('.deleteMessages')) {
+          messages = messages.filter(message => !params.id.includes(message.id));
+          searchIndex = searchIndex.filter(message => !params.id.includes(message.id));
+          return { _: 'messages.affectedMessages' };
+        }
+        throw new Error(`Unexpected method: ${method}`);
+      } } }
+    };
+    const createEngine = () => makeEngine(new TelegramApi({ root: () => root })).engine;
+    const engine = createEngine();
+    const filters = makeFilters({ scanMethod: 'auto', skipPinned: true });
+    const first = await engine.scan({ target: scanTarget, filters });
+    assert.deepEqual(first.entries.map(message => message.id), [100]);
+    const deletion = await engine.delete({ target: scanTarget, entries: first.entries, filters });
+    assert.equal(deletion.stats.deleted, 1);
+    messages.push(msg(200));
+    const fresh = await createEngine().scan({ target: scanTarget, filters });
+    assert.deepEqual(fresh.entries.map(message => message.id), [200]);
+    assert.deepEqual(scanOffsets, [0, 100, 0, 200]);
+  });
+}
+
+test('history continues past a page containing only deleted-message placeholders', async () => {
+  const offsets = [];
+  const { engine } = makeEngine({ historyPage: async ({ offsetId }) => {
+    offsets.push(offsetId);
+    const messages = offsetId === 0
+      ? [{ _: 'messageEmpty', id: 300 }, { _: 'messageEmpty', id: 299 }]
+      : offsetId === 299 ? [msg(298)] : [];
+    return normalizeMessagesResult({ _: 'messages.messagesSlice', messages, count: 3 });
+  } });
+  const result = await engine.scan({ target, filters: makeFilters({ scanMethod: 'history' }) });
+  assert.deepEqual(result.entries.map(message => message.id), [298]);
+  assert.deepEqual(offsets, [0, 299, 298]);
+});
+
+test('auto message limit stops before history verification', async () => {
+  const { engine } = makeEngine({
+    searchPage: async () => page([msg(3), msg(2), msg(1)]),
+    historyPage: async () => { throw new Error('Requested cap already satisfied'); }
+  });
+  const result = await engine.scan({ target, filters: makeFilters({ scanMethod: 'auto', maxMessages: 2 }) });
+  assert.deepEqual(result.entries.map(message => message.id), [3, 2]);
+  assert.equal(result.mode, 'search');
+});
+
+test('history verification keeps topic scope and local media, text, regex and date filters', async () => {
+  const topicTarget = { ...target, topMsgId: 55, threadId: 55 };
+  const filters = makeFilters({
+    scanMethod: 'auto', type: 'photos', query: 'invoice', pattern: '^invoice',
+    minDate: 2_000_000, maxDate: 3_000_000
+  });
+  const photo = { _: 'messageMediaPhoto' };
+  const { engine } = makeEngine({
+    searchPage: async () => emptyPage(),
+    historyPage: async ({ target: scope, offsetId }) => {
+      assert.equal(scope, topicTarget);
+      return offsetId ? emptyPage() : page([
+        msg(7, { date: 3_001, message: 'invoice too new', media: photo }),
+        msg(6, { date: 2_500, message: 'invoice retained', media: photo }),
+        msg(5, { date: 2_499, message: 'invoice wrong type' }),
+        msg(4, { date: 2_498, message: 'wrong query', media: photo }),
+        msg(3, { date: 2_497, message: 'wrong prefix invoice', media: photo }),
+        msg(2, { date: 1_999, message: 'invoice too old', media: photo })
+      ]);
+    }
+  });
+  const result = await engine.scan({ target: topicTarget, filters });
+  assert.deepEqual(result.entries.map(message => message.id), [6]);
+});
+
+test('auto retries incomplete search through history; incomplete history is never successful', async () => {
+  const { engine } = makeEngine({
+    searchPage: async () => normalizeMessagesResult({ _: 'messages.messagesNotModified' }),
+    historyPage: async ({ offsetId }) => offsetId ? emptyPage() : page([msg(10)])
+  });
+  const result = await engine.scan({ target, filters: makeFilters({ scanMethod: 'auto' }) });
+  assert.deepEqual(result.entries.map(message => message.id), [10]);
+  for (const response of [{ _: 'messages.messagesNotModified' }, {}]) {
+    engine.api.historyPage = async () => normalizeMessagesResult(response);
+    await assert.rejects(engine.scan({ target, filters: makeFilters({ scanMethod: 'history' }) }), { code: 'INCOMPLETE_RESPONSE' });
+  }
+});
+
+test('history refuses stalled pagination instead of returning partial success', async () => {
+  const { engine } = makeEngine({ historyPage: async () => page([msg(10)]) });
+  await assert.rejects(engine.scan({ target, filters: makeFilters({ scanMethod: 'history' }) }), { code: 'PAGINATION_STALLED' });
+});
+
+test('Stop during history verification aborts instead of returning matches', async () => {
+  const controller = new AbortController();
+  const { engine } = makeEngine({
+    searchPage: async () => emptyPage(),
+    historyPage: async () => { controller.abort(); return page([msg(10)]); }
+  });
+  await assert.rejects(engine.scan({ target, filters: makeFilters({ scanMethod: 'auto' }), signal: controller.signal }), isAbortError);
 });
 
 test('explicit search mode surfaces a search failure instead of falling back', async () => {

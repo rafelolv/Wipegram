@@ -31,3 +31,9 @@ Use English change bullets in `CHANGELOG.md` and release notes; keep validation 
 Preserve unrelated working-tree changes. Commit, push and publish when requested. For commits use repository-local `Rafael <82127878+rafelolv@users.noreply.github.com>`; do not change global configuration or rewrite history.
 
 CI runs on main pushes and pull requests. Release automation runs only when a `v*` tag is pushed; it validates version, notes, changelog and generated artifacts, then publishes fixed downloads and checksums. Adding workflow files does not publish anything. A requested GitHub release does not authorize Firefox AMO or other store publication. Follow [RELEASING.md](RELEASING.md) and verify the published files before reporting success.
+
+## Distribution identity and licensing
+
+Creator metadata is `Rafael (rafaelolv)`; repository paths still use `rafelolv/Wipegram`. Keep package metadata, userscript author and popup credit consistent. `images/icon.svg` is the distribution icon source. Run `npm run build:icons` with a Chromium executable installed, or set `WIPEGRAM_CHROME=/path/to/chrome`, and commit all PNG exports when changing the icon. Rebuild both packages afterward. The userscript embeds the 64 px PNG as a data URL; browser packages include 48/128 px icons. No runtime request is needed to fetch an icon.
+
+From 0.2.2, embed the proprietary license in the userscript and ship the same `LICENSE` in both extension packages. npm uses `SEE LICENSE IN LICENSE`; the userscript uses `LicenseRef-Wipegram-Proprietary`. Preserve prior MIT releases and third-party license notices. See [licensing](LICENSING.md). Authorized maintenance builds do not grant redistribution or modification rights to other users.

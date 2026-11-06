@@ -13,6 +13,8 @@ const hash = value => createHash('sha256').update(value).digest('hex');
 const common = {
   'wipegram.user.js': artifact,
   LICENSE: await readFile(new URL('LICENSE', root)),
+  'icon-48.png': await readFile(new URL('images/icon-48.png', root)),
+  'icon-128.png': await readFile(new URL('images/icon-128.png', root)),
   'popup.html': await readFile(new URL('src/extension/popup.html', root)),
   'popup.css': await readFile(new URL('src/extension/popup.css', root))
 };
@@ -26,7 +28,8 @@ for (const browser of ['chromium', 'firefox']) {
     description: pkg.description,
     author: pkg.author,
     homepage_url: 'https://github.com/rafelolv/Wipegram',
-    action: { default_title: 'Wipegram', default_popup: 'popup.html' },
+    icons: { 48: 'icon-48.png', 128: 'icon-128.png' },
+    action: { default_title: 'Wipegram', default_popup: 'popup.html', default_icon: { 48: 'icon-48.png', 128: 'icon-128.png' } },
     content_scripts: [{
       matches: ['https://web.telegram.org/k/*', 'https://web.telegram.org/k', 'https://web.telegram.org/a/*', 'https://web.telegram.org/a'],
       js: ['wipegram.user.js'],

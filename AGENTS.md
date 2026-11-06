@@ -2,6 +2,9 @@
 
 Maintained by rafelolv. Follow [docs/MAINTENANCE.md](docs/MAINTENANCE.md).
 
+- Creator display name is `Rafael (rafaelolv)`; official repository URLs remain `rafelolv/Wipegram`. Preserve attribution and the proprietary terms from 0.2.2 onward. Earlier MIT grants and third-party rights remain unchanged; see [docs/LICENSING.md](docs/LICENSING.md).
+- `images/icon.svg` is the canonical distribution icon. Generate its PNGs with `npm run build:icons`, then rebuild packages. Userscript metadata embeds the local 64 px PNG; browser manifests use the local 48/128 px PNGs. Do not add remote icon requests to the runtime.
+
 ## Development and behavior
 
 - Use English for documentation, comments, user-facing text, metadata and commit messages. Follow the user's language in conversation.

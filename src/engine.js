@@ -180,9 +180,8 @@ export class WipegramEngine {
    * Find the user's own messages in the current target.
    *
    * Search mode asks Telegram for sender=me with the chosen server-side media
-   * filter, which is fast but unsupported in a few chat types. Auto mode falls
-   * back to walking the full history and filtering locally when Telegram
-   * rejects sender search.
+   * filter. Auto mode also verifies history from its newest page because an
+   * empty or partial search result is not proof that no messages remain.
    */
   async scan({ target, filters, signal }) {
     if (!target) throw new WipegramError('NO_CHAT', 'Open a chat first, then press Scan messages.');
@@ -200,6 +199,13 @@ export class WipegramEngine {
     let scanned = 0;
     let totalFound = 0;
     const seenCursors = new Set();
+    const switchToHistory = (type, details = {}) => {
+      allowFallback = false;
+      mode = 'history';
+      offsetId = 0;
+      seenCursors.clear();
+      this.emit(type, { ...details, matched: matched.size });
+    };
 
     this.emit('scan:start', { target, filters, mode });
 
@@ -244,14 +250,9 @@ export class WipegramEngine {
           const error = normalizeError(rawError);
 
           if (allowFallback && isSearchFallbackError(error)) {
-            allowFallback = false;
-            mode = 'history';
-            offsetId = 0;
-            seenCursors.clear();
-            this.emit('scan:fallback', {
+            switchToHistory('scan:fallback', {
               reason: humanError(error),
-              code: error.code || 'SEARCH_UNAVAILABLE',
-              matched: matched.size
+              code: error.code || 'SEARCH_UNAVAILABLE'
             });
             continue;
           }
@@ -259,7 +260,18 @@ export class WipegramEngine {
           throw error;
         }
 
+        this.checkAbort(signal);
         pages += 1;
+        if (page.notModified || page.incomplete) {
+          if (allowFallback) {
+            switchToHistory('scan:fallback', {
+              reason: 'Telegram returned an incomplete search response.',
+              code: 'INCOMPLETE_RESPONSE'
+            });
+            continue;
+          }
+          throw new WipegramError('INCOMPLETE_RESPONSE', 'Telegram did not return a complete message page. Scan again before deleting.');
+        }
         const messages = page.messages || [];
         if (page.count) totalFound = Math.max(totalFound, page.count);
         scanned += messages.length;
@@ -293,14 +305,20 @@ export class WipegramEngine {
         });
 
         if (limit && matched.size >= limit) break;
-        if (messages.length === 0) break;
-        if (filters.minDate && oldestMs && oldestMs < filters.minDate) break;
-
         const ids = messages.map(message => message?.id).filter(id => Number.isInteger(id) && id > 0);
-        if (!ids.length) break;
-
-        const nextOffset = Math.min(...ids);
-        if (!nextOffset || nextOffset === offsetId || seenCursors.has(nextOffset)) break;
+        const nextOffset = page.nextOffsetId ?? (ids.length ? Math.min(...ids) : 0);
+        const reachedMinDate = filters.minDate && oldestMs && oldestMs < filters.minDate;
+        const stalled = nextOffset && ((offsetId && nextOffset >= offsetId) || seenCursors.has(nextOffset));
+        if (!nextOffset || reachedMinDate || stalled) {
+          if (allowFallback) {
+            switchToHistory('scan:verify', { reason: 'Checking chat history for messages missing from sender search.' });
+            continue;
+          }
+          if (stalled && mode === 'history' && !reachedMinDate) {
+            throw new WipegramError('PAGINATION_STALLED', 'Telegram repeated a history page. The scan is incomplete; try again before deleting.');
+          }
+          break;
+        }
         seenCursors.add(nextOffset);
         offsetId = nextOffset;
 
