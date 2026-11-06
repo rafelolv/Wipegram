@@ -4,6 +4,12 @@ All notable changes to Wipegram are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-06
+
+### Fixed
+
+- Anchor quick notifications inside the panel below its header, with full-width placement on mobile, instead of the bottom of the screen.
+
 ## [0.4.0] - 2026-11-06
 
 ### Added

@@ -234,8 +234,8 @@ button:focus-visible, a:focus-visible, summary:focus-visible {
 .wg-confirm-field input { height: 40px; font-weight: 600; }
 .wg-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
 .wg-modal-actions .wg-btn { min-width: 96px; }
-.wg-toast { position: fixed; left: 50%; bottom: 24px; z-index: 2147483002; max-width: min(420px, calc(100vw - 32px)); padding: 10px 16px; border: 1px solid #455248; border-radius: 7px; background: #1b1e1c; color: #e8ebe9; font-size: 12px; text-align: center; opacity: 0; pointer-events: none; transform: translate(-50%, 8px); transition: opacity .15s ease, transform .15s ease; }
-.wg-toast.wg-show { opacity: 1; transform: translate(-50%, 0); }
+.wg-toast { position: absolute; top: 82px; right: 16px; z-index: 2; max-width: min(420px, calc(100% - 32px)); padding: 10px 16px; border: 1px solid #455248; border-radius: 7px; background: #1b1e1c; color: #e8ebe9; font-size: 12px; text-align: center; opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity .15s ease, transform .15s ease; }
+.wg-toast.wg-show { opacity: 1; transform: translateY(0); }
 .wg-toast-error { border-color: #b43643; }
 .wg-toast-warning { border-color: #956314; }
 :host(.wg-private) .wg-blur { filter: blur(5px); transition: filter .15s ease; }
@@ -250,6 +250,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible {
   .wg-metric { padding-inline: 8px; }
 }
 @media (max-width: 680px) {
+  .wg-toast { top: 72px; left: 12px; right: 12px; max-width: none; text-align: left; }
   .wg-panel { top: 8px !important; left: 8px !important; right: 8px !important; width: auto; max-width: none; height: calc(100vh - 16px); height: calc(100dvh - 16px); border-radius: 10px; }
   .wg-header { min-height: 62px; padding: 10px 14px; cursor: default; }
   .wg-title { font-size: 19px; }

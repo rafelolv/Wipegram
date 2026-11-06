@@ -229,6 +229,34 @@ async function main() {
   await waitForShadow(page, '/Message limit must be/.test(root.getElementById("form-error").textContent)');
   await page.click('#limit-100');
 
+  if (process.env.WIPEGRAM_UI_SMOKE === '1') {
+    for (const width of [1280, 380, 320]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.evaluate(() => {
+        window.__wipegram.ui.showToast('Toast position smoke test');
+        if (innerWidth > 680) window.__wipegram.ui.positionPanel(24, 90);
+      });
+      await page.waitForTimeout(180);
+      const geometry = await page.evaluate(() => {
+        const root = document.getElementById('wipegram-ui').shadowRoot;
+        const panel = root.getElementById('panel');
+        const toast = root.getElementById('toast');
+        const p = panel.getBoundingClientRect(), t = toast.getBoundingClientRect();
+        const header = root.querySelector('.wg-header').getBoundingClientRect();
+        const scan = root.getElementById('scan-btn').getBoundingClientRect();
+        return { inside: panel.contains(toast) && t.left >= p.left && t.right <= p.right,
+          belowHeader: t.top >= header.bottom, aboveActions: t.bottom < scan.top,
+          mobileWidth: t.width, panelWidth: p.width };
+      });
+      assert(geometry.inside && geometry.belowHeader && geometry.aboveActions, `Toast misplaced at ${width}px`);
+      if (width <= 680) assert(geometry.mobileWidth >= geometry.panelWidth - 30, 'Mobile toast should fill available panel width');
+    }
+    await page.click('#close-btn');
+    assert(await page.locator('#toast').isVisible() === false, 'Toast must hide with its panel');
+    console.log('Toast smoke test passed: desktop, moved panel, mobile and close.');
+    return;
+  }
+
   // Keyboard shortcut toggles the panel.
   await page.keyboard.press('Alt+Shift+W');
   await waitForShadow(page, 'root.getElementById("panel").hidden === true');
